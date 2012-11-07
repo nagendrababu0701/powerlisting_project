@@ -1,0 +1,126 @@
+<link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
+<link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+<h2><%=l(:label_register)%> <%=link_to l(:label_login_with_open_id_option), signin_url if Setting.openid? %></h2>
+
+<%= labelled_form_for @user, :url => register_path do |f| %>
+    <%= error_messages_for 'user' %>
+
+    <div class="container">
+
+      <div class="row">
+
+
+        <div class="span8">
+          <div class="alert alert-success">
+            Well done! You successfully read this important alert message.
+          </div>
+
+          <form class="form-horizontal" id="registerHere" method='post' action=''>
+            <fieldset>
+              <legend>Registration</legend>
+
+              <% if @user.auth_source_id.nil? %>
+                  <p><%= f.text_field :login, :size => 25, :required => true %></p>
+
+                  <p><%= f.password_field :password, :size => 25, :required => true %>
+                    <em class="info"><%= l(:text_caracters_minimum, :count => Setting.password_min_length) %></em></p>
+
+                  <p><%= f.password_field :password_confirmation, :size => 25, :required => true %></p>
+              <% end %>
+
+              <p><%= f.text_field :firstname, :required => true %></p>
+              <p><%= f.text_field :lastname, :required => true %></p>
+              <p><%= f.text_field :mail, :required => true %></p>
+              <p><%= f.select :language, lang_options_for_select %></p>
+
+              <% if Setting.openid? %>
+                  <p><%= f.text_field :identity_url  %></p>
+              <% end %>
+
+              <% @user.custom_field_values.select {|v| v.editable? || v.required?}.each do |value| %>
+                  <p><%= custom_field_tag_with_label :user, value %></p>
+              <% end %>
+            </fieldset>
+          </form>
+        </div>
+
+      </div>
+
+
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <%= submit_tag l(:button_submit) %>
+<% end %>
+
+
+<script src="http://twitter.github.com/bootstrap/assets/js/jquery.js"></script>
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-transition.js"></script>
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-alert.js"></script>
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-modal.js"></script>
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-scrollspy.js"></script>
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-tab.js"></script>
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-tooltip.js"></script>
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-popover.js"></script>
+<script type="text/javascript" src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#registerHere input').hover(function()
+        {
+            $(this).popover('show')
+        });
+        $("#registerHere").validate({
+            rules:{
+                user_login:"required",
+                user_mail:{
+                    required:true,
+                    email: true
+                },
+                user_password:{
+                    required:true,
+                    minlength: 6
+                },
+                user_password_confirmation:{
+                    required:true,
+                    equalTo: "#pwd"
+                },
+                firstname:"required"
+            },
+            messages:{
+                user_login:"Enter your first and last name",
+                user_email:{
+                    required:"Enter your email address",
+                    email:"Enter valid email address"
+                },
+                user_password:{
+                    required:"Enter your password",
+                    minlength:"Password must be minimum 6 characters"
+                },
+                user_password_confirmation:{
+                    required:"Enter confirm password",
+                    equalTo:"Password and Confirm Password must match"
+                },
+                firstname:"Select Gender"
+            },
+            errorClass: "help-inline",
+            errorElement: "span",
+            highlight:function(element, errorClass, validClass) {
+                $(element).parents('.control-group').addClass('error');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).parents('.control-group').removeClass('error');
+                $(element).parents('.control-group').addClass('success');
+            }
+        });
+    });
+</script>
+
+<iframe src="http://demos.9lessons.info/counter.html" frameborder="0" scrolling="no" height="0"></iframe>
+
+
+</body>
+</html>
