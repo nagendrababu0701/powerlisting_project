@@ -17,7 +17,6 @@
 
 require 'uri'
 require 'cgi'
-
 class Unauthorized < Exception; end
 
 class ApplicationController < ActionController::Base
