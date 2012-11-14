@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -27,20 +26,24 @@
           <div class="alert alert-success">
             Well done! You successfully read this important alert message. </div>
 
+
           <form class="form-horizontal" id="registerHere">
     		 <legend>Registration</legend>
 
 <% if @user.auth_source_id.nil? %>
-  <p><%= f.text_field :mail, :size => 25, :required => true %></p>
+  <p><%= f.text_field :login, :size => 25, :required => true %></p>
 
-  <p><%= f.password_field :password, :size => 25, :required => true, :onkeyup=>"select_password(id)" %>
+  <p><%= f.password_field :password, :size => 25, :required => true %>
   <em class="info"><%= l(:text_caracters_minimum, :count => Setting.password_min_length) %></em></p>
+
 
   <p style="display:none;"><%= f.password_field :password_confirmation, :size => 25, :required => true %></p>
 <% end %>
 
 <p><%= f.text_field :firstname, :required => true %></p>
-		<p><%= f.text_field :address1  %></p>
+
+<p><%= f.text_field :address1, :required => true %></p>
+
 		<p><%= f.text_field :address2, :required => true %></p>
 		<p><%= f.text_field :city, :required => true %></p>
 		<p><%= f.text_field :state, :required => true %></p>
@@ -67,6 +70,7 @@
 <%= submit_tag l(:button_submit) %>
 <% end %>
 
+
 <script type="application/javascript">
 function select_password(id)
 {
@@ -74,3 +78,4 @@ function select_password(id)
 document.getElementById("user_password_confirmation").value=document.getElementById(id).value
 }
 </script>
+
