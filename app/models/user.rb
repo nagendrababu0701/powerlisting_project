@@ -28,41 +28,13 @@ class User < Principal
 
   # Different ways of displaying/sorting users
   USER_FORMATS = {
-    :firstname_lastname => {
-        :string => '#{firstname} #{lastname}',
-        :order => %w(firstname lastname id),
-        :setting_order => 1
-      },
-    :firstname_lastinitial => {
-        :string => '#{firstname} #{lastname.to_s.chars.first}.',
-        :order => %w(firstname lastname id),
-        :setting_order => 2
-      },
+    
     :firstname => {
         :string => '#{firstname}',
         :order => %w(firstname id),
         :setting_order => 3
       },
-    :lastname_firstname => {
-        :string => '#{lastname} #{firstname}',
-        :order => %w(lastname firstname id),
-        :setting_order => 4
-      },
-    :lastname_coma_firstname => {
-        :string => '#{lastname}, #{firstname}',
-        :order => %w(lastname firstname id),
-        :setting_order => 5
-      },
-    :lastname => {
-        :string => '#{lastname}',
-        :order => %w(lastname id),
-        :setting_order => 6
-      },
-    :username => {
-        :string => '#{login}',
-        :order => %w(login id),
-        :setting_order => 7
-      },
+    
   }
 
   MAIL_NOTIFICATION_OPTIONS = [
@@ -90,20 +62,16 @@ class User < Principal
   attr_accessor :password, :password_confirmation
   attr_accessor :last_before_login_on
   # Prevents unauthorized assignments
-  attr_protected :login, :admin, :password, :password_confirmation, :hashed_password
+  attr_protected :admin, :password, :password_confirmation, :hashed_password
 
-  LOGIN_LENGTH_LIMIT = 60
   MAIL_LENGTH_LIMIT = 60
 
-  validates_presence_of :login, :firstname, :lastname, :mail, :if => Proc.new { |user| !user.is_a?(AnonymousUser) }
-  validates_uniqueness_of :login, :if => Proc.new { |user| user.login_changed? && user.login.present? }, :case_sensitive => false
-  validates_uniqueness_of :mail, :if => Proc.new { |user| !user.mail.blank? }, :case_sensitive => false
+  validates_presence_of :firstname
+
   # Login must contain lettres, numbers, underscores only
-  validates_format_of :login, :with => /^[a-z0-9_\-@\.]*$/i
-  validates_length_of :login, :maximum => LOGIN_LENGTH_LIMIT
-  validates_length_of :firstname, :lastname, :maximum => 30
-  validates_format_of :mail, :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i, :allow_blank => true
-  validates_length_of :mail, :maximum => MAIL_LENGTH_LIMIT, :allow_nil => true
+
+  validates_length_of :firstname, :maximum => 30
+
   validates_confirmation_of :password, :allow_nil => true
   validates_inclusion_of :mail_notification, :in => MAIL_NOTIFICATION_OPTIONS.collect(&:first), :allow_blank => true
   validate :validate_password_length

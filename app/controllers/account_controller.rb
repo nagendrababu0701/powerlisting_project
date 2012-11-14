@@ -34,6 +34,13 @@ class AccountController < ApplicationController
     render_error :message => e.message
   end
 
+def bussiness_details_search
+
+end
+
+
+
+
   # Log out current user and redirect to welcome page
   def logout
     logout_user
@@ -156,12 +163,12 @@ class AccountController < ApplicationController
   end
 
   def password_authentication
-    user = User.try_to_login(params[:username], params[:password])
+    user = User.try_to_login(params[:mail], params[:password])
 
     if user.nil?
       invalid_credentials
     elsif user.new_record?
-      onthefly_creation_failed(user, {:login => user.login, :auth_source_id => user.auth_source_id })
+      onthefly_creation_failed(user, {:mail => user.mail, :auth_source_id => user.auth_source_id })
     else
       # Valid user
       successful_authentication(user)
@@ -293,4 +300,6 @@ class AccountController < ApplicationController
     flash[:notice] = l(:notice_account_pending)
     redirect_to signin_path
   end
+
+
 end

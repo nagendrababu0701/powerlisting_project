@@ -1,0 +1,43 @@
+<link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
+<link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
+<%= javascript_include_tag :defaults %>
+<script type="text/javascript">
+	function select_company_name()
+	{
+		business_name=document.getElementById('business').value
+		jQuery.ajax({
+          	url: "/account/search_bussiness_details/1?business_name="+business_name,
+		type: "POST",
+           	success: function(result){  
+			alert(result)
+          	  },
+          	error: function(){
+                 		 alert('Error occured');
+           	 }
+      });
+	}
+</script>
+
+ <div class="container">
+      <div class="row">
+         <div class="span8">
+		<table>
+		<tr>
+		<td>Business Name</td>
+		<td><%= text_field_tag :business, "", :id=>"business" %></td>
+		<td>City</td>
+		<td><%= text_field_tag :city, "", :id=>"city" %></td>
+		<td>State</td>
+		<td><%= text_field_tag :state, "", :id=>"state" %></td>
+		<td>County</td>
+		<td><%= text_field_tag :country, "", :id=>"country" %></td>
+		<td>Pincode</td>
+		<td><%= text_field_tag :pincode, "", :id=>"pincode" %></td>
+		</tr>
+		</table>
+	 </div>
+    </div>
+</div>
+
+    <%= submit_tag l(:button_scan), :onclick=>"select_company_name()" %>
+
