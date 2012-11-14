@@ -1,0 +1,50 @@
+<%= sitemap "#{@venue.name}" %>
+
+<%= see_more "https://developer.foursquare.com/docs/explore.html#req<%=venues/#{@venue_id}" %>
+
+<table>
+  <tr>
+   <td> Name</td>
+   <td><%= @venue.name</td>
+</tr>
+  <tr>
+   <td> Location</td>
+   <td><%= @venue.location.address%></td>
+  - if @venue.primary_category
+    <tr>
+     <td> Primary Category</td>
+     <td><%= @venue.primary_category.name%></td>
+</tr>
+  <tr>
+   <td> Categories</td>
+   <td>
+      - @venue.categories.each do |category|
+        %ul
+          %li
+            <%= image_tag category["icon"]%>
+            <%= category["name"]%></td>
+</tr>
+  <tr>
+   <td> Checkins Count</td>
+   <td><%= @venue.stats["checkinsCount"]%></td>
+    </tr>
+  <tr>
+   <td> Photos</td>
+   <td>
+      <p>
+        <%= @venue.photos_count%>
+        photos
+        <% unless @venue.photos.blank? %>
+          <br />
+          All photos may not be present here, use "all_photos" method to get more photos
+          <br />
+          Note that various size are available for each photo (original, 300x300, 100x100, 36x36)
+      - @venue.photos.each do |photo|
+        <%= link_to image_tag(photo.square_100_url), photo.url%>
+    <% end %>
+<% end %></td></tr>
+  <tr>
+   <td> More</td>
+   <td><%= link_to "See documentation", "https://developer.foursquare.com/docs/explore.html#req<%=venues/#{@venue_id}"%></td>
+</tr>
+</table>
