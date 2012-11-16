@@ -14,18 +14,64 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+require 'geocoder'
+require 'net/http'
+
 
 class UsersController < ApplicationController
   layout 'admin'
 
   before_filter :require_admin, :except => :show
-  before_filter :find_user, :only => [:show, :edit, :update, :destroy, :edit_membership, :destroy_membership]
+ before_filter :find_user, :only => [:show, :edit, :update, :destroy, :edit_membership, :destroy_membership]
   accept_api_auth :index, :show, :create, :update, :destroy
 
   helper :sort
   include SortHelper
   helper :custom_fields
   include CustomFieldsHelper
+
+def previous_information_details
+user=User.find_by_firstname(params[:user_id])
+business_locations= BusinessLocation.last(:conditions=>"user_id= '#{user.id}'")
+if(business_locations)
+ @directories=Directory.find(:all, :conditions=>"business_location_id='#{business_locations.id}'")
+end
+	#@user=User.first(:conditions=>"firstname = '#{params[:user_id]}'", :include=>[{:business_locations=>[:directories]}])
+end
+
+def search_business_details_mapquest
+@s = Geocoder.search(params[:city],params[:business])
+render :json => @s[0].formatted_address.to_json
+end
+
+def search_business_details_yelp
+        client = Yelp::Client.new
+        request = Yelp::Review::Request::Location.new(
+                :address => '',
+                :city => params[:city],
+                :state => params[:state],
+                :term => params[:business],
+                :yws_id => 'GanonVA_293b8gzCHFgHdQ')
+		response = client.search(request)
+	render :json =>response["message"]["text"].to_json
+end
+
+def search_business_details_yahoo
+
+http://info.yahoo.com/privacy/us/yahoo/addressbook/details.html
+
+	#url = 'http://info.yahoo.com/privacy/us/yahoo/products.html/?		appid=0yJmk9cUNjYUg0RWhVOG1aJmQ9WVdrOVNUZEdkMjFrTXpJbWNHbzlNVEV4TVRJd05UWXkmcz1jb25zdW1lcnNlY3JldCZ4PWIx&query=reliance&results=1'
+	url = 'http://info.yahoo.com/privacy/us/yahoo/addressbook/details.html?appid=0yJmk9cUNjYUg0RWhVOG1aJmQ9WVdrOVNUZEdkMjFrTXpJbWNHbzlNVEV4TVRJd05UWXkmcz1jb25zdW1lcnNlY3JldCZ4PWIx&query=dghjjfg&results=1'
+
+	resp = Net::HTTP.get_response(URI.parse(url)) 
+	@data = resp.body
+render :json =>@data.to_json
+end
+
+def search_business_details_urbanmapping
+interface = UrbanMapping::Interface.new('80f9aed0823afd0f9b98e227abfc2491')
+@hood = interface.get_neighborhoods_by_name(params[:name])
+end
 
   def index
     sort_init 'login', 'asc'
@@ -198,6 +244,8 @@ class UsersController < ApplicationController
       format.js
     end
   end
+
+
 
   private
 

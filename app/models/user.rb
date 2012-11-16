@@ -18,6 +18,9 @@
 require "digest/sha1"
 
 class User < Principal
+
+ has_many :business_locations, :dependent => :destroy
+
   include Redmine::SafeAttributes
 
   # Account statuses
