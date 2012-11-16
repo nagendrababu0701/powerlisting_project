@@ -30,6 +30,7 @@ class UsersController < ApplicationController
   helper :custom_fields
   include CustomFieldsHelper
 
+
 def previous_information_details
 user=User.find_by_firstname(params[:user_id])
 business_locations= BusinessLocation.last(:conditions=>"user_id= '#{user.id}'")
@@ -39,7 +40,9 @@ end
 	#@user=User.first(:conditions=>"firstname = '#{params[:user_id]}'", :include=>[{:business_locations=>[:directories]}])
 end
 
-def search_business_details_mapquest
+
+def search_business_details
+
 @s = Geocoder.search(params[:city],params[:business])
 render :json => @s[0].formatted_address.to_json
 end

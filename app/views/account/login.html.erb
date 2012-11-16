@@ -1,15 +1,19 @@
+<%= stylesheet_link_tag "login_form" %>
+<%= javascript_include_tag "login_form" %>
 <%= call_hook :view_account_login_top %>
-<div id="login-form">
+<div class="login-form">
+<h1>Login Form</h1>
 <%= form_tag(signin_path) do %>
 <%= back_url_hidden_field_tag %>
 <table>
 <tr>
-    <td align="right"><label for="username"><%=l(:field_login)%>:</label></td>
-    <td align="left"><%= text_field_tag 'mail', params[:usermail], :tabindex => '1' %></td>
+   
+    <td align="left"><%= text_field_tag 'mail', params[:usermail],:placeholder=>"Enter email", :tabindex => '1' %></td>
+
 </tr>
 <tr>
-    <td align="right"><label for="password"><%=l(:field_password)%>:</label></td>
-    <td align="left"><%= password_field_tag 'password', nil, :tabindex => '2' %></td>
+   
+    <td align="left"><%= password_field_tag 'password', nil,:placeholder=>"Enter password", :tabindex => '2' %></td>
 </tr>
 <% if Setting.openid? %>
 <tr>
@@ -26,12 +30,13 @@
     </td>
 </tr>
 <tr>
-    <td align="left">
+    <td align="left" >
         <% if Setting.lost_password? %>
-            <%= link_to l(:label_password_lost), lost_password_path %>
+            <%= link_to "LastPassword", lost_password_path %>
         <% end %>
-    </td>
-    <td align="right">
+   
+   
+
         <input type="submit" name="login" value="<%=l(:button_login)%> &#187;" tabindex="5"/>
     </td>
 </tr>

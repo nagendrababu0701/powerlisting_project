@@ -5,6 +5,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 
+
 window.open("/users/previous_information_details?user_id=<%= @name %>&logintime=<%= @login_time %>",'dependent, width=900, height=480, left=100, top=100', target='_blank');
 
     $("#clicking").click(function () {
@@ -16,11 +17,13 @@ hide_show();
             dataType: "html",
             success: function (data) {
 	$("#searched_business_data").html(data)
+
             },
             error: function () {
                 alert("error");
             }
         });
+
    });
 })
 function hide_show()
@@ -54,8 +57,8 @@ $('#creating_events').hide();
 <div style="background:#ADD8E6">
 <fieldset>
 <legend><b>Scanning Details</b></legend>
+	<table width="100%">
 
-  <table width="100%">
 	<tr>
 		<td>Business Name</td>
 		<td><%= text_field_tag :business, "", :id=>"business" %></td>
@@ -64,6 +67,7 @@ $('#creating_events').hide();
 		<td>State</td>
 		<td><%= text_field_tag :state, "", :id=>"state" %></td>
 	</tr>
+
         <tr>	<td>Country</td>
 		<td><%= text_field_tag :country, "", :id=>"country" %></td>
 		<td>Pincode</td>

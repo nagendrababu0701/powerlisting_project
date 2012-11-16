@@ -1,4 +1,7 @@
 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+<%= javascript_include_tag "login_form" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,71 +14,57 @@
 
 <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
       
-</head>
-<h2><%=l(:label_register)%> <%=link_to l(:label_login_with_open_id_option), signin_url if Setting.openid? %></h2>
 
 <%= labelled_form_for @user, :url => register_path do |f| %>
 <%= error_messages_for 'user' %>
+<h2><%#=l(:label_register)%> <%=link_to l(:label_login_with_open_id_option), signin_url if Setting.openid? %></h2>
+<%= labelled_form_for @user, :url => register_path do |f| %>
+<%= error_messages_for 'user' %>
+<%= stylesheet_link_tag "form_register" %>
+<div id="registration">
 
-<div class="container">
+    <div class="span8">
+ <form id="RegisterUserForm" action="" method="post">
+					<legend style="width:83%; color:green;">Register</legend>
+					 <div style="float: left; width: 50%;">
+					<% if @user.auth_source_id.nil? %>
+						<p><%= f.text_field :mail, :size => 25,:class=> "text", :placeholder=>"Enter email",:required => true %></p>
+						<p><%= f.password_field :password, :size => 25,:class=> "text",:placeholder=>"Enter password", :required => true %>
+						<em class="info" style="color:green;"><%= l(:text_caracters_minimum, :class=> "text",:count => Setting.password_min_length) %></em></p>
+					<% end %>
+					<p><%= f.text_field :firstname,:class=> "text",:placeholder=>"Enter Full Name", :required => true %></p>
+					<p><%= f.text_field :address1, :class=> "text",:placeholder=>"Enter Address1",:required => true %></p>
+					<p><%= f.text_field :address2,:class=> "text",:placeholder=>"Enter Address2", :required => true %></p>
+					</div>
+					<div style="float: right; width: 50%;">
+					<p><%= f.text_field :city, :class=> "text",:placeholder=>"Enter City",:required => true %></p>
+					<p><%= f.text_field :state,:class=> "text",:placeholder=>"Enter State", :required => true %></p>
+					<p><%= f.text_field :country,:class=> "text",:placeholder=>"Enter Country", :required => true %></p>
+					<p><%= f.text_field :zip_code,:class=> "text",:placeholder=>"Enter ZipCode", :required => true %></p>
+					<p><%= f.text_field :phone,:class=> "text",:placeholder=>"PhoneNumber", :required => true %></p>
+					</div>
+						<% if Setting.openid? %>
+							<p><%= f.text_field :identity_url  %></p>
+						<% end %>
 
-      <div class="row">
+					<%= button_to "", users_path,:id=>"button",:method => "get" %>
+</form>
+</div>
 
 
-        <div class="span8">
-          <div class="alert alert-success">
-            Well done! You successfully read this important alert message. </div>
-
-
-          <form class="form-horizontal" id="registerHere">
-    		 <legend>Registration</legend>
-
-<% if @user.auth_source_id.nil? %>
-  <p><%= f.text_field :mail, :size => 25, :required => true %></p>
-
-  <p><%= f.password_field :password, :size => 25, :required => true %>
-  <em class="info"><%= l(:text_caracters_minimum, :count => Setting.password_min_length) %></em></p>
-
-
-  <p style="display:none;"><%= f.password_field :password_confirmation, :size => 25, :required => true %></p>
-<% end %>
-
-<p><%= f.text_field :firstname, :required => true %></p>
-
-<p><%= f.text_field :address1, :required => true %></p>
-
-		<p><%= f.text_field :address2, :required => true %></p>
-		<p><%= f.text_field :city, :required => true %></p>
-		<p><%= f.text_field :state, :required => true %></p>
-		<p><%= f.text_field :country, :required => true %></p>
-		<p><%= f.text_field :zip_code, :required => true %></p>
-		<p><%= f.text_field :phone, :required => true %></p>
-<p style="display:none;"><%= f.text_field :lastname, :required => true %></p>
-<p  style="display:none;"><%= f.text_field :mail, :required => true %></p>
-<p  style="display:none;"><%= f.select :language, lang_options_for_select %></p>
-
-<% if Setting.openid? %>
-  <p><%= f.text_field :identity_url  %></p>
-<% end %>
-
-<% @user.custom_field_values.select {|v| v.editable? || v.required?}.each do |value| %>
-  <p><%= custom_field_tag_with_label :user, value %></p>
 <% end %>
  </form>
         </div>
 
       </div>
 
-
-<%= submit_tag l(:button_submit) %>
-<% end %>
-
-
 <script type="application/javascript">
 function select_password(id)
 {
 
+
 document.getElementById("user_password_confirmation").value=document.getElementById(id).value
 }
 </script>
+
 

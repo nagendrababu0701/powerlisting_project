@@ -1,0 +1,2 @@
+<INPUT type="button" value="New Window!" onClick="window.open('http://www.pageresource.com/jscript/jex5.htm','mywindow','width=400,height=200')"> 
+

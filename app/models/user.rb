@@ -98,8 +98,8 @@ class User < Principal
   LOGIN_LENGTH_LIMIT = 60
   MAIL_LENGTH_LIMIT = 60
 
-  validates_presence_of :login, :firstname, :lastname, :mail, :if => Proc.new { |user| !user.is_a?(AnonymousUser) }
-  validates_uniqueness_of :login, :if => Proc.new { |user| user.login_changed? && user.login.present? }, :case_sensitive => false
+  validates_presence_of :mail, :firstname,  :if => Proc.new { |user| !user.is_a?(AnonymousUser) }
+  #validates_uniqueness_of :mail, :if => Proc.new { |user| user.login_changed? && user.login.present? }, :case_sensitive => false
   validates_uniqueness_of :mail, :if => Proc.new { |user| !user.mail.blank? }, :case_sensitive => false
   # Login must contain lettres, numbers, underscores only
   validates_format_of :login, :with => /^[a-z0-9_\-@\.]*$/i
@@ -161,28 +161,28 @@ class User < Principal
 
   # Returns the user that matches provided login and password, or nil
   def self.try_to_login(login, password)
-    login = login.to_s
+    mail = login.to_s
     password = password.to_s
 
     # Make sure no one can sign in with an empty password
     return nil if password.empty?
-    user = find_by_login(login)
+    user = find_by_mail(mail)
     if user
       # user is already in local database
       return nil if !user.active?
       if user.auth_source
         # user has an external authentication method
-        return nil unless user.auth_source.authenticate(login, password)
+        return nil unless user.auth_source.authenticate(mail, password)
       else
         # authentication with local password
         return nil unless user.check_password?(password)
       end
     else
       # user is not yet registered, try to authenticate with available sources
-      attrs = AuthSource.authenticate(login, password)
+      attrs = AuthSource.authenticate(mail, password)
       if attrs
         user = new(attrs)
-        user.login = login
+        user.mail = mail
         user.language = Setting.default_language
         if user.save
           user.reload
@@ -546,7 +546,7 @@ class User < Principal
       (!admin? || User.active.first(:conditions => ["admin = ? AND id <> ?", true, id]).present?)
   end
 
-  safe_attributes 'login',
+  safe_attributes 'city','state','country','phone','zip_code','address1','address2','login',
     'firstname',
     'lastname',
     'mail',
@@ -713,3 +713,4 @@ class AnonymousUser < User
     false
   end
 end
+

@@ -1,5 +1,8 @@
 source 'http://rubygems.org'
-
+gem 'geocoder'
+gem "omniauth-foursquare"
+gem  'foursquare2'
+gem 'typhoeus', '0.4.0'
 gem 'rails', '3.2.8'
 gem "jquery-rails", "~> 2.0.2"
 gem "i18n", "~> 0.6.0"
@@ -19,6 +22,10 @@ gem 'mapquest_directions'
 gem 'yelp'
 gem 'foursquare2'
 gem 'typhoeus', '0.4.0'
+
+
+
+
 
 # Optional gem for LDAP authentication
 group :ldap do
