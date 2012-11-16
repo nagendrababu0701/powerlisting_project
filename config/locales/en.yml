@@ -233,7 +233,7 @@ en:
   field_zip_code: zipcode
   field_phone: Phone
 
-
+  field_lastname: City
   field_lastname: Last name
   field_mail: Email
   field_filename: File

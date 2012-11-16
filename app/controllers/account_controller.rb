@@ -111,8 +111,10 @@ end
       @user.register
       if session[:auth_source_registration]
         @user.activate
-        @user.login = session[:auth_source_registration][:login]
+        @user.mail = session[:auth_source_registration][:mail]
         @user.auth_source_id = session[:auth_source_registration][:auth_source_id]
+	#@user.city=user_params[:city]
+	#@user.state=user_params[:state]
         if @user.save
             session[:auth_source_registration] = nil
           self.logged_user = @user
@@ -120,9 +122,9 @@ end
           redirect_to :controller => 'my', :action => 'account'
         end
       else
-        @user.login = params[:user][:login]
+        @user.mail = params[:user][:mail]
         unless user_params[:identity_url].present? && user_params[:password].blank? && user_params[:password_confirmation].blank?
-          @user.password, @user.password_confirmation = user_params[:password], user_params[:password_confirmation]
+          @user.password = user_params[:password]
         end
 
         case Setting.self_registration

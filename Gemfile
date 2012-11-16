@@ -1,6 +1,5 @@
 source 'http://rubygems.org'
 gem 'geocoder'
-gem 'ken', :git => "git://github.com/michael/ken-rb.git"
 gem "omniauth-foursquare"
 gem  'foursquare2'
 gem 'typhoeus', '0.4.0'
@@ -10,8 +9,11 @@ gem "i18n", "~> 0.6.0"
 gem "coderay", "~> 1.0.6"
 gem "fastercsv", "~> 1.5.0", :platforms => [:mri_18, :mingw_18, :jruby]
 gem "builder", "3.0.0"
-gem 'mongoid'
-gem 'bson_ext'
+
+
+
+
+
 # Optional gem for LDAP authentication
 group :ldap do
   gem "net-ldap", "~> 0.3.1"
