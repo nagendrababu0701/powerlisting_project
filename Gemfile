@@ -6,6 +6,19 @@ gem "i18n", "~> 0.6.0"
 gem "coderay", "~> 1.0.6"
 gem "fastercsv", "~> 1.5.0", :platforms => [:mri_18, :mingw_18, :jruby]
 gem "builder", "3.0.0"
+gem 'oauth'
+gem 'mechanize'
+gem 'hpricot'
+gem 'nokogiri'
+gem 'geocoder'
+gem 'citygrid'
+gem 'httparty'
+gem 'hashie'
+gem 'multi_xml'
+gem 'mapquest_directions'
+gem 'yelp'
+gem 'foursquare2'
+gem 'typhoeus', '0.4.0'
 
 # Optional gem for LDAP authentication
 group :ldap do
@@ -27,7 +40,7 @@ platforms :mri, :mingw do
     gem "rmagick", ">= 2.0.0"
   end
 end
-
+gem "ruby-debug"
 # Database gems
 platforms :mri, :mingw do
   group :postgresql do

@@ -34,6 +34,65 @@ class AccountController < ApplicationController
     render_error :message => e.message
   end
 
+def bussiness_details_search
+user=User.find_by_type("User")
+@name=user.firstname
+@login_time=user.last_login_on.strftime('%Y-%m-%d  %r')
+
+end
+
+def search_business_details
+user=User.find_by_type("User")
+@name=user.firstname
+@login_time=user.last_login_on.strftime('%Y-%m-%d  %r')
+
+@s = Geocoder.search(params[:city],params[:business])
+	
+client = Yelp::Client.new
+        request = Yelp::Review::Request::Location.new(
+                :address => '',
+                :city => params[:city],
+                :state => params[:state],
+                :term => params[:business],
+                :yws_id => 'GanonVA_293b8gzCHFgHdQ')
+		response = client.search(request)
+@result=response["message"]["text"]
+   
+       business_location=BusinessLocation.new
+       business_location.address = params[:address]
+       business_location.city = params[:city]
+       business_location.state = params[:state]
+       business_location.business_name = params[:business]
+       business_location.pincode = params[:pincode]
+       business_location.user_id = user.id
+       business_location.login_time = user.last_login_on 
+
+       i=1
+	business_user_id=BusinessLocation.find_by_user_id(user.id)
+       if(business_user_id)
+	business_location.logincount = business_user_id.user_id.to_i+1
+	else
+	business_location.logincount = i
+        end
+
+       business_location.save
+	
+	 directories= Directory.new
+	if(@s[0])
+	 directories.business_location_id=business_location.id
+	 directories.business="MAPQUEST"
+	 directories.business_lising_information=@s[0].formatted_address
+	 directories.categories=params[:business]
+	directories.status="Found"
+	directories.save
+	end
+
+render :partial=>'users/business_info_search'
+end
+
+
+
+
   # Log out current user and redirect to welcome page
   def logout
     logout_user
@@ -156,12 +215,12 @@ class AccountController < ApplicationController
   end
 
   def password_authentication
-    user = User.try_to_login(params[:username], params[:password])
+    user = User.try_to_login(params[:mail], params[:password])
 
     if user.nil?
       invalid_credentials
     elsif user.new_record?
-      onthefly_creation_failed(user, {:login => user.login, :auth_source_id => user.auth_source_id })
+      onthefly_creation_failed(user, {:mail => user.mail, :auth_source_id => user.auth_source_id })
     else
       # Valid user
       successful_authentication(user)
@@ -293,4 +352,6 @@ class AccountController < ApplicationController
     flash[:notice] = l(:notice_account_pending)
     redirect_to signin_path
   end
+
+
 end

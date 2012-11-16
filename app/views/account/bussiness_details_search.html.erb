@@ -1,0 +1,81 @@
+<link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
+<link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+window.open("/users/previous_information_details?user_id=<%= @name %>&logintime=<%= @login_time %>",'dependent, width=900, height=480, left=100, top=100', target='_blank');
+
+    $("#clicking").click(function () {
+hide_show();
+          $.ajax({
+            url: '/account/search_business_details',
+            type: "POST",
+            data: { 'business': $("#business").val(), 'city' : $("#city").val(), 'state' :$("#state").val(), 'country' : $("#country").val(), 'pincode' : $("#pincode").val()  },
+            dataType: "html",
+            success: function (data) {
+	$("#searched_business_data").html(data)
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+   });
+})
+function hide_show()
+{
+$('#clicking').hide();
+$('#creating_events').show();
+}
+
+function hide_show1()
+{
+$('#clicking').show();
+$('#creating_events').hide();
+}
+
+</script>
+
+<style type="text/css">
+   .preview{
+	color:#08233e;
+	background-color: #E3E1B8; 
+	font:1.0em Futura, ‘Century Gothic’, AppleGothic, sans-serif;
+	font-weight:bold;
+	padding:9px;
+	border-radius:12px 12px 12px 12px;
+		
+}
+.preview:hover{background-color:rgb(255,222,173);}
+.preview:active{position:relative;top:2px;}
+
+</style>
+<div style="background:#ADD8E6">
+<fieldset>
+<legend><b>Scanning Details</b></legend>
+
+  <table width="100%">
+	<tr>
+		<td>Business Name</td>
+		<td><%= text_field_tag :business, "", :id=>"business" %></td>
+		<td>City</td>
+		<td><%= text_field_tag :city, "", :id=>"city" %></td>
+		<td>State</td>
+		<td><%= text_field_tag :state, "", :id=>"state" %></td>
+	</tr>
+        <tr>	<td>Country</td>
+		<td><%= text_field_tag :country, "", :id=>"country" %></td>
+		<td>Pincode</td>
+		<td><%= text_field_tag :pincode, "", :id=>"pincode" %></td>
+		<td><%= submit_tag 'Scan',:class => "preview", :id=>"clicking" %><span id="creating_events" style ="display:none;">Scaning, 			Please wait...</span></td>
+	</tr>
+  </table>
+ </fieldset>
+</div>
+
+
+<div id="searched_business_data">
+
+</div>
+

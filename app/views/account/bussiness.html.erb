@@ -1,0 +1,46 @@
+<link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
+<link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#clicking").click(function () {
+          $.ajax({
+            url: '/account/search_business_details',
+            type: "POST",
+            data: { 'business': $("#business").val(), 'city' : $("#city").val(), 'state' :$("#state").val(), 'country' : $("#country").val(), 'pincode' : $("#pincode").val()  },
+            dataType: "html",
+            success: function (data) {
+	$("#searched_business_data").html(data)
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+    });
+})
+</script>
+
+
+	<table width="100%">
+	<tr>
+		<td>Business Name</td>
+		<td><%= text_field_tag :business, "", :id=>"business" %></td>
+		<td>City</td>
+		<td><%= text_field_tag :city, "", :id=>"city" %></td>
+		<td>State</td>
+		<td><%= text_field_tag :state, "", :id=>"state" %></td>
+	</tr>
+        <tr>	<td>County</td>
+		<td><%= text_field_tag :country, "", :id=>"country" %></td>
+		<td>Pincode</td>
+		<td><%= text_field_tag :pincode, "", :id=>"pincode" %></td>
+	</tr>
+	</table>
+
+<center>
+<input type="button" id="clicking" value="Scan">
+</center>
+<div id="searched_business_data">
+
+</div>
