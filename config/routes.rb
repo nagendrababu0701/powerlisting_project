@@ -16,13 +16,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 RedmineApp::Application.routes.draw do
-
-
   root :to => 'welcome#index', :as => 'home'
 
   match 'login', :to => 'account#login', :as => 'signin'
   match 'logout', :to => 'account#logout', :as => 'signout'
+
   match 'account/register', :to => 'account#register', :via => [:get, :post], :as => 'register'
+  
+match 'account/bussiness_details_search', :to => 'account#bussiness_details_search', :via => [:get, :post], :as => 'bussiness_details_search'
   match 'account/lost_password', :to => 'account#lost_password', :via => [:get, :post], :as => 'lost_password'
   match 'account/activate', :to => 'account#activate', :via => :get
 
@@ -74,10 +75,33 @@ RedmineApp::Application.routes.draw do
   match 'my/remove_block', :controller => 'my', :action => 'remove_block', :via => :post
   match 'my/order_blocks', :controller => 'my', :action => 'order_blocks', :via => :post
 
-  resources :users
+  resources :users do
+collection do
+post "search_business_details_mapquest"
+post "search_business_details123"
+post "search_business_details_yahoo"
+post "search_business_details_urbanmapping"
+
+end
+end
+
+resources :users_business_locations do
+collection do
+get "previous_information_details"
+end
+end
+
+
+  resources :account do
+collection do
+post "search_business_details"
+end
+end
+
   match 'users/:id/memberships/:membership_id', :to => 'users#edit_membership', :via => :put, :as => 'user_membership'
   match 'users/:id/memberships/:membership_id', :to => 'users#destroy_membership', :via => :delete
   match 'users/:id/memberships', :to => 'users#edit_membership', :via => :post, :as => 'user_memberships'
+#  match 'search_bussiness_details', :controller=> 'users', :action => 'search_bussiness_details'
 
   match 'watchers/new', :controller=> 'watchers', :action => 'new', :via => :get
   match 'watchers', :controller=> 'watchers', :action => 'create', :via => :post
@@ -137,12 +161,7 @@ RedmineApp::Application.routes.draw do
     resources :queries, :only => [:new, :create]
     resources :issue_categories, :shallow => true
     resources :documents, :except => [:show, :edit, :update, :destroy]
-    resources :boards do
-collection do
-get "city_search"
-post "city_search"
-end
-end
+    resources :boards
     resources :repositories, :shallow => true, :except => [:index, :show] do
       member do
         match 'committers', :via => [:get, :post]

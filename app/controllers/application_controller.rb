@@ -407,6 +407,7 @@ class ApplicationController < ActionController::Base
   end
 
   def render_feed(items, options={})
+options[:title]="Wavespot"
     @items = items || []
     @items.sort! {|x,y| y.event_datetime <=> x.event_datetime }
     @items = @items.slice(0, Setting.feeds_limit.to_i)

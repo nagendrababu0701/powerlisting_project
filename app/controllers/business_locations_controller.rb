@@ -15,6 +15,7 @@ require "geocoder"
 #render :json => @s[0].formatted_address.to_json
   end
 
+
   def show
 
   end

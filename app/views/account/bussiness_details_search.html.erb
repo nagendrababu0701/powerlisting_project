@@ -5,15 +5,15 @@
 <script type="text/javascript">
 $(document).ready(function(){
 
-
-window.open("/users/previous_information_details?user_id=<%= @name %>&logintime=<%= @login_time %>",'dependent, width=900, height=480, left=100, top=100', target='_blank');
-
+<% if(@business_user_id) %>
+window.open("/users_business_locations/previous_information_details?user_id=<%= @name %>&logintime=<%= @login_time %>",'dependent, width=900, height=480, left=100, top=100', target='_blank');
+<% end %>
     $("#clicking").click(function () {
 hide_show();
           $.ajax({
             url: '/account/search_business_details',
             type: "POST",
-            data: { 'business': $("#business").val(), 'city' : $("#city").val(), 'state' :$("#state").val(), 'country' : $("#country").val(), 'pincode' : $("#pincode").val()  },
+            data: { 'business': $("#business").val(), 'city' : $("#city").val(), 'state' :$("#state").val(), 'country' : $("#country").val(), 'pincode' : $("#pincode").val() , 'ph_no' : $("#ph_no").val()  },
             dataType: "html",
             success: function (data) {
 	$("#searched_business_data").html(data)
@@ -61,18 +61,21 @@ $('#creating_events').hide();
 
 	<tr>
 		<td>Business Name</td>
-		<td><%= text_field_tag :business, "", :id=>"business" %></td>
+		<td><%= text_field_tag :business, "", :id=>"business", :required => true %></td>
 		<td>City</td>
 		<td><%= text_field_tag :city, "", :id=>"city" %></td>
 		<td>State</td>
 		<td><%= text_field_tag :state, "", :id=>"state" %></td>
 	</tr>
 
-        <tr>	<td>Country</td>
+     <tr>	
+        <td>Country</td>
 		<td><%= text_field_tag :country, "", :id=>"country" %></td>
+		<td>Ph.No</td>
+		<td><%= text_field_tag :ph_no, "", :id=>"ph_no" %></td>
 		<td>Pincode</td>
 		<td><%= text_field_tag :pincode, "", :id=>"pincode" %></td>
-		<td><%= submit_tag 'Scan',:class => "preview", :id=>"clicking" %><span id="creating_events" style ="display:none;">Scaning, 			Please wait...</span></td>
+		<td><%= submit_tag 'Scan',:class => "preview", :id=>"clicking" %><span id="creating_events" style ="display:none;">Scaning, Please wait...</span></td>
 	</tr>
   </table>
  </fieldset>
@@ -82,4 +85,5 @@ $('#creating_events').hide();
 <div id="searched_business_data">
 
 </div>
+
 

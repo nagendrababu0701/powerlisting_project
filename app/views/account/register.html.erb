@@ -27,19 +27,22 @@
 					 <div style="float: left; width: 50%;">
 					<% if @user.auth_source_id.nil? %>
 						<p><%= f.text_field :mail, :size => 25,:class=> "text", :placeholder=>"Enter email",:required => true %></p>
-						<p><%= f.password_field :password, :size => 25,:class=> "text",:placeholder=>"Enter password", :required => true %>
-						<em class="info" style="color:green;"><%= l(:text_caracters_minimum, :class=> "text",:count => Setting.password_min_length) %></em></p>
-					<% end %>
 					<p><%= f.text_field :firstname,:class=> "text",:placeholder=>"Enter Full Name", :required => true %></p>
 					<p><%= f.text_field :address1, :class=> "text",:placeholder=>"Enter Address1",:required => true %></p>
-					<p><%= f.text_field :address2,:class=> "text",:placeholder=>"Enter Address2", :required => true %></p>
+						<p><%= f.text_field :city, :class=> "text",:placeholder=>"Enter City",:required => true %></p>
+					<p><%= f.text_field :country,:class=> "text",:placeholder=>"Enter Country", :required => true %></p>
+					
 					</div>
 					<div style="float: right; width: 50%;">
-					<p><%= f.text_field :city, :class=> "text",:placeholder=>"Enter City",:required => true %></p>
-					<p><%= f.text_field :state,:class=> "text",:placeholder=>"Enter State", :required => true %></p>
-					<p><%= f.text_field :country,:class=> "text",:placeholder=>"Enter Country", :required => true %></p>
-					<p><%= f.text_field :zip_code,:class=> "text",:placeholder=>"Enter ZipCode", :required => true %></p>
+
+						<p><%= f.password_field :password, :size => 25,:class=> "text",:placeholder=>"Enter password", :required => true %>
+						<em class="info" style="color:green;"><%= l(:text_caracters_minimum, :class=> "text",:count => Setting.password_min_length) %></em></p>
+						<% end %>
+					
 					<p><%= f.text_field :phone,:class=> "text",:placeholder=>"PhoneNumber", :required => true %></p>
+					<p><%= f.text_field :address2,:class=> "text",:placeholder=>"Enter Address2", :required => true %></p>
+					<p><%= f.text_field :state,:class=> "text",:placeholder=>"Enter State", :required => true %></p>
+					<p><%= f.text_field :zip_code,:class=> "text",:placeholder=>"Enter ZipCode", :required => true %></p>
 					</div>
 						<% if Setting.openid? %>
 							<p><%= f.text_field :identity_url  %></p>

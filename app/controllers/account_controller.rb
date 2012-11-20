@@ -35,35 +35,39 @@ class AccountController < ApplicationController
   end
 
 def bussiness_details_search
-user=User.find_by_type("User")
+user=User.current
 @name=user.firstname
-@login_time=user.last_login_on.strftime('%Y-%m-%d  %r')
+@login_time=user.last_login_on
 
+@business_user_id=BusinessLocation.find_by_user_id(user.id)
+	
 end
 
 def search_business_details
-user=User.find_by_type("User")
+user=User.current
 @name=user.firstname
-@login_time=user.last_login_on.strftime('%Y-%m-%d  %r')
+@login_time=user.last_login_on
 
 @s = Geocoder.search(params[:city],params[:business])
-	
-client = Yelp::Client.new
-        request = Yelp::Review::Request::Location.new(
+
+		client = Yelp::Client.new
+        	request = Yelp::Review::Request::Location.new(
                 :address => '',
                 :city => params[:city],
                 :state => params[:state],
                 :term => params[:business],
                 :yws_id => 'GanonVA_293b8gzCHFgHdQ')
 		response = client.search(request)
-@result=response["message"]["text"]
+		@result=response["message"]["text"]
    
        business_location=BusinessLocation.new
        business_location.address = params[:address]
        business_location.city = params[:city]
        business_location.state = params[:state]
        business_location.business_name = params[:business]
-       business_location.pincode = params[:pincode]
+business_location.pincode = params[:pincode]
+business_location.ph_no = params[:ph_no]
+
        business_location.user_id = user.id
        business_location.login_time = user.last_login_on 
 
@@ -78,14 +82,22 @@ client = Yelp::Client.new
        business_location.save
 	
 	 directories= Directory.new
-	if(@s[0])
-	 directories.business_location_id=business_location.id
-	 directories.business="MAPQUEST"
-	 directories.business_lising_information=@s[0].formatted_address
-	 directories.categories=params[:business]
-	directories.status="Found"
-	directories.save
-	end
+if(@s[0])
+ directories.business_location_id=business_location.id
+ directories.business="MAPQUEST"
+ directories.business_lising_information=@s[0].formatted_address
+ directories.categories=params[:business]
+directories.status="Found"
+directories.save
+end
+if(@result=="OK")
+directories.business_location_id=business_location.id
+ directories.business="YELP"
+ directories.business_lising_information=params[:city]+","+params[:state]+","+params[:country]
+ directories.categories=params[:business]
+directories.status="Found"
+directories.save
+end
 
 render :partial=>'users/business_info_search'
 end
