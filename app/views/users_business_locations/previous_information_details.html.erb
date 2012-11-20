@@ -1,0 +1,54 @@
+<% if @directories.blank? %>
+<h1>No Direcotries.....avilable </h1>
+<% else %>
+<style type="text/css">
+.color1{
+background-color:#CCFFCC;
+}
+.color2{
+background-color:#F0FFFF;
+}
+</style>
+
+
+<div>
+	<table width="100%" border="1" align="center">
+		<tr bgcolor="#8FBC8F">
+			<th><%= params[:user_id]  %> </th>
+			<th><%= params[:logintime]  %> </th>
+		</tr>
+	</table>
+</div>
+<div>
+<table width="100%" align="center">
+	<tr bgcolor="#99CCFF">
+		<th> </th>
+		<th>Basic Listings Information</th>
+		<th>Categories</th>			
+		<th>Web Site</th>
+		<th>Description</th>
+		<th>Photos</th>
+		<th>Special Offer</th>
+       		<th>Status</th>
+	</tr>
+<% @i=0 %>
+   <% @directories.each do |directory| %>
+  <% if((@i%2)==0) 
+		id="color1"
+	else
+		id="color2"
+  end %>
+  <tr class='<%= id %>'>
+		<td><%= directory.business %> </td>
+		<td><%= directory.business_lising_information %> </td>
+		<td><%= directory.categories %> </td>
+		<td><%= directory.web_site %> </td>
+		<td><%= directory.description %> </td>
+		<td><%= directory.photos %> </td>
+		<td><%= directory.special_offer %> </td>
+		<td><%= directory.status %> </td>
+</tr>
+ <% end %>
+</table>
+</div>
+<% end %>

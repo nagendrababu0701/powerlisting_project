@@ -81,15 +81,16 @@ $('#creating_events').hide();
  </fieldset>
 </div>
 
+<p>  <%= select_tag 'state', options_for_select(get_cities) %>
+
+        </p>
+<p>  <%= select_tag 'country', options_for_select(get_countries) %>
+	
+        </p>
 
 <div id="searched_business_data">
 
 </div>
 
+<%= country_select :country, ["United States"] %>
 
-
-
-
- <%= country_select :country,'' %>
-
-<%= country_select :country,  :style=>'width:100px;'%>

@@ -1,5 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
+COUNTRY_STATE_CONFIG = YAML.load(File.read(File.expand_path('../country_state_list.yml', __FILE__)))
+
 require 'rails/all'
 
 if defined?(Bundler)
