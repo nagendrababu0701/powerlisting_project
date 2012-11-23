@@ -14,10 +14,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ require 'state_select_plugin'
+ require "rubygems"
+ require "test/unit"
+ require "net/https"
+ require 'rubygems'
+ #require 'yahoo/local_search'
 
-class AccountController < ApplicationController
+
+class AccountController < ApplicationController 
   helper :custom_fields
   include CustomFieldsHelper
+  include HTTParty
 
   # prevents login action to be filtered by check_if_login_required application scope filter
   skip_before_filter :check_if_login_required
@@ -38,10 +46,10 @@ def bussiness_details_search
 user=User.current
 @name=user.firstname
 @login_time=user.last_login_on
-
 @business_user_id=BusinessLocation.find_by_user_id(user.id)
-	
 end
+
+
 
 def search_business_details
 user=User.current
@@ -58,27 +66,36 @@ user=User.current
                 :term => params[:business],
                 :yws_id => 'GanonVA_293b8gzCHFgHdQ')
 		response = client.search(request)
-		@result=response["message"]["text"]
+  	@result=response["message"]["text"]
    
+   #citygrid = Citygrid::Client.new(:api_key => '10000004333')
+   #spot = citygrid.search_locations(:what => "roots coffee", :where => "76180", :rpp => 1)
+
+#url = 'http://info.yahoo.com/privacy/us/yahoo/products.html/?    appid=0yJmk9cUNjYUg0RWhVOG1aJmQ9WVdrOVNUZEdkMjFrTXpJbWNHbzlNVEV4TVRJd05UWXkmcz1jb25zdW1lcnNlY3JldCZ4PWIx&query=reliance&results=1'
+yls = Yahoo::LocalSearch.new('0yJmk9cUNjYUg0RWhVOG1aJmQ9WVdrOVNUZEdkMjFrTXpJbWNHbzlNVEV4TVRJd05UWXkmcz1jb25zdW1lcnNlY3JldCZ4PWI')
+@yahoo_results = yls.locate params[:business], params[:pincode], 5
+
+
+
+foursquare=Foursquare::Base.new('2LRH0UGPXER4KLVDBCOHZUNKKWWCM5JI0B2F05IDFUEREUMD','M4EK4OH2FMKH0WNFJYDPL2GWNAF1AOCTZ4YE1XFE22OQXN0H')
+@venues = foursquare.venues.search(:query => params[:business], :ll => "48.857,2.349", :near => params[:city])
+
        business_location=BusinessLocation.new
        business_location.address = params[:address]
        business_location.city = params[:city]
        business_location.state = params[:state]
+       business_location.ph_no = params[:ph_no]
        business_location.business_name = params[:business]
-business_location.pincode = params[:pincode]
-business_location.ph_no = params[:ph_no]
-
+       business_location.pincode = params[:pincode]
        business_location.user_id = user.id
        business_location.login_time = user.last_login_on 
-
        i=1
-	business_user_id=BusinessLocation.find_by_user_id(user.id)
+	     business_user_id=BusinessLocation.find_by_user_id(user.id)
        if(business_user_id)
-	business_location.logincount = business_user_id.user_id.to_i+1
-	else
-	business_location.logincount = i
-        end
-
+	         business_location.logincount = business_user_id.user_id.to_i+1
+	     else
+	         business_location.logincount = i
+       end
        business_location.save
 	
 	 directories= Directory.new
@@ -90,20 +107,50 @@ if(@s[0])
 directories.status="Found"
 directories.save
 end
-if(@result=="OK")
-directories.business_location_id=business_location.id
- directories.business="YELP"
- directories.business_lising_information=params[:city]+","+params[:state]+","+params[:country]
- directories.categories=params[:business]
-directories.status="Found"
-directories.save
+  
+directories1= Directory.new
+ if(@result=="OK")
+    directories1.business_location_id=business_location.id
+     directories1.business="YELP"
+     directories1.business_lising_information=params[:city]+","+params[:state]+","+params[:country]
+     directories1.categories=params[:business]
+    directories1.status="Found"
+    directories1.save
+end
+
+directories2= Directory.new
+
+if(@venues)
+  if(@venues["places"][0])
+    directories2.business_location_id=business_location.id
+     directories2.business="Foursquare"
+     directories2.business_lising_information=params[:city]+","+params[:state]+","+params[:country]
+     directories2.categories=@venues["places"][0].categories
+     directories2.photos=@venues["places"][0].icon
+    directories2.status="Found"
+    directories2.save
+end
+end
+
+directories3= Directory.new
+if(@yahoo_results)
+  if(@yahoo_results[0].title)
+    directories3.business_location_id=business_location.id
+     directories3.business="Yahoo"
+     directories3.business_lising_information=params[:city]+","+params[:state]+","+params[:country]
+     directories3.categories=@yahoo_results[0].categories
+     directories3.web_site=@yahoo_results[0].business_url
+    directories3.status="Found"
+    directories3.save
+end
 end
 
 render :partial=>'users/business_info_search'
 end
 
-
-
+def select_states
+state_select('business_location', 'state',  options = {:country=>params[:country]}, html_options = {})
+end
 
   # Log out current user and redirect to welcome page
   def logout
@@ -367,5 +414,7 @@ end
     redirect_to signin_path
   end
 
+
+  
 
 end
