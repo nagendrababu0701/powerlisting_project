@@ -52,14 +52,23 @@ user=User.current
 
 		client = Yelp::Client.new
         	request = Yelp::Review::Request::Location.new(
-                :address => '',
+                :ph_no => params[:ph_no],
                 :city => params[:city],
-                :state => params[:state],
-                :term => params[:business],
-                :yws_id => 'GanonVA_293b8gzCHFgHdQ')
+		:country => params[:country],
+		:pincode => params[:pincode],
+	        :business =>params[:business],
+		:ywsid => 'GanonVA_293b8gzCHFgHdQ'
+                )
 		response = client.search(request)
-		@result=response["message"]["text"]
-   
+   debugger
+
+
+
+  #    response = client.search(request)
+
+
+
+
        business_location=BusinessLocation.new
        business_location.address = params[:address]
        business_location.city = params[:city]
