@@ -40,8 +40,6 @@
 	</tr>
 
        <tr bgcolor="#CCFFCC">
-	
-		
 		<td><%= "Yelp" %> </td>
 		<% if @results=="OK" %>
 		<td><%= params[:city] %>, <%= params[:state] %> </td>
@@ -61,8 +59,53 @@
 		<td><%= "Not Found" %> </td>
 		<% end %>
 	</tr>
-
+<% if @venues %>
+	<tr bgcolor="#F0FFFF">
+		<% if @venues["places"][0] %>
+		<td><%= "Foresquare" %> </td>
+		<td><%= params[:city] %>, <%= params[:state] %></td>
+		<td><%= @venues["places"][0].categories %> </td>
+		<td><%= " " %> </td>
+		<td><%= " " %> </td>
+		<td><%= @venues["places"][0].icon %> </td>
+		<td><%= " " %> </td>
+		<td><%= "Found" %> </td>
+		<% else %>
+		<td><%= "Foresquare" %> </td>
+		<td><%= "" %> </td>
+		<td><%= "" %> </td>
+		<td><%= " " %> </td>
+		<td><%= " " %> </td>
+		<td><%= " " %> </td>
+		<td><%= " " %> </td>
+		<td><%= "Not Found" %> </td>
+		<% end %>
+	</tr>
+<% end %>
 	
+	<% if @yahoo_results %>
+	<tr bgcolor="#F0FFFF">
+		<% if @yahoo_results[0].title %>
+		<td><%= "Yahoo" %> </td>
+		<td><%= params[:city] %>, <%= params[:state] %></td>
+		<td><%= @yahoo_results[0].categories %> </td>
+		<td><%= @yahoo_results[0].business_url %> </td>
+		<td><%= " " %> </td>
+		<td><%= "" %> </td>
+		<td><%= " " %> </td>
+		<td><%= "Found" %> </td>
+		<% else %>
+		<td><%= "Yahoo" %> </td>
+		<td><%= "" %> </td>
+		<td><%= "" %> </td>
+		<td><%= " " %> </td>
+		<td><%= " " %> </td>
+		<td><%= " " %> </td>
+		<td><%= " " %> </td>
+		<td><%= "Not Found" %> </td>
+		<% end %>
+	</tr>
+<% end %>
 
 </table>
 </div>

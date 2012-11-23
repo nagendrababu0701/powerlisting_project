@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121026003537) do
+ActiveRecord::Schema.define(:version => 20121116060340) do
 
   create_table "attachments", :force => true do |t|
     t.integer  "container_id"
@@ -63,6 +63,20 @@ ActiveRecord::Schema.define(:version => 20121026003537) do
 
   add_index "boards", ["last_message_id"], :name => "index_boards_on_last_message_id"
   add_index "boards", ["project_id"], :name => "boards_project_id"
+
+  create_table "business_locations", :force => true do |t|
+    t.string   "business_name"
+    t.string   "city"
+    t.string   "state"
+    t.string   "country"
+    t.string   "pincode"
+    t.string   "user_id"
+    t.string   "login_time"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "address"
+    t.string   "logincount"
+  end
 
   create_table "changes", :force => true do |t|
     t.integer "changeset_id",                               :null => false
@@ -164,6 +178,20 @@ ActiveRecord::Schema.define(:version => 20121026003537) do
 
   add_index "custom_values", ["custom_field_id"], :name => "index_custom_values_on_custom_field_id"
   add_index "custom_values", ["customized_type", "customized_id"], :name => "custom_values_customized"
+
+  create_table "directories", :force => true do |t|
+    t.integer  "business_location_id"
+    t.string   "business_lising_information"
+    t.string   "categories"
+    t.string   "web_site"
+    t.string   "description"
+    t.string   "photos"
+    t.string   "special_offer"
+    t.string   "status"
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.string   "business"
+  end
 
   create_table "documents", :force => true do |t|
     t.integer  "project_id",                :default => 0,  :null => false
@@ -502,6 +530,14 @@ ActiveRecord::Schema.define(:version => 20121026003537) do
     t.string   "identity_url"
     t.string   "mail_notification",               :default => "",    :null => false
     t.string   "salt",              :limit => 64
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "state"
+    t.string   "city"
+    t.string   "country"
+    t.string   "zip_code"
+    t.string   "phone"
+    t.string   "logincount"
   end
 
   add_index "users", ["auth_source_id"], :name => "index_users_on_auth_source_id"
