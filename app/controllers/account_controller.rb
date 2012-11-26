@@ -36,17 +36,7 @@ class AccountController < ApplicationController
     render_error :message => e.message
   end
 
-def bussiness_details_search
-user=User.current
-@name=user.firstname
-@login_time=user.last_login_on
-@business_user_id=BusinessLocation.find_by_user_id(user.id)
-end
 
-def select_states
-s=state_select('business_location', 'state', country= params[:country], options = {}, html_options = {})
-render :text => s
-end
 
   # Log out current user and redirect to welcome page
   def logout
@@ -162,11 +152,6 @@ end
   end
 
   private
-
-def state_select(object, method, country, options = {}, html_options = {})
-    ActionView::Helpers::InstanceTag.new(object, method, self, options.delete(:object)).to_state_select_tag(country, options, html_options)
-  end
-
   def authenticate_user
     if Setting.openid? && using_open_id?
       open_id_authenticate(params[:openid_url])

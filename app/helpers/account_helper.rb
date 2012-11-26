@@ -18,13 +18,5 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 module AccountHelper
-	
-def get_cities
-     COUNTRY_STATE_CONFIG["states_in_india"].split(",")
-  end
-  def get_countries
-     COUNTRY_STATE_CONFIG["countries_names"].split(",")[0,105]
-  end
-
  
 end

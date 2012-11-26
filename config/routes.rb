@@ -87,21 +87,13 @@ end
 
 resources :users_business_locations do
 collection do
+get "bussiness_details_search"
 get "previous_information_details"
-post "load_states"
-post "search_business_details"
-end
-end
-
-
-
-  resources :account do
-collection do
-post "search_business_details"
 post "select_states"
-get "select_states" 
+post "search_business_details"
 end
 end
+
 
   match 'users/:id/memberships/:membership_id', :to => 'users#edit_membership', :via => :put, :as => 'user_membership'
   match 'users/:id/memberships/:membership_id', :to => 'users#destroy_membership', :via => :delete

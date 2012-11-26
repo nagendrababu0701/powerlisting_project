@@ -16,6 +16,18 @@ end
 end
 end
 
+def bussiness_details_search
+user=User.current
+@name=user.firstname
+@login_time=user.last_login_on
+@business_user_id=BusinessLocation.find_by_user_id(user.id)
+end
+
+def select_states
+s=state_select('business_location', 'state', country= params[:country], options = {}, html_options = {})
+render :text => s
+end
+
 
 def search_business_details
 user=User.current
@@ -49,25 +61,18 @@ user=User.current
 #@yahoo_results = yls.locate params[:business], params[:pincode], 5
 
 foursquare=Foursquare::Base.new('2LRH0UGPXER4KLVDBCOHZUNKKWWCM5JI0B2F05IDFUEREUMD','M4EK4OH2FMKH0WNFJYDPL2GWNAF1AOCTZ4YE1XFE22OQXN0H')
-@venues = foursquare.venues.search(:query => params[:business], :ll => "48.857,2.349", :near => params[:city])
+@venues = foursquare.venues.search(:query => params[:business], :ll => "000,00", :near => params[:city])
 
-       business_location=BusinessLocation.new
-       business_location.address = params[:address] 
-       business_location.city = params[:city]
-       business_location.state = params[:state]
-       business_location.ph_no = params[:ph_no]
-       business_location.business_name = params[:business]
-       business_location.pincode = params[:pincode]
-       business_location.user_id = user.id
-       business_location.login_time = user.last_login_on 
-       i=1
-	     business_user_id=BusinessLocation.find_last_by_user_id(user.id)
+     business_location=BusinessLocation.new(:address=> params[:address], :city => params[:city], :state=> params[:state], :ph_no => params[:ph_no], :business_name=>params[:business], :pincode => params[:pincode], :user_id => user.id, :login_time => user.last_login_on)
+     i=1
+     business_user_id=BusinessLocation.find_last_by_user_id(user.id)
        if(business_user_id)
-	         business_location.logincount = business_user_id.logincount.to_i+1
-	     else
-	         business_location.logincount = i
+           business_location.logincount = business_user_id.logincount.to_i+1
+       else
+           business_location.logincount = i
        end
-       business_location.save
+     business_location.save
+
 
 directories= Directory.new
 if(@s[0])
@@ -81,14 +86,14 @@ end
   
 directories1= Directory.new
  if(@yelp_results=="OK")
-    directories1.business_location_id=business_location.id
-     directories1.business=response_results["businesses"][0]["name"]
-     directories1.business_lising_information=params[:city]+","+params[:state]+","+params[:country]
-     directories1.categories=response_results["businesses"][0]["categories"]
-     directories1.web_site=response_results["businesses"][0]["url"]
-     directories1.photos=response_results["businesses"][0]["photo_url"]
-    directories1.status="Found"
-    directories1.save
+   directories1.business_location_id=business_location.id
+   directories1.business=response_results["businesses"][0]["name"]
+   directories1.business_lising_information=response["businesses"][i]["city"]+","+response["businesses"][i]["city"]
+   directories1.categories=response_results["businesses"][0]["categories"]
+   directories1.web_site=response_results["businesses"][0]["url"]
+   directories1.photos=response_results["businesses"][0]["photo_url"]
+   directories1.status="Found"
+   directories1.save
 end
 
 directories2= Directory.new
@@ -119,8 +124,11 @@ if(@yahoo_results)
 end
 end
 
-render :partial=>'users/business_info_search'
+render :partial=>'business_info_search'
 end
 
-
+private 
+def state_select(object, method, country, options = {}, html_options = {})
+    ActionView::Helpers::InstanceTag.new(object, method, self, options.delete(:object)).to_state_select_tag(country, options, html_options)
+  end
 end
