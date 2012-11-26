@@ -88,13 +88,18 @@ end
 resources :users_business_locations do
 collection do
 get "previous_information_details"
+post "load_states"
+post "search_business_details"
 end
 end
+
 
 
   resources :account do
 collection do
 post "search_business_details"
+post "select_states"
+get "select_states" 
 end
 end
 

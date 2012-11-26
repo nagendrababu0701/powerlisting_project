@@ -41,7 +41,7 @@
 
        <tr bgcolor="#CCFFCC">
 		<td><%= "Yelp" %> </td>
-		<% if @results=="OK" %>
+		<% if @yelp_results=="OK" %>
 		<td><%= params[:city] %>, <%= params[:state] %> </td>
 		<td><%= params[:business] %> </td>
 		<td><%= " " %> </td>
@@ -61,7 +61,7 @@
 	</tr>
 <% if @venues %>
 	<tr bgcolor="#F0FFFF">
-		<% if @venues["places"][0] %>
+		<% if @venues["places"] %>
 		<td><%= "Foresquare" %> </td>
 		<td><%= params[:city] %>, <%= params[:state] %></td>
 		<td><%= @venues["places"][0].categories %> </td>

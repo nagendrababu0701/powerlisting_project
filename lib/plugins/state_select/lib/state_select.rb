@@ -20,7 +20,9 @@ module Helpers #:nodoc:
     # Return select and option tags for the given object and method, using state_options_for_select to generate the list of option tags.
     def state_select(object, method, options = {}, html_options = {})
       options.symbolize_keys!
+
       options[:country] ||= 'US'
+
       ActionView::Helpers::InstanceTag.new(object, method, self, options.delete(:object)).to_state_select_tag(options.delete(:country), options, html_options)
     end
 

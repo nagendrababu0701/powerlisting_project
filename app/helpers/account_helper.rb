@@ -26,4 +26,5 @@ def get_cities
      COUNTRY_STATE_CONFIG["countries_names"].split(",")[0,105]
   end
 
+ 
 end

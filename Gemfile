@@ -9,6 +9,29 @@ gem "i18n", "~> 0.6.0"
 gem "coderay", "~> 1.0.6"
 gem "fastercsv", "~> 1.5.0", :platforms => [:mri_18, :mingw_18, :jruby]
 gem "builder", "3.0.0"
+gem 'yelp'
+gem 'mapquest_directions'
+gem 'multi_xml'
+gem 'hashie'
+gem 'mechanize'
+gem 'hpricot'
+gem 'nokogiri'
+gem 'geocoder'
+gem 'citygrid'
+gem 'httparty'
+gem 'oauth'
+gem 'ruby-debug'           
+gem 'country_select', '1.0.0'
+gem 'htmlentities', '4.2.0'
+gem "yahoo-placemaker", "~> 0.0.7"
+gem 'nas-yahoo_stock'
+#gem "yahoo_jp_transit", "~> 0.1.2"
+#gem "yahoo-answers"
+#gem "yahoofinance-typhoeus", "~> 1.0.0"
+#gem "yahoo-local", "~> 0.1.4"
+#gem 'yahoo-geocode'
+# gem "yahoo-search", "~> 2.0.0"
+#gem 'yahoo'
 #gem 'mongoid'
 #gem 'bson_ext'
 
