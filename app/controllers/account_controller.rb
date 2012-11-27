@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  
 class AccountController < ApplicationController 
- 
+ layout "common_layout"
   helper :custom_fields
   include CustomFieldsHelper
   include HTTParty
@@ -29,11 +29,11 @@ class AccountController < ApplicationController
     if request.get?
       logout_user
     else
-      authenticate_user
-    end
+   authenticate_user
+   end
   rescue AuthSourceException => e
-    logger.error "An error occured when authenticating #{params[:username]}: #{e.message}"
-    render_error :message => e.message
+    logger.error "An error occured when authenticating #{params[:username]} "
+
   end
 
 
@@ -116,7 +116,7 @@ class AccountController < ApplicationController
             session[:auth_source_registration] = nil
           self.logged_user = @user
           flash[:notice] = l(:notice_account_activated)
-          redirect_to :controller => 'my', :action => 'account'
+          redirect_to :controller => 'users_business_locations', :action => 'bussiness_details_search'
         end
       else
         @user.mail = params[:user][:mail]
@@ -153,6 +153,7 @@ class AccountController < ApplicationController
 
   private
   def authenticate_user
+
     if Setting.openid? && using_open_id?
       open_id_authenticate(params[:openid_url])
     else
@@ -223,7 +224,7 @@ class AccountController < ApplicationController
       set_autologin_cookie(user)
     end
     call_hook(:controller_account_success_authentication_after, {:user => user })
-    redirect_back_or_default :controller => 'my', :action => 'page'
+    redirect_to  bussiness_details_search_users_business_locations_url 
   end
 
   def set_autologin_cookie(user)
@@ -275,7 +276,7 @@ class AccountController < ApplicationController
     if user.save
       self.logged_user = user
       flash[:notice] = l(:notice_account_activated)
-      redirect_to :controller => 'my', :action => 'account'
+      redirect_to :controller => 'users_business_locations', :action => 'bussiness_details_search'
     else
       yield if block_given?
     end

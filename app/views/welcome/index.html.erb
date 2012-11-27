@@ -1,39 +1,125 @@
-<h2><%= l(:label_home) %></h2>
 
-<div class="splitcontentleft">
-  <%= textilizable Setting.welcome_text %>
-  <% if @news.any? %>
-  <div class="news box">
-  <h3><%=l(:label_news_latest)%></h3>
-    <%= render :partial => 'news/news', :collection => @news %>
-    <%= link_to l(:label_news_view_all), :controller => 'news' %>
-  </div>
-  <% end %>
-  <%= call_hook(:view_welcome_index_left, :projects => @projects) %>
-</div>
+ <%= stylesheet_link_tag 'style' %>
+<script type="text/javascript">
+$(document).ready(function(){
 
-<div class="splitcontentright">
-    <% if @projects.any? %>
-  <div class="projects box">
-  <h3><%=l(:label_project_latest)%></h3>
-    <ul>
-    <% for project in @projects %>
-      <% @project = project %>
-      <li>
-      <%= link_to_project project %> (<%= format_time(project.created_on) %>)
-      <%= textilizable project.short_description, :project => project %>
-      </li>
-    <% end %>
-    <% @project = nil %>
-    </ul>
-  </div>
-  <% end %>
-    <%= call_hook(:view_welcome_index_right, :projects => @projects) %>
-</div>
-
-<% content_for :header_tags do %>
-<%= auto_discovery_link_tag(:atom, {:controller => 'news', :action => 'index', :key => User.current.rss_key, :format => 'atom'},
-                                   :title => "#{Setting.app_title}: #{l(:label_news_latest)}") %>
-<%= auto_discovery_link_tag(:atom, {:controller => 'activities', :action => 'index', :key => User.current.rss_key, :format => 'atom'},
-                                   :title => "#{Setting.app_title}: #{l(:label_activity)}") %>
+<% if(@business_user_id) %>
+window.open("/users_business_locations/previous_information_details?user_id=<%= @name %>&logintime=<%= @login_time %>",'dependent, width=900, height=480, left=100, top=100', target='_blank');
 <% end %>
+    $("#clicking").click(function () {
+hide_show();
+          $.ajax({
+            url: '/users_business_locations/search_business_details',
+            type: "POST",
+            data: { 'business': $("#business").val(), 'city' : $("#city").val(), 'state' :$("#state").val(), 'country' : $("#country").val(), 'pincode' : $("#pincode").val() , 'ph_no' : $("#ph_no").val()  },
+            dataType: "html",
+            success: function (data) {
+	$("#searched_business_data").html(data)
+
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+
+   });
+
+
+$("#country").change(function(){
+
+$.ajax({
+            url: '/users_business_locations/select_states',
+            type: "POST",
+            data: { 'country' : $("#country").val() },
+            dataType: "html",
+            success: function (data) {
+	
+states=data.split("&lt;option value=&quot;").length
+document.getElementById('business_location').length=0
+var opt = document.createElement("option");
+document.getElementById("business_location").options.add(opt);
+opt.text = "Please Select"
+opt.value = ""
+for(i=1;i<parseInt(states);i++)
+{
+var opt = document.createElement("option")
+document.getElementById("business_location").options.add(opt)
+state=data.split("&lt;option value=&quot;")[i]
+opt.text = state.split("&quot;&gt;")[0]
+opt.value = state.split("&quot;&gt;")[0]
+}
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+});
+})
+
+
+function hide_show()
+{
+$('#clicking').hide();
+$('#creating_events').show();
+}
+
+function hide_show1()
+{
+$('#clicking').show();
+$('#creating_events').hide();
+}
+</script>
+<div id="hme_body_blk">
+	<div id="hme_body_main">
+    	<div id="hme_bodyL">
+        	<h2>Start here! Check to see how your business appears across the internet.</h2>
+            <div class="line"></div>
+            <p>Enter your business information below:</p>
+            
+            <div class="hme_row">
+                <%= text_field_tag :business, "", :id=>"business", :class =>"txtbox hme_txtbx",:value=>"Business Name" %>
+                <div class="clr"></div>
+            </div>
+	   <div class="hme_row">
+                <%= text_field_tag :ph_no, "", :id=>"ph_no", :class =>"txtbox hme_txtbx",:value=>"Business Phone Number" %>		
+                <div class="clr"></div>
+            </div>
+	   		
+            
+            <div class="hme_row">
+                 <%= text_field_tag :city, "", :id=>"city", :class =>"txtbox hme_txtbx",:value=>"Business Address" %>
+                <div class="clr"></div>
+            </div>
+            <div class="hme_row">
+		<%=  select_tag 'country', options_for_select(get_countries),html_options = {:onChange =>"select_states()"} %>		    <%= select_tag (:business_location, :state) %>
+		<%= text_field_tag :pincode, "", :id=>"pincode",:class=>"txtbox hme_zip", :value=>"Zip" %>		
+
+                <div class="clr"></div>
+            </div>
+            
+            <div class="line"></div>
+           
+            <div class="hme_row">
+		<%= submit_tag '',:class => "btn_scan_now", :id=>"clicking" %>
+			<span id="creating_events" style ="display:none;">Scaning, Please wait...</span>
+                <div class="clr"></div>
+            </div>
+            
+            
+        </div>
+    	<div id="hme_bodyR">
+       	  <h2>Update Once. Updates Everywhere.</h2>
+          <p>PowerListings® – Instantly update your business info on 35+ sites, power up your listings with photos & specials, monitor reviews, and track your results! </p>
+            <p><img src="/images/banner_rgt.png" width="430" height="350" alt="" /></p>
+        </div>
+        <div class="clr"></div>
+    </div>
+</div>
+<div id="hme_body_blkB"></div>
+<div class="clr"></div>
+
+
+
+
+
+

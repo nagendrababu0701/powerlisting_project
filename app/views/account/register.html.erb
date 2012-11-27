@@ -1,60 +1,4 @@
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
-<%= javascript_include_tag "login_form" %>
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-<link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
-
-<link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
-      
-</head>
-<h2><%#=l(:label_register)%> <%=link_to l(:label_login_with_open_id_option), signin_url if Setting.openid? %></h2>
-
-<%= labelled_form_for @user, :url => register_path do |f| %>
-<%= error_messages_for 'user' %>
-<%= stylesheet_link_tag "form_register" %>
-<div id="registration">
-
-    <div class="span8">
- <form id="RegisterUserForm" action="" method="post">
-					<legend style="width:83%; color:green;">Register</legend>
-					 <div style="float: left; width: 50%;">
-					<% if @user.auth_source_id.nil? %>
-						<p><%= f.text_field :mail, :size => 25,:class=> "text", :placeholder=>"Enter email",:required => true %></p>
-					<p><%= f.text_field :firstname,:class=> "text",:placeholder=>"Enter Full Name", :required => true %></p>
-					<p><%= f.text_field :address1, :class=> "text",:placeholder=>"Enter Address1",:required => true %></p>
-						<p><%= f.text_field :city, :class=> "text",:placeholder=>"Enter City",:required => true %></p>
-					<p><%= f.text_field :country,:class=> "text",:placeholder=>"Enter Country", :required => true %></p>
-					
-					</div>
-					<div style="float: right; width: 50%;">
-
-						<p><%= f.password_field :password, :size => 25,:class=> "text",:placeholder=>"Enter password", :required => true %>
-						<em class="info" style="color:green;"><%= l(:text_caracters_minimum, :class=> "text",:count => Setting.password_min_length) %></em></p>
-						<% end %>
-					
-					<p><%= f.text_field :phone,:class=> "text",:placeholder=>"PhoneNumber", :required => true %></p>
-					<p><%= f.text_field :address2,:class=> "text",:placeholder=>"Enter Address2", :required => true %></p>
-					<p><%= f.text_field :state,:class=> "text",:placeholder=>"Enter State", :required => true %></p>
-					<p><%= f.text_field :zip_code,:class=> "text",:placeholder=>"Enter ZipCode", :required => true %></p>
-					</div>
-						<% if Setting.openid? %>
-							<p><%= f.text_field :identity_url  %></p>
-						<% end %>
-
-					<%= button_to "", users_path,:id=>"button",:method => "get" %>
-</form>
-</div>
-
-<% end %>
-
-
+<%#= stylesheet_link_tag 'style' %>
 <script type="application/javascript">
 function select_password(id)
 {
@@ -62,4 +6,95 @@ function select_password(id)
 document.getElementById("user_password_confirmation").value=document.getElementById(id).value
 }
 </script>
+
+
+
+
+
+
+
+<%= labelled_form_for @user, :url => register_path do |f| %>
+<%= error_messages_for 'user' %>
+<div id="body_main_blk">
+	<div id="body_main">
+		<h1 class="cntr">Register</h1>
+        <div id="body_cont_blk"> 
+        	<div id="body_contL">               	
+                <div class="login_row">
+		   <% if @user.auth_source_id.nil? %>	
+                    <span class="label">Email <span class="mand">*</span></span>
+                    <span class="inp"><%= f.text_field :mail, :type=>"text", :class=>"txtbox"%></span>
+                    <div class="clr"></div>
+                </div>
+                <div class="login_row">
+                    <span class="label">Full name <span class="mand">*</span></span>
+                    <span class="inp"><%= f.text_field :firstname, :type=>"text", :class=>"txtbox"%></span>
+                    <div class="clr"></div>
+                </div>
+                <div class="login_row">
+                    <span class="label">Address1 <span class="mand">*</span></span>
+                    <span class="inp"><%= f.text_field :address1, :type=>"text", :class=>"txtbox"%></span>
+                    <div class="clr"></div>
+                </div>
+                <div class="login_row">
+                    <span class="label">City <span class="mand">*</span></span>
+                    <span class="inp"><%= f.text_field :city, :type=>"text", :class=>"txtbox"%></span>
+                    <div class="clr"></div>
+                </div>
+                <div class="login_row">
+                    <span class="label">Country <span class="mand">*</span></span>
+                    <span class="inp"><%= f.text_field :country, :type=>"text", :class=>"txtbox"%></span>
+                    <div class="clr"></div>
+                </div>
+            </div>
+            
+        	<div id="body_contR">
+                <div class="login_row">
+                    <span class="label">Password <span class="mand">*</span></span>
+                    <span class="inp"><%= f.text_field :password, :type=>"text", :class=>"txtbox"%></span>
+                    <div class="clr"></div>
+                </div>
+                <div class="login_row">
+                    <span class="label">Phone <span class="mand">*</span></span>
+                    <span class="inp"><%= f.text_field :phone, :type=>"text", :class=>"txtbox"%></span>
+                    <div class="clr"></div>
+                </div>
+		<% end %>
+                <div class="login_row">
+                    <span class="label">Address2  <span class="mand">*</span></span>
+                    <span class="inp"><%= f.text_field :address2, :type=>"text", :class=>"txtbox"%></span>
+                    <div class="clr"></div>
+                </div>
+                <div class="login_row">
+                    <span class="label">State  <span class="mand">*</span></span>
+                    <span class="inp"><%= f.text_field :state, :type=>"text", :class=>"txtbox"%></span>
+                    <div class="clr"></div>
+                </div>
+                <div class="login_row">
+                    <span class="label">Zipcode  <span class="mand">*</span></span>
+                    <span class="inp"><%= f.text_field :zip_code, :type=>"text", :class=>"txtbox"%></span>
+                    <div class="clr"></div>
+                </div>
+                <div class="login_row">
+                    <span class="label">&nbsp;</span>
+                    <span class="btn"><input type="submit" value="Register" class="btn_bg" /></span>
+                    <div class="clr"></div>
+                </div>
+            </div>
+            <div class="clr"></div>
+        </div>
+    </div>
+</div>
+
+<% end %>
+
+
+
+
+
+
+
+
+
+
 

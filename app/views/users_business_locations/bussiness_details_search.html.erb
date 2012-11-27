@@ -1,6 +1,6 @@
 <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
 <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
-
+<%= javascript_include_tag "jquery" %>
 <script type="text/javascript">
 $(document).ready(function(){
 
@@ -88,7 +88,9 @@ $('#creating_events').hide();
 
 <div style="background:#ADD8E6">
 <fieldset>
+				<a href="#" class="modify" style="float:right;">Modify</a>
 <legend><b>Scanning Details</b></legend>
+	<div class="slidingDiv">
 	<table width="100%">
 
 	<tr>
@@ -107,10 +109,12 @@ $('#creating_events').hide();
 		<td><%= text_field_tag :ph_no, "", :id=>"ph_no" %></td>
 		<td>Pincode</td>
 		<td><%= text_field_tag :pincode, "", :id=>"pincode" %></td>
-		<td><%= submit_tag 'Scan',:class => "preview", :id=>"clicking" %>
+		<td class="show_hide"><%= submit_tag 'Scan',:class => "preview", :id=>"clicking" %>
 			<span id="creating_events" style ="display:none;">Scaning, Please wait...</span></td>
+
 	</tr>
   </table>
+</div>
 
  </fieldset>
 </div>
@@ -119,4 +123,26 @@ $('#creating_events').hide();
 <div id="searched_business_data">
 
 </div>
+<script type="text/javascript">
+ 
+$(document).ready(function(){
+ 
+       
+        $(".show_hide").show();
+	$(".modify").hide();
+ 
+    $('.show_hide').click(function(){
+    $(".slidingDiv").slideToggle();
+    $(".modify").show();	
+    });
+
+    $('.modify').click(function(){
+    $(".slidingDiv").slideToggle();
+    $(".modify").hide();
+
+    });	
+ 
+});
+ 
+</script>
 

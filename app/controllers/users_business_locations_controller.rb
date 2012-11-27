@@ -4,7 +4,7 @@ require "rubygems"
  #require 'yahoo/local_search'
 
  class UsersBusinessLocationsController < ApplicationController
-
+layout 'common_layout'
 def previous_information_details
 user=User.current
 if(user)
@@ -34,32 +34,30 @@ user=User.current
 @name=user.firstname
 @login_time=user.last_login_on
 
-@s = Geocoder.search(params[:city],params[:business])
-
+=begin
 		client = Yelp::Client.new
     request = Yelp::Phone::Request::Number.new(
           :phone_number =>  params[:ph_no],
           :yws_id => 'GanonVA_293b8gzCHFgHdQ')
       response = client.search(request)
     @yelp_results=""
-
-    for i in 0...response["businesses"].length
-        if(response["businesses"][i]["zip"]==params[:pincode])
-        request_results = Yelp::Review::Request::Location.new(
-                    :address => response["businesses"][i]["address1"],
-                    :city => response["businesses"][i]["city"],
-                    :state => response["businesses"][i]["state"],
-                    :term => response["businesses"][i]["name"],
-                    :yws_id => 'GanonVA_293b8gzCHFgHdQ')
-    		response_results = client.search(request_results)
-        @yelp_results=response_results["message"]["text"]
-      	end
-    end
-   
+=end
+    
 
 #yls = Yahoo::LocalSearch.new('0yJmk9cUNjYUg0RWhVOG1aJmQ9WVdrOVNUZEdkMjFrTXpJbWNHbzlNVEV4TVRJd05UWXkmcz1jb25zdW1lcnNlY3JldCZ4PWI')
 #@yahoo_results = yls.locate params[:business], params[:pincode], 5
+consumer_key = 'EqkWF9LFP9HgsDXAML9BgA'
+consumer_secret = 'zOEDsuF5SuGNEQQPSuv-lkLyHgo'
+token = 'T4IKO-ihOsaytRN6oRrQHZFOrfjFFIAc'
+token_secret = 'q8PPnDD5sssimvQ486tJsq6M0TY'
 
+api_host = 'api.yelp.com'
+
+consumer = OAuth::Consumer.new(consumer_key, consumer_secret, {:site => "http://#{api_host}"})
+access_token = OAuth::AccessToken.new(consumer, token, token_secret)
+path = "/v2/search?term=restaurants&location=new%20york"
+
+ access_token.get(path).body
 foursquare=Foursquare::Base.new('2LRH0UGPXER4KLVDBCOHZUNKKWWCM5JI0B2F05IDFUEREUMD','M4EK4OH2FMKH0WNFJYDPL2GWNAF1AOCTZ4YE1XFE22OQXN0H')
 @venues = foursquare.venues.search(:query => params[:business], :ll => "000,00", :near => params[:city])
 
