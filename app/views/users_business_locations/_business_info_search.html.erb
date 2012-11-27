@@ -4,7 +4,7 @@
 </script>
 
 <br>
-<table width="100%" align="center">
+<table width="100%" align="center" border="1" bordercolor="white">
 	<tr bgcolor="#99CCFF">
 		<th> </th>
 		<th>Basic Listings Information</th>
@@ -13,8 +13,9 @@
 		<th>Description</th>
 		<th>Photos</th>
 		<th>Special Offer</th>
-       		<th>Status</th>
+       	<th>Status</th>
 	</tr>
+
 	<tr bgcolor="#F0FFFF">
 	
 		<% if @s[0] %>
@@ -42,7 +43,8 @@
        <tr bgcolor="#CCFFCC">
 		<td><%= "Yelp" %> </td>
 		<% if @yelp_results=="OK" %>
-		<td><%= params[:city] %>, <%= params[:state] %> </td>
+		<td><%= @response_results["businesses"][0]["address1"] %>
+			<%= @response_results["businesses"][0]["city"] %>, <%= @response_results["businesses"][0]["state"] %> </td>
 		<td><%= params[:business] %> </td>
 		<td><%= " " %> </td>
 		<td><%= " " %> </td>
@@ -63,22 +65,41 @@
 	<tr bgcolor="#F0FFFF">
 		<% if @venues["places"] %>
 		<td><%= "Foresquare" %> </td>
-		<td><%= params[:city] %>, <%= params[:state] %></td>
-		<td><%= @venues["places"][0].categories %> </td>
-		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= @venues["places"][0].icon %> </td>
-		<td><%= " " %> </td>
-		<td><%= "Found" %> </td>
+		<td><%= @venues["places"][0].location["address"] %> <br>
+	    <%= @venues["places"][0].location["city"] %>, <%= @venues["places"][0].location["state"] %></td>
+		
+		<% if(@venues["places"][0].categories) %>
+		<td><image src="/images/yelp_buttons/icon_tick.png"> </td>
 		<% else %>
-		<td><%= "Foresquare" %> </td>
-		<td><%= "" %> </td>
-		<td><%= "" %> </td>
-		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= "Not Found" %> </td>
+		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
+		<% end %>
+	
+		<% if(@venues["places"][0].json["url"]) %>
+		<td><image src="/images/yelp_buttons/icon_tick.png"> </td>
+		<% else %>
+		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
+		<% end %>
+
+
+		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
+
+		<% if(@venues["places"][0].icon) %>
+		<td><image src="/images/yelp_buttons/icon_tick.png"> </td>
+		<% else %>
+		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
+		<% end %>
+		<% if (@venues["places"][0].json["specials"]) %>
+		<td><image src="/images/yelp_buttons/icon_tick.png"> </td>
+		<% else %>
+		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
+		<% end %>
+
+		<% if(@venues["places"]) %>
+		<td><image src="/images/yelp_buttons/icon_tick.png"> </td>
+		<% else %>
+		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
+		<% end %>
+
 		<% end %>
 	</tr>
 <% end %>
