@@ -15,7 +15,7 @@
 		<th>Special Offer</th>
        	<th>Status</th>
 	</tr>
-	
+
 	<tr bgcolor="#F0FFFF">
 	
 		<% if @s[0] %>
@@ -64,22 +64,31 @@
 	<tr bgcolor="#F0FFFF">
 		<% if @venues["places"] %>
 		<td><%= "Foresquare" %> </td>
-		<td><%= params[:city] %>, <%= params[:state] %></td>
-		<td><%= @venues["places"][0].categories %> </td>
-		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= @venues["places"][0].icon %> </td>
-		<td><%= " " %> </td>
-		<td><%= "Found" %> </td>
+		<td><%= @venues["places"][0].location["address"] %> <br>
+	 <%= @venues["places"][0].location["city"] %>, <%= @venues["places"][0].location["state"] %></td>
+		
+		<% if(@venues["places"][0].categories) %>
+		<td><image src="/images/yelp_buttons/icon_tick.png"> </td>
 		<% else %>
-		<td><%= "Foresquare" %> </td>
-		<td><%= "" %> </td>
-		<td><%= "" %> </td>
+		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
+		<% end %>
+	
 		<td><%= " " %> </td>
 		<td><%= " " %> </td>
+		
+		<% if(@venues["places"][0].icon) %>
+		<td><image src="/images/yelp_buttons/icon_tick.png"> </td>
+		<% else %>
+		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
+		<% end %>
 		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= "Not Found" %> </td>
+
+		<% if(@venues["places"]) %>
+		<td><image src="/images/yelp_buttons/icon_tick.png"> </td>
+		<% else %>
+		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
+		<% end %>
+
 		<% end %>
 	</tr>
 <% end %>

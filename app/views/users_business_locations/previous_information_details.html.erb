@@ -40,13 +40,37 @@ background-color:#F0FFFF;
   end %>
   <tr class='<%= id %>'>
 		<td><%= directory.business %> </td>
-		<td><%= directory.business_lising_information %> </td>
-		<td><%= directory.categories %> </td>
-		<td><%= directory.web_site %> </td>
-		<td><%= directory.description %> </td>
-		<td><%= directory.photos %> </td>
-		<td><%= directory.special_offer %> </td>
-		<td><%= directory.status %> </td>
+		<td><%= directory.business_lising_information %> </td> 
+		<% if(directory.categories) %>
+		<td><image src="/images/yelp_buttons/icon_tick.png"> </td>
+		<% else %>
+		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
+		<% end %>
+		<% if(directory.web_site) %>
+		<td><image src="/images/yelp_buttons/icon_tick.png"> </td>
+		<% else %>
+		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
+		<% end %>
+		<% if(directory.description) %>
+		<td><image src="/images/yelp_buttons/icon_tick.png"> </td>
+		<% else %>
+		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
+		<% end %>
+		<% if(directory.photos) %>
+		<td><image src="/images/yelp_buttons/icon_tick.png"> </td>
+		<% else %>
+		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
+		<% end %>
+		<% if(directory.special_offer) %>
+		<td><image src="/images/yelp_buttons/icon_tick.png"> </td>
+		<% else %>
+		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
+		<% end %>
+		<% if(directory.status) %>
+		<td><image src="/images/yelp_buttons/icon_tick.png"> </td>
+		<% else %>
+		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
+		<% end %>
 </tr>
  <% end %>
 </table>
