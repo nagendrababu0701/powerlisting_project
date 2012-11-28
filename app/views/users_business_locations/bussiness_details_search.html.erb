@@ -1,11 +1,9 @@
 <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
 <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
-<%= javascript_include_tag "jquery" %>
 <script type="text/javascript">
 $(document).ready(function(){
-
 <% if(@business_user_id) %>
-window.open("/users_business_locations/previous_information_details?user_id=<%= @name %>&logintime=<%= @login_time %>",'dependent, width=900, height=480, left=100, top=100', target='_blank');
+      window.open("/users_business_locations/previous_information_details?user_id=<%= @name %>&logintime=<%= @login_time %>",'dependent, width=900, height=480, left=100, top=100', target='_blank');
 <% end %>
     $("#clicking").click(function () {
 hide_show();
@@ -34,15 +32,20 @@ $.ajax({
             data: { 'country' : $("#country").val() },
             dataType: "html",
             success: function (data) {
-	
-states=data.split("&lt;option value=&quot;").length
+alert(data)
+states=data.split("option value=").length
+alert(data.split("option value=")[1])
+
+alert(states)
+
 document.getElementById('business_location').length=0
 var opt = document.createElement("option");
 document.getElementById("business_location").options.add(opt);
 opt.text = "Please Select"
 opt.value = ""
-for(i=1;i<parseInt(states);i++)
+for(i=1;i<parseInt(data.split("option value=").length);i++)
 {
+
 var opt = document.createElement("option")
 document.getElementById("business_location").options.add(opt)
 state=data.split("&lt;option value=&quot;")[i]
