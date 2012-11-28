@@ -1,5 +1,8 @@
 <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
 <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
+   <%= stylesheet_link_tag 'scan.css' %>
+
+
 <script type="text/javascript">
 $(document).ready(function(){
 <% if(@business_user_id) %>
@@ -82,7 +85,17 @@ $('#creating_events').hide();
 	font-weight:bold;
 	padding:9px;
 	border-radius:12px 12px 12px 12px;
-		
+}
+.status_bg {
+    background: url("/images/yelp_buttons/status_bg.png") no-repeat scroll center bottom transparent;
+    color: #559D00;
+    float: left;
+    padding: 6px 0 8px 35px;
+    text-align: left;
+    width: 58px;
+}
+.tr_background { 
+ bgcolor: #99CCFF;
 }
 .preview:hover{background-color:rgb(255,222,173);}
 .preview:active{position:relative;top:2px;}
@@ -98,22 +111,24 @@ $('#creating_events').hide();
 
 	<tr>
 		<td>Business Name</td>
-		<td><%= text_field_tag :business, "", :id=>"business", :required => true %></td>
+		<td><%= text_field_tag :business, "", :id=>"business" %></td>
 		<td>City</td>
 		<td><%= text_field_tag :city, "", :id=>"city" %></td>
-	    <td>Country</td>
+	  <td>Country</td>
 		<td><%=  select_tag 'country', options_for_select(get_countries),html_options = {:onChange =>"select_states()"} %></td>	
 	</tr>
 
-     <tr>	
-   		<td>State</td>
+  <tr>	
+  	<td>State</td>
 		<td><%= select_tag (:business_location, :state) %></td>
 		<td>Ph.No</td>
 		<td><%= text_field_tag :ph_no, "", :id=>"ph_no" %></td>
 		<td>Pincode</td>
 		<td><%= text_field_tag :pincode, "", :id=>"pincode" %></td>
+
 		<td class="show_hide"><%= submit_tag 'Scan',:class => "preview", :id=>"clicking" %>
 			<span id="creating_events" style ="display:none;">Scaning, Please wait...</span></td>
+
 
 	</tr>
   </table>

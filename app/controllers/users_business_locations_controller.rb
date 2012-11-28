@@ -49,9 +49,11 @@ match=phone
 if !phone.blank? && !city.blank?
 e1=Net::HTTP.get(URI.parse(URI.escape("http://api.yelp.com/phone_search?phone="+phone+"&ywsid=GanonVA_293b8gzCHFgHdQ")))
 search_address=JSON.parse(e1)
-   if(search_address["businesses"][0]["address1"].include?(city) || search_address["businesses"][0]["city"].include?(city) )
-        @response_results=search_address 
-        @yelp_results=@response_results["message"]["text"]
+   if(search_address["message"]["text"]=="OK")
+     if(search_address["businesses"][0]["address1"].include?(city) || search_address["businesses"][0]["city"].include?(city) )
+          @response_results=search_address 
+          @yelp_results=@response_results["message"]["text"]
+     end
    end
 elsif !phone.blank?
 e=Net::HTTP.get(URI.parse(URI.escape("http://api.yelp.com/phone_search?phone="+phone+"&ywsid=GanonVA_293b8gzCHFgHdQ")))
@@ -62,14 +64,25 @@ e=Net::HTTP.get(URI.parse(URI.escape("http://api.yelp.com/business_review_search
 @response_results=JSON.parse(e)
 @yelp_results=@response_results["message"]["text"]
 end
+<<<<<<< HEAD
+
+#yls = Yahoo::LocalSearch.new('0yJmk9cUNjYUg0RWhVOG1aJmQ9WVdrOVNUZEdkMjFrTXpJbWNHbzlNVEV4TVRJd05UWXkmcz1jb25zdW1lcnNlY3JldCZ4PWI')
+#@yahoo_results = yls.locate params[:business], params[:pincode], 5
+
+=======
 #End of the yelp search.
 #Foursquare search condition.
+>>>>>>> 1a3586eb130b0e799e34049474837187f8c6e4f1
 foursquare=Foursquare::Base.new('2LRH0UGPXER4KLVDBCOHZUNKKWWCM5JI0B2F05IDFUEREUMD','M4EK4OH2FMKH0WNFJYDPL2GWNAF1AOCTZ4YE1XFE22OQXN0H')
 @s = Geocoder.search(city+","+state+","+country+","+pincode)
 @venues = foursquare.venues.search(:query => params[:business], :ll => @s[0].latitude.to_s+","+@s[0].longitude.to_s, :intent => :match)
 
+<<<<<<< HEAD
+
+=======
 #End of Foursquare search condition .
 #saving the search contents in to business location model.
+>>>>>>> 1a3586eb130b0e799e34049474837187f8c6e4f1
 business_location=BusinessLocation.new(:address=> params[:address], :city => params[:city], :state=> params[:business_location], :ph_no => params[:ph_no], :business_name=>params[:business], :pincode => params[:pincode], :user_id => user.id, :login_time => user.last_login_on)
 business_location.save
 #End of business locations savings.
@@ -79,6 +92,8 @@ u=UsersBusinessLocation.new
 u.directory_savings(business_location.id,"MAPQUEST",@s[0].formatted_address,"Found")
 
  if(@yelp_results=="OK")
+  puts @response_results
+  puts @yahoo_results
    u.directory_savings(business_location.id,@response_results["businesses"][0]["name"],@response_results["businesses"][0]["city"]+","+@response_results["businesses"][0]["state"],"Found")
 end
 
