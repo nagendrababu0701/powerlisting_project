@@ -2,11 +2,11 @@
 <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
    <%= stylesheet_link_tag 'scan.css' %>
 
+
 <script type="text/javascript">
 $(document).ready(function(){
-
 <% if(@business_user_id) %>
-window.open("/users_business_locations/previous_information_details?user_id=<%= @name %>&logintime=<%= @login_time %>",'dependent, width=900, height=480, left=100, top=100', target='_blank');
+      window.open("/users_business_locations/previous_information_details?user_id=<%= @name %>&logintime=<%= @login_time %>",'dependent, width=900, height=480, left=100, top=100', target='_blank');
 <% end %>
     $("#clicking").click(function () {
 hide_show();
@@ -35,15 +35,20 @@ $.ajax({
             data: { 'country' : $("#country").val() },
             dataType: "html",
             success: function (data) {
-	
-states=data.split("&lt;option value=&quot;").length
+alert(data)
+states=data.split("option value=").length
+alert(data.split("option value=")[1])
+
+alert(states)
+
 document.getElementById('business_location').length=0
 var opt = document.createElement("option");
 document.getElementById("business_location").options.add(opt);
 opt.text = "Please Select"
 opt.value = ""
-for(i=1;i<parseInt(states);i++)
+for(i=1;i<parseInt(data.split("option value=").length);i++)
 {
+
 var opt = document.createElement("option")
 document.getElementById("business_location").options.add(opt)
 state=data.split("&lt;option value=&quot;")[i]
@@ -99,7 +104,9 @@ $('#creating_events').hide();
 
 <div style="background:#ADD8E6">
 <fieldset>
+				<a href="#" class="modify" style="float:right;">Modify</a>
 <legend><b>Scanning Details</b></legend>
+	<div class="slidingDiv">
 	<table width="100%">
 
 	<tr>
@@ -118,10 +125,14 @@ $('#creating_events').hide();
 		<td><%= text_field_tag :ph_no, "", :id=>"ph_no" %></td>
 		<td>Pincode</td>
 		<td><%= text_field_tag :pincode, "", :id=>"pincode" %></td>
-		<td><%= submit_tag 'Scan',:class => "preview", :id=>"clicking" %>
-			<span id="creating_events" style="display:none;">Scaning, Please wait...</span></td>
+
+		<td class="show_hide"><%= submit_tag 'Scan',:class => "preview", :id=>"clicking" %>
+			<span id="creating_events" style ="display:none;">Scaning, Please wait...</span></td>
+
+
 	</tr>
   </table>
+</div>
 
  </fieldset>
 </div>
@@ -130,4 +141,26 @@ $('#creating_events').hide();
 <div id="searched_business_data">
 
 </div>
+<script type="text/javascript">
+ 
+$(document).ready(function(){
+ 
+       
+        $(".show_hide").show();
+	$(".modify").hide();
+ 
+    $('.show_hide').click(function(){
+    $(".slidingDiv").slideToggle();
+    $(".modify").show();	
+    });
+
+    $('.modify').click(function(){
+    $(".slidingDiv").slideToggle();
+    $(".modify").hide();
+
+    });	
+ 
+});
+ 
+</script>
 

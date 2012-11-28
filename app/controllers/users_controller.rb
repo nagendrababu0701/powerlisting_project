@@ -19,7 +19,7 @@ require 'net/http'
 
 
 class UsersController < ApplicationController
-  layout 'admin'
+layout "common_layout"
 
   before_filter :require_admin, :except => :show
  before_filter :find_user, :only => [:show, :edit, :update, :destroy, :edit_membership, :destroy_membership]
@@ -80,7 +80,7 @@ class UsersController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { render :layout => 'base' }
+      format.html { render :layout => 'common_layout' }
       format.api
     end
   end

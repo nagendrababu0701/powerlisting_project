@@ -17,6 +17,7 @@
 
 class WelcomeController < ApplicationController
   caches_action :robots
+  layout "common_layout"
 
   def index
     @news = News.latest User.current

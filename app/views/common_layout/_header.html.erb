@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Wavespot</title>
+<%= javascript_include_tag 'application','jquery-1.7.2-ui-1.8.21-ujs-2.0.3' %>
+        <%= stylesheet_link_tag 'style' %>
+</head>
+
+<body>
+<div id="header_main">
+	<div id="header1">
+    	<div class="add-nav">
+        	<div class="nav-holder">
+            	<ul class="secondry-nav">
+<% if   User.current.lastname =="Anonymous" %>
+                	<li class="sing menu-item menu-item-type-custom menu-item-object-custom menu-item-256" id="menu-item-256"><%= link_to "SIGN IN",:controller=>"account",:action =>"login" %></li>
+<% else %>
+
+<li class="sing menu-item menu-item-type-custom menu-item-object-custom menu-item-256" id="menu-item-256"><%= link_to "SIGN OUT",:controller=>"account",:action =>"logout" %></li>
+<% end %>
+<% if  User.current.lastname =="Anonymous" %>
+                    <li class="activate menu-item menu-item-type-custom menu-item-object-custom menu-item-257" id="menu-item-257"><%= link_to "REGISTER",:controller=>"account",:action =>"register" %></li>
+<% else %>
+<li class="activate menu-item menu-item-type-custom menu-item-object-custom menu-item-257" id="menu-item-257"><%= link_to "MyProfile",:controller=>"users",:action =>"show",:id =>User.current.id   %></li>
+<% end %>
+                    <li class="tel menu-item menu-item-type-custom menu-item-object-custom menu-item-773" id="menu-item-773"><a>T: 925.226.0440</a></li>
+				</ul>
+            </div>
+		</div>
+    	<div class="logo"><a href="http://www.wavespot.net" target="_blank">Wavespot</a></div>
+        
+        <ul id="nav">
+        	<li><a href="#">Benefits</a></li>
+        	<li><a href="#">Features</a></li>
+        	<li><a href="#">Enterprise</a></li>
+        	<li><a href="#">Platform Partner</a></li>
+		</ul>
+
+        <div class="clr"></div>
+    </div>
+    <div class="clr"></div>
+</div>
+<div class="clr"></div>
+
