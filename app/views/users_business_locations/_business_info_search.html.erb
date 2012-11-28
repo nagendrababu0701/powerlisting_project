@@ -1,132 +1,24 @@
 <script type="text/javascript">
  hide_show1();
-
 </script>
 
 <br>
-<table width="100%" align="center" border="1" bordercolor="white">
-	<tr bgcolor="#99CCFF">
-		<th> </th>
-		<th>Basic Listings Information</th>
-		<th>Categories</th>			
-		<th>Web Site</th>
-		<th>Description</th>
-		<th>Photos</th>
-		<th>Special Offer</th>
-       	<th>Status</th>
-	</tr>
 
-	<tr bgcolor="#F0FFFF">
-	
-		<% if @s[0] %>
-		<td><%= "MAP QUEST" %> </td>
-		<td><%= @s[0].formatted_address %> </td>
-		<td><%= params[:business] %> </td>
-		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= "Found" %> </td>
-		<% else %>
-		<td><%= "MAP QUEST" %> </td>
-		<td><%= "" %> </td>
-		<td><%= "" %> </td>
-		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= "Not Found" %> </td>
-		<% end %>
+<% if(@yelp_results=="OK") %>
+<%= results_app_params("Yelp",@response_results["businesses"][0]["address1"]+","+@response_results["businesses"][0]["city"]+","+@response_results["businesses"][0]["state"],@response_results["businesses"][0]["categories"],@response_results["businesses"][0]["url"],"",@response_results["businesses"][0]["url"],"","yes")%>
+<% end %>
 
-	</tr>
-
-       <tr bgcolor="#CCFFCC">
-		<td><%= "Yelp" %> </td>
-		<% if @yelp_results=="OK" %>
-		<td><%= @response_results["businesses"][0]["address1"] %>
-			<%= @response_results["businesses"][0]["city"] %>, <%= @response_results["businesses"][0]["state"] %> </td>
-		<td><%= params[:business] %> </td>
-		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= "Found" %> </td>
-		<% else %>
-		<td><%= "" %> </td>
-		<td><%= "" %> </td>
-		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= "Not Found" %> </td>
-		<% end %>
-	</tr>
 <% if @venues %>
-	<tr bgcolor="#F0FFFF">
-		<% if @venues["places"] %>
-		<td><%= "Foresquare" %> </td>
-		<td><%= @venues["places"][0].location["address"] %> <br>
-	    <%= @venues["places"][0].location["city"] %>, <%= @venues["places"][0].location["state"] %></td>
+	<% if @venues["places"] %>
+		<%= results_app_params("Foursquare", @venues["places"][0].location["address"]+","+@venues["places"][0].location["city"]+","+@venues["places"][0].location["state"]+","+@venues["places"][0].location["country"]+","+@venues["places"][0].location["postalCode"],@venues["places"][0].categories,@venues["places"][0].json["url"],"",@venues["places"][0].icon,@venues["places"][0].json["specials"],"yes")%>
+
+<% end %>
+<% end %>
 		
-		<% if(@venues["places"][0].categories) %>
-		<td><image src="/images/yelp_buttons/icon_tick.png"> </td>
-		<% else %>
-		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
-		<% end %>
-	
-		<% if(@venues["places"][0].json["url"]) %>
-		<td><image src="/images/yelp_buttons/icon_tick.png"> </td>
-		<% else %>
-		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
-		<% end %>
-
-
-		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
-
-		<% if(@venues["places"][0].icon) %>
-		<td><image src="/images/yelp_buttons/icon_tick.png"> </td>
-		<% else %>
-		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
-		<% end %>
-		<% if (@venues["places"][0].json["specials"]) %>
-		<td><image src="/images/yelp_buttons/icon_tick.png"> </td>
-		<% else %>
-		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
-		<% end %>
-
-		<% if(@venues["places"]) %>
-		<td><image src="/images/yelp_buttons/icon_tick.png"> </td>
-		<% else %>
-		<td><image src="/images/yelp_buttons/icon_close.png"> </td>
-		<% end %>
-
-		<% end %>
-	</tr>
-<% end %>
-	
 	<% if @yahoo_results %>
-	<tr bgcolor="#F0FFFF">
 		<% if @yahoo_results[0].title %>
-		<td><%= "Yahoo" %> </td>
-		<td><%= params[:city] %>, <%= params[:state] %></td>
-		<td><%= @yahoo_results[0].categories %> </td>
-		<td><%= @yahoo_results[0].business_url %> </td>
-		<td><%= " " %> </td>
-		<td><%= "" %> </td>
-		<td><%= " " %> </td>
-		<td><%= "Found" %> </td>
-		<% else %>
-		<td><%= "Yahoo" %> </td>
-		<td><%= "" %> </td>
-		<td><%= "" %> </td>
-		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= " " %> </td>
-		<td><%= "Not Found" %> </td>
+		<%= results_app_params("Yahoo", @venues["places"][0].location["address"]+","+@venues["places"][0].location["city"]+","+@venues["places"][0].location["state"]+","+@venues["places"][0].location["country"]+","+@venues["places"][0].location["postalCode"],@yahoo_results[0].categories,@yahoo_results[0].business_url,"",@venues["places"][0].icon,@venues["places"][0].json["specials"],"yes")%>
 		<% end %>
-	</tr>
 <% end %>
 
-</table>
-</div>
+
