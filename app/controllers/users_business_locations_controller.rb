@@ -23,11 +23,11 @@ end
 
 def bussiness_details_search
 
-user=User.current
-@name=user.firstname
-@login_time=user.last_login_on
-@business_user_id=BusinessLocation.find_by_user_id(user.id)
-@last_business_searches= BusinessLocation.where(:user_id =>user.id).last#if(business_locations)
+@user=User.current
+@name=@user.firstname
+@login_time=@user.last_login_on
+@business_user_id=BusinessLocation.find_by_user_id(@user.id)
+@last_business_searches= BusinessLocation.where(:user_id =>@user.id).last#if(business_locations)
 
 end
 
