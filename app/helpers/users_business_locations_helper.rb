@@ -1,10 +1,14 @@
 module UsersBusinessLocationsHelper
-def results_app_params(bus_name,address,category,web_site,description,photos,offer,fount_or_not)
-
+def results_app_params(bus_name,address,category,web_site,description,photos,offer,total_revenue,fount_or_not)
 data = "<table width='100%' align='center'>
             <tr>
-              <td>#{bus_name}</td>
-              <td>#{address}</td>"
+              <td>#{bus_name}</td>"
+              
+            if(!address.blank?) 
+               data << "<td>#{address}</td>"
+            else
+              data << "<td> The Address Was Not match</td>"
+             end
 
              if(!category.blank?) 
                data << "<td><image src='/images/yelp_buttons/icon_tick.png'> </td>"
@@ -36,6 +40,11 @@ data = "<table width='100%' align='center'>
               data << "<td><image src='/images/yelp_buttons/icon_close.png'> </td>"
              end
 
+             if(!total_revenue.blank?) 
+               data << "<td>#{total_revenue}</td>"
+            else
+              data << "<td>0</td>"
+             end
 
              if(!category.blank?) 
                data << "<td class='status_bg'>Listed</td>"

@@ -1,19 +1,15 @@
-<link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
-<link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
-   <%= stylesheet_link_tag 'scan.css' %>
-
-
 <script type="text/javascript">
 $(document).ready(function(){
 <% if(@business_user_id) %>
       window.open("/users_business_locations/previous_information_details?user_id=<%= @name %>&logintime=<%= @login_time %>",'dependent, width=900, height=480, left=100, top=100', target='_blank');
 <% end %>
     $("#clicking").click(function () {
+       
 hide_show();
           $.ajax({
             url: '/users_business_locations/search_business_details',
             type: "POST",
-            data: { 'business': $("#business").val(), 'city' : $("#city").val(), 'state' :$("#state").val(), 'country' : $("#country").val(), 'pincode' : $("#pincode").val() , 'ph_no' : $("#ph_no").val()  },
+            data: { 'business': $("#business").val(), 'city' : $("#city").val(), 'business_location' :$("#business_location").val(), 'country' : $("#country").val(), 'pincode' : $("#pincode").val() , 'ph_no' : $("#ph_no").val(), 'user_id' : '<%= @user.id %>'  },
             dataType: "html",
             success: function (data) {
 	$("#searched_business_data").html(data)
@@ -35,12 +31,6 @@ $.ajax({
             data: { 'country' : $("#country").val() },
             dataType: "html",
             success: function (data) {
-alert(data)
-states=data.split("option value=").length
-alert(data.split("option value=")[1])
-
-alert(states)
-
 document.getElementById('business_location').length=0
 var opt = document.createElement("option");
 document.getElementById("business_location").options.add(opt);
@@ -48,12 +38,11 @@ opt.text = "Please Select"
 opt.value = ""
 for(i=1;i<parseInt(data.split("option value=").length);i++)
 {
-
 var opt = document.createElement("option")
 document.getElementById("business_location").options.add(opt)
-state=data.split("&lt;option value=&quot;")[i]
-opt.text = state.split("&quot;&gt;")[0]
-opt.value = state.split("&quot;&gt;")[0]
+state=data.split("<option value=")[i]
+opt.text = state.split('"')[1]
+opt.value = state.split('"')[1]
 }
             },
             error: function () {
@@ -122,7 +111,7 @@ $('#creating_events').hide();
   	<td>State</td>
 		<td><%= select_tag (:business_location, :state) %></td>
 		<td>Ph.No</td>
-		<td><%= text_field_tag :ph_no, "", :id=>"ph_no" %></td>
+		<td><%= text_field_tag :ph_no, "", :id=>"ph_no", :pattern =>'[0-9]{6}' %></td>
 		<td>Pincode</td>
 		<td><%= text_field_tag :pincode, "", :id=>"pincode" %></td>
 
