@@ -22,8 +22,7 @@ user=User.current
 @name=user.firstname
 @login_time=user.last_login_on
 @business_user_id=BusinessLocation.find_by_user_id(user.id)
-@last_business_searches= BusinessLocation.where(:user_id =>user.id).last#if(business_locations)
-
+@last_3=BusinessLocation.find(:all, :conditions=>"user_id = '#{user.id}'", :order => "id desc", :limit => 3) if !user.firstname.blank?
 end
 
 def select_states
@@ -36,7 +35,6 @@ def search_business_details
 user=User.current
 address=""
 address=user.address1.to_s if user
-
 @name=user.firstname
 @login_time=user.last_login_on
 #yls = Yahoo::LocalSearch.new('0yJmk9cUNjYUg0RWhVOG1aJmQ9WVdrOVNUZEdkMjFrTXpJbWNHbzlNVEV4TVRJd05UWXkmcz1jb25zdW1lcnNlY3JldCZ4PWI')
@@ -84,11 +82,13 @@ foursquare=Foursquare::Base.new('2LRH0UGPXER4KLVDBCOHZUNKKWWCM5JI0B2F05IDFUEREUM
 #End of Foursquare search condition .
 #saving the search contents in to business location model.
 
-business_location=BusinessLocation.new(:address=> params[:address], :country =>params[:country], :city => params[:city], :state=> params[:business_location], :ph_no => params[:ph_no], :business_name=>params[:business], :pincode => params[:pincode], :user_id => user.id, :login_time => user.last_login_on)
+if params[:business_ids].blank?
+business_location=BusinessLocation.new(:address=> params[:address], :country =>params[:country], :city => params[:city], :state=> params[:business_location], :business_name=>params[:business], :pincode => params[:pincode], :user_id => user.id, :login_time => user.last_login_on, :ph_no => phone)
 business_location.save
 #End of business locations savings.
 
 #savings directories code
+
 u=UsersBusinessLocation.new
  if(@yelp_results=="OK")
     u.directory_savings(business_location.id,@response_results["businesses"][0]["name"],@response_results["businesses"][0]["city"]+","+@response_results["businesses"][0]["state"],"Found") if(@response_results["businesses"]!=[])
@@ -99,10 +99,10 @@ if(!@venues.blank?)
   end
 
 if(!@yahoo_results.blank?)
-  if(@yahoo_results[0].title)
-  u.directory_savings(business_location.id,"Yahoo",params[:city]+","+params[:business_location]+","+params[:country],"Found")
+  u.directory_savings(business_location.id,"Yahoo",params[:city]+","+params[:business_location]+","+params[:country],"Found") if !@yahoo_results[0].title.blank?
 end
 end
+
 #end of directories savings.
 render :partial=>'business_info_search'
 end

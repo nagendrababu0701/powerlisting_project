@@ -16,7 +16,7 @@ def results_app_params(bus_name,address,category,web_site,description,photos,off
              end
 
              if(!category.blank?) 
-               data << "<td><image src='/images/yelp_buttons/icon_tick.png'> </td>"
+               data << "<td><image src='/images/yelp_buttons/icon_tick.png'></td>"
             else
               data << "<td><image src='/images/yelp_buttons/icon_close.png'> </td>"
              end
