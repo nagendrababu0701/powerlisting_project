@@ -1,9 +1,6 @@
-
 <script type="text/javascript">
 $(document).ready(function(){
-//<% if(@business_user_id) %>
-     // window.open("/users_business_locations/previous_information_details?user_id=<%= @name %>&logintime=<%= @login_time %>",'dependent, width=900, height=480, left=100, top=100', target='_blank');
-//<% end %>
+
     $("#clicking").click(function () {
         var t= new_user_validations("business_search");
         if(t){
@@ -13,11 +10,14 @@ $(document).ready(function(){
             return false;
         }
         hide_show();
+
+       
+
           $.ajax({
             url: '/users_business_locations/search_business_details',
             type: "POST",
 
-            data: { 'business': $("#business").val(), 'city' : $("#city").val(), 'business_location' :$("#business_location").val(), 'country' : $("#country").val(), 'pincode' : $("#pincode").val() , 'ph_no' : $("#ph_no").val(), 'user_id' : '<%= @user.id %>'  },
+            data: { 'business': $("#business").val(), 'city' : $("#city").val(), 'business_location' :$("#business_location").val(), 'country' : $("#country").val(), 'pincode' : $("#pincode").val() , 'ph_no' : $("#ph_no").val(), 'user_id' : '<%= @user.id %>', 'business_ids' : $("#business_ids").val()  },
 
             dataType: "html",
             success: function (data) {
@@ -63,8 +63,17 @@ opt.value = state.split('"')[1]
         });
 });
 
+jQuery('input[onlyNumeric]').keyup(function(){ 
+    var decimal=jQuery(this).attr('onlyNumeric'); var msg="Only Integer Values allowed."; 
+    var val=jQuery(this).val(); var old_val=val; val=val.replace(/[0-9]*/g, ""); if (decimal=='d')
+    {val=val.replace(/\./, ""); msg="Only Numeric Values allowed.";}
+    if (val!=''){ old_val=old_val.replace(/([^0-9].*)/g, "")
+    jQuery(this).val(old_val); //alert(msg);
+    }
+});
 
 })
+
 
 function hide_show()
 {
@@ -76,6 +85,22 @@ function hide_show1()
 {
 $('#clicking').show();
 $('#creating_events').hide();
+}
+function store_valuess(id,business_name,city,state,country,ph_no,pincode)
+{
+$("#business_ids").val(id)
+$("#business").val(business_name)
+$("#city").val(city)
+ $("#ph_no").val(ph_no)
+$("#pincode").val(pincode)
+document.getElementById('business_location').length=0
+var opt = document.createElement("option");
+document.getElementById("business_location").options.add(opt);
+opt.text = state
+opt.value = state
+$("#country").val(country)
+
+
 }
 </script>
 
@@ -122,16 +147,31 @@ background-color:#F0FFFF;
 
 </style>
 
-
+<div>
+    <table width="100%">
+    <tr style="color:#9C4A6A;background-color:#B5B7BA;">
+        <th>Business Name</th>
+        <th>Address</th>
+    </tr>
+    <% if !@last_3.blank? %>
+<% @last_3.each do |last_3| %>
+     <tr align="center" onclick='store_valuess("<%= last_3.id %>","<%= last_3.business_name %>","<%= last_3.city %>","<%= last_3.state %>","<%= last_3.country %>","<%= last_3.ph_no %>","<%= last_3.pincode %>")'>
+        <td><%= last_3.business_name %></td>
+        <td><%= last_3.city %></td>
+    </tr>   
+<% end %>
+<% end %>
+</table>
+</div>
 
 <div style="background:#ADD8E6">
 
 <fieldset>
-				<a href="#" class="modify" style="float:right;">Modify</a>
+<a href="#" class="modify" style="float:right;">Modify</a>
 <legend><b>Scanning Details</b></legend>
 	<div class="slidingDiv">
 	<table width="100%">
-
+<%= hidden_field_tag :business_ids, "", :id=>"business_ids" %>
 	<tr>
 		<td>Business Name</td>
 		<td><%= text_field_tag :business, "", :id=>"business" %></td>
@@ -148,9 +188,10 @@ background-color:#F0FFFF;
   	<td>State</td>
 		<td><%= select_tag (:business_location, :state) %></td>
 		<td>Ph.No</td>
-		<td><%= text_field_tag :ph_no, "", :id=>"ph_no", :pattern =>'[0-9]{6}' %></td>
+
+		<td><%= text_field_tag :ph_no, "", :id=>"ph_no", :onlynumeric=>"i", :maxlength=>"10" %></td>
 		<td>Pincode</td>
-		<td><%= text_field_tag :pincode, "", :id=>"pincode" %></td>
+		<td><%= text_field_tag :pincode, "", :id=>"pincode", :onlynumeric=>"i" %></td>
 
 		<td class="show_hide"><%= submit_tag 'Scan',:class => "preview", :id=>"clicking" %>
 			<span id="creating_events" style ="display:none;">Scaning, Please wait...</span></td>

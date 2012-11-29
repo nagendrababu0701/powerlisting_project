@@ -4,6 +4,19 @@
 
 <% i=0 %>
 <table width='100%' align='center'>
+<tr bgcolor="#99CCFF">
+		<th> </th>
+		<th>Basic Listings Information</th>
+		<th>Categories</th>			
+		<th>Web Site</th>
+		<th>Description</th>
+		<th>Photos</th>
+		<th>Special Offer</th>
+		<th>Reviews</th>
+        <th>Status</th>
+	</tr>
+
+
 <% if(@yelp_results=="OK") && (@response_results["businesses"]!=[]) %>
 <%= results_app_params("Yelp",@response_results["businesses"][0]["address1"]+","+@response_results["businesses"][0]["city"]+","+@response_results["businesses"][0]["state"],@response_results["businesses"][0]["categories"],@response_results["businesses"][0]["url"],"",@response_results["businesses"][0]["url"],"",@response_results["businesses"][0]["review_count"],"yes",i)%>
 <% else %>

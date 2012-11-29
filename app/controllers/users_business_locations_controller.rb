@@ -27,7 +27,8 @@ def bussiness_details_search
 @name=@user.firstname
 @login_time=@user.last_login_on
 @business_user_id=BusinessLocation.find_by_user_id(@user.id)
-@last_business_searches= BusinessLocation.where(:user_id =>@user.id).last#if(business_locations)
+@last_3=BusinessLocation.find(:all, :conditions=>"user_id = '#{@user.id}'", :order => "id desc", :limit => 3) if !@user.firstname.blank?
+
 
 end
 
@@ -42,7 +43,6 @@ def search_business_details
 user=User.find_by_id(params[:user_id].to_i)
 address=""
 address=user.address1.to_s if user
-
 @name=user.firstname
 @login_time=user.last_login_on
 
@@ -94,11 +94,13 @@ foursquare=Foursquare::Base.new('2LRH0UGPXER4KLVDBCOHZUNKKWWCM5JI0B2F05IDFUEREUM
 #End of Foursquare search condition .
 #saving the search contents in to business location model.
 
-business_location=BusinessLocation.new(:address=> params[:address], :country =>params[:country], :city => params[:city], :state=> params[:business_location], :ph_no => params[:ph_no], :business_name=>params[:business], :pincode => params[:pincode], :user_id => user.id, :login_time => user.last_login_on)
+if params[:business_ids].blank?
+business_location=BusinessLocation.new(:address=> params[:address], :country =>params[:country], :city => params[:city], :state=> params[:business_location], :business_name=>params[:business], :pincode => params[:pincode], :user_id => user.id, :login_time => user.last_login_on, :ph_no => phone)
 business_location.save
 #End of business locations savings.
 
 #savings directories code
+
 u=UsersBusinessLocation.new
 
   if(@yelp_results=="OK")
@@ -109,8 +111,8 @@ if(!@venues.blank?)
   end
 
 if(!@yahoo_results.blank?)
-  u.directory_savings(business_location.id,"Yahoo",@yahoo_results[0].address+","+@yahoo_results[0].city+","+@yahoo_results[0].state+","+@yahoo_results[0].phone,"Found") if(!@yahoo_results[0].title.blank?)
-
+u.directory_savings(business_location.id,"Yahoo",@yahoo_results[0].address+","+@yahoo_results[0].city+","+@yahoo_results[0].state+","+@yahoo_results[0].phone,"Found") if(!@yahoo_results[0].title.blank?)
+end
 end
 #end of directories savings.
 render :partial=>'business_info_search'
