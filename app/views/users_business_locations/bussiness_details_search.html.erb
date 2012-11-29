@@ -2,12 +2,15 @@
 $(document).ready(function(){
 
     $("#clicking").click(function () {
+       
 hide_show();
 alert($("#ph_no").val())
           $.ajax({
             url: '/users_business_locations/search_business_details',
             type: "POST",
-            data: { 'business': $("#business").val(), 'city' : $("#city").val(), 'business_location' :$("#business_location").val(), 'country' : $("#country").val(), 'pincode' : $("#pincode").val() ,'ph_no' : $("#ph_no").val(), 'business_ids' : $("#business_ids").val()  },
+
+            data: { 'business': $("#business").val(), 'city' : $("#city").val(), 'business_location' :$("#business_location").val(), 'country' : $("#country").val(), 'pincode' : $("#pincode").val() , 'ph_no' : $("#ph_no").val(), 'user_id' : '<%= @user.id %>', 'business_ids' : $("#business_ids").val()  },
+
             dataType: "html",
             success: function (data) {
 	$("#searched_business_data").html(data)
@@ -29,6 +32,7 @@ $.ajax({
             data: { 'country' : $("#country").val() },
             dataType: "html",
             success: function (data) {
+
  
 states=data.split("option value=").length
 document.getElementById('business_location').length=0
@@ -40,9 +44,9 @@ for(i=1;i<parseInt(data.split("option value=").length);i++)
 {
 var opt = document.createElement("option")
 document.getElementById("business_location").options.add(opt)
-state=data.split("&lt;option value=&quot;")[i]
-opt.text = state.split("&quot;&gt;")[0]
-opt.value = state.split("&quot;&gt;")[0]
+state=data.split("<option value=")[i]
+opt.text = state.split('"')[1]
+opt.value = state.split('"')[1]
 }
             },
             error: function () {
@@ -163,6 +167,7 @@ background-color:#F0FFFF;
   	<td>State</td>
 		<td><%= select_tag (:business_location, :state) %></td>
 		<td>Ph.No</td>
+
 		<td><%= text_field_tag :ph_no, "", :id=>"ph_no", :onlynumeric=>"i", :maxlength=>"10" %></td>
 		<td>Pincode</td>
 		<td><%= text_field_tag :pincode, "", :id=>"pincode", :onlynumeric=>"i" %></td>

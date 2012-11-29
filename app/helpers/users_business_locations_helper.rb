@@ -1,4 +1,6 @@
 module UsersBusinessLocationsHelper
+
+
 def results_app_params(bus_name,address,category,web_site,description,photos,offer,total_revenue,fount_or_not,i)
   data=""
   if((i%2)==0) 
@@ -8,6 +10,7 @@ def results_app_params(bus_name,address,category,web_site,description,photos,off
   end 
            data << "<tr class=#{id}>"
                data << "<td>#{bus_name}</td>"
+
               
             if(!address.blank?) 
                data << "<td>#{address}</td>"
