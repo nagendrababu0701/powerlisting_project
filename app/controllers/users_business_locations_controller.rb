@@ -1,7 +1,7 @@
 require "rubygems"
  require "test/unit"
  require "net/https"
- require 'yahoo/local_search'
+# require 'yahoo/local_search'
  class UsersBusinessLocationsController < ApplicationController
 layout 'common_layout'
 before_filter :check_if_login_required 
@@ -23,11 +23,11 @@ end
 
 def bussiness_details_search
 
-user=User.current
-@name=user.firstname
-@login_time=user.last_login_on
-@business_user_id=BusinessLocation.find_by_user_id(user.id)
-@last_3=BusinessLocation.find(:all, :conditions=>"user_id = '#{user.id}'", :order => "id desc", :limit => 3) if !user.firstname.blank?
+@user=User.current
+@name=@user.firstname
+@login_time=@user.last_login_on
+@business_user_id=BusinessLocation.find_by_user_id(@user.id)
+@last_3=BusinessLocation.find(:all, :conditions=>"user_id = '#{@user.id}'", :order => "id desc", :limit => 3) if !@user.firstname.blank?
 end
 
 def select_states
@@ -111,7 +111,7 @@ if(!@venues.blank?)
 if(!@yahoo_results.blank?)
 u.directory_savings(business_location.id,"Yahoo",@yahoo_results[0].address+","+@yahoo_results[0].city+","+@yahoo_results[0].state+","+@yahoo_results[0].phone,"Found") if(!@yahoo_results[0].title.blank?)
 end
-
+end
 #end of directories savings.
 render :partial=>'business_info_search'
 end
