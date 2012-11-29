@@ -1,23 +1,25 @@
 <script type="text/javascript">
  hide_show1();
 </script>
-<% if(@yelp_results=="OK") && (@response_results["businesses"]!=[])) %>
-<%= results_app_params("Yelp",@response_results["businesses"][0]["address1"]+","+@response_results["businesses"][0]["city"]+","+@response_results["businesses"][0]["state"],@response_results["businesses"][0]["categories"],@response_results["businesses"][0]["url"],"",@response_results["businesses"][0]["url"],"",@response_results["businesses"][0]["review_count"],"yes")%>
+
+<% i=0 %>
+<table width='100%' align='center'>
+<% if(@yelp_results=="OK") && (@response_results["businesses"]!=[]) %>
+<%= results_app_params("Yelp",@response_results["businesses"][0]["address1"]+","+@response_results["businesses"][0]["city"]+","+@response_results["businesses"][0]["state"],@response_results["businesses"][0]["categories"],@response_results["businesses"][0]["url"],"",@response_results["businesses"][0]["url"],"",@response_results["businesses"][0]["review_count"],"yes",i)%>
 <% else %>
-<%= results_app_params("Yelp","","","","","","","","")%>
+<%= results_app_params("Yelp","","","","","","","","",i)%>
 <% end %>
 
 <% if(!@venues.blank?) && (@venues["places"]!=[])%>
-<%= results_app_params("Foursquare", @venues["places"][0].location["address"]+","+@venues["places"][0].location["city"]+","+@venues["places"][0].location["state"]+","+@venues["places"][0].location["country"]+","+@venues["places"][0].location["postalCode"],@venues["places"][0].categories,@venues["places"][0].json["url"],"",@venues["places"][0].icon,@venues["places"][0].json["specials"],"","yes")%>
+<%= results_app_params("Foursquare", @venues["places"][0].location["address"]+","+@venues["places"][0].location["city"]+","+@venues["places"][0].location["state"]+","+@venues["places"][0].location["country"]+","+@venues["places"][0].location["postalCode"],@venues["places"][0].categories,@venues["places"][0].json["url"],"",@venues["places"][0].icon,@venues["places"][0].json["specials"],"","yes",i+1)%>
 <% else %>
-<%= results_app_params("Foursquare","","","","","","","","")%>
+<%= results_app_params("Foursquare","","","","","","","","",i+1)%>
 <% end %>
 		
 <% if !@yahoo_results.blank? && !@yahoo_results[0].title.blank? %>
-<%= results_app_params("Yahoo",@yahoo_results[0].address+","+@yahoo_results[0].city+","+@yahoo_results[0].state+","+@yahoo_results[0].phone,@yahoo_results[0].categories,@yahoo_results[0].url,"",@yahoo_results[0].map_url,"",@yahoo_results[0].total_reviews,"yes")%>
+<%= results_app_params("Yahoo",@yahoo_results[0].address+","+@yahoo_results[0].city+","+@yahoo_results[0].state+","+@yahoo_results[0].phone,@yahoo_results[0].categories,@yahoo_results[0].url,"",@yahoo_results[0].map_url,"",@yahoo_results[0].total_reviews,"yes",i+2)%>
 		
 <% else %>
-<%= results_app_params("Yahoo","","","","","","","","")%>
+<%= results_app_params("Yahoo","","","","","","","","",i+2)%>
 <% end %>
-
-
+</table>

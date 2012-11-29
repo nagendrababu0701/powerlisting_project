@@ -1,15 +1,18 @@
+
 <script type="text/javascript">
 $(document).ready(function(){
-<% if(@business_user_id) %>
-      window.open("/users_business_locations/previous_information_details?user_id=<%= @name %>&logintime=<%= @login_time %>",'dependent, width=900, height=480, left=100, top=100', target='_blank');
-<% end %>
+//<% if(@business_user_id) %>
+     // window.open("/users_business_locations/previous_information_details?user_id=<%= @name %>&logintime=<%= @login_time %>",'dependent, width=900, height=480, left=100, top=100', target='_blank');
+//<% end %>
     $("#clicking").click(function () {
        
 hide_show();
           $.ajax({
             url: '/users_business_locations/search_business_details',
             type: "POST",
+
             data: { 'business': $("#business").val(), 'city' : $("#city").val(), 'business_location' :$("#business_location").val(), 'country' : $("#country").val(), 'pincode' : $("#pincode").val() , 'ph_no' : $("#ph_no").val(), 'user_id' : '<%= @user.id %>'  },
+
             dataType: "html",
             success: function (data) {
 	$("#searched_business_data").html(data)
@@ -31,6 +34,9 @@ $.ajax({
             data: { 'country' : $("#country").val() },
             dataType: "html",
             success: function (data) {
+
+ 
+states=data.split("option value=").length
 document.getElementById('business_location').length=0
 var opt = document.createElement("option");
 document.getElementById("business_location").options.add(opt);
@@ -50,8 +56,9 @@ opt.value = state.split('"')[1]
             }
         });
 });
-})
 
+
+})
 
 function hide_show()
 {
@@ -89,9 +96,20 @@ $('#creating_events').hide();
 .preview:hover{background-color:rgb(255,222,173);}
 .preview:active{position:relative;top:2px;}
 
+.color1{
+background-color:#CCFFCC;
+}
+.color2{
+background-color:#F0FFFF;
+}
 </style>
 
+</style>
+
+
+
 <div style="background:#ADD8E6">
+
 <fieldset>
 				<a href="#" class="modify" style="float:right;">Modify</a>
 <legend><b>Scanning Details</b></legend>
