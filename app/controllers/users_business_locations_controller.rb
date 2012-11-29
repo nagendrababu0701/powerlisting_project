@@ -28,6 +28,7 @@ def bussiness_details_search
 @login_time=@user.last_login_on
 @business_user_id=BusinessLocation.find_by_user_id(@user.id)
 @last_3=BusinessLocation.find(:all, :conditions=>"user_id = '#{@user.id}'", :order => "id desc", :limit => 3) if !@user.firstname.blank?
+
 end
 
 def select_states

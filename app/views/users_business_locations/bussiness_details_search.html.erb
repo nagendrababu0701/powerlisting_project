@@ -2,8 +2,15 @@
 $(document).ready(function(){
 
     $("#clicking").click(function () {
-       
-hide_show();
+        var t= new_user_validations("business_search");
+        if(t){
+
+        }
+        else{
+            return false;
+        }
+        hide_show();
+
           $.ajax({
             url: '/users_business_locations/search_business_details',
             type: "POST",
@@ -124,6 +131,16 @@ background-color:#CCFFCC;
 .color2{
 background-color:#F0FFFF;
 }
+
+.error_explanation_search {
+  width: 450px;
+  padding: 12px 133px  0 ;
+  padding-bottom: 0;
+  margin-top: 10px;
+  color: red;
+  /*margin-bottom: 20px;*/
+ /* background-color: red;*/
+ 
 </style>
 
 </style>
@@ -156,8 +173,11 @@ background-color:#F0FFFF;
 	<tr>
 		<td>Business Name</td>
 		<td><%= text_field_tag :business, "", :id=>"business" %></td>
+         <span class="error_explanation_search" id="business_search" style="display:none;">Business Name  cant be blank</span>
 		<td>City</td>
 		<td><%= text_field_tag :city, "", :id=>"city" %></td>
+        <span class="error_explanation_search" id="city_search" style="display:none;">City Name  cant be blank</span>
+
 	  <td>Country</td>
 		<td><%=  select_tag 'country', options_for_select(get_countries),html_options = {:onChange =>"select_states()"} %></td>	
 	</tr>
@@ -193,7 +213,7 @@ $(document).ready(function(){
        
         $(".show_hide").show();
 	$(".modify").hide();
- 
+
     $('.show_hide').click(function(){
     $(".slidingDiv").slideToggle();
     $(".modify").show();	
