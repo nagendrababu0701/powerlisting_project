@@ -6,14 +6,15 @@ require "rubygems"
  class UsersBusinessLocationsController < ApplicationController
 layout 'common_layout'
 def previous_information_details
+
 user=User.current
-if(user)
-business_locations= BusinessLocation.last(:conditions=>"user_id= '#{user.id}'")
-if(business_locations)
- @directories=Directory.find(:all, :conditions=>"business_location_id='#{business_locations.id}'")
-end
+
+#if(user)
+#@last_business_searches= BusinessLocation.where(:user_id =>user.id).last#if(business_locations)
+ #@directories=Directory.find(:all, :conditions=>"business_location_id='#{business_locations.id}'")
+#end#
 	#@user=User.first(:conditions=>"firstname = '#{params[:user_id]}'", :include=>[{:business_locations=>[:directories]}])
-end
+#end
 end
 
 def bussiness_details_search
@@ -21,6 +22,8 @@ user=User.current
 @name=user.firstname
 @login_time=user.last_login_on
 @business_user_id=BusinessLocation.find_by_user_id(user.id)
+@last_business_searches= BusinessLocation.where(:user_id =>user.id).last#if(business_locations)
+
 end
 
 def select_states
@@ -32,19 +35,21 @@ end
 def search_business_details
 user=User.current
 address=""
-address=user.address1 if user
+address=user.address1.to_s if user
 
 @name=user.firstname
 @login_time=user.last_login_on
-yls = Yahoo::LocalSearch.new('0yJmk9cUNjYUg0RWhVOG1aJmQ9WVdrOVNUZEdkMjFrTXpJbWNHbzlNVEV4TVRJd05UWXkmcz1jb25zdW1lcnNlY3JldCZ4PWI')
-@yahoo_results = yls.locate params[:business], params[:pincode], 5
-phone=params[:ph_no].to_s
-city=params[:city].to_s
-business=params[:business].to_s
-state=params[:business_location].to_s
-country=params[:country].to_s
-pincode=params[:pincode].to_s
+#yls = Yahoo::LocalSearch.new('0yJmk9cUNjYUg0RWhVOG1aJmQ9WVdrOVNUZEdkMjFrTXpJbWNHbzlNVEV4TVRJd05UWXkmcz1jb25zdW1lcnNlY3JldCZ4PWI')
+#@yahoo_results = yls.locate params[:business], params[:pincode], 5
+
+phone=params[:ph_no].to_s 
+city=params[:city].to_s 
+business=params[:business].to_s 
+state=params[:business_location].to_s 
+country=params[:country].to_s 
+pincode=params[:pincode].to_s 
 match=phone
+match=city if phone.blank?
 #yelp searching conditions
 if !phone.blank? && !city.blank?
 e1=Net::HTTP.get(URI.parse(URI.escape("http://api.yelp.com/phone_search?phone="+phone+"&ywsid=GanonVA_293b8gzCHFgHdQ")))
@@ -64,46 +69,36 @@ e=Net::HTTP.get(URI.parse(URI.escape("http://api.yelp.com/business_review_search
 @response_results=JSON.parse(e)
 @yelp_results=@response_results["message"]["text"]
 end
-<<<<<<< HEAD
+#End of the yelp search.
 
 #yls = Yahoo::LocalSearch.new('0yJmk9cUNjYUg0RWhVOG1aJmQ9WVdrOVNUZEdkMjFrTXpJbWNHbzlNVEV4TVRJd05UWXkmcz1jb25zdW1lcnNlY3JldCZ4PWI')
-#@yahoo_results = yls.locate params[:business], params[:pincode], 5
+#@yahoo_results, = yls.locate params[:business], params[:pincode], 5
 
-=======
-#End of the yelp search.
+
 #Foursquare search condition.
->>>>>>> 1a3586eb130b0e799e34049474837187f8c6e4f1
 foursquare=Foursquare::Base.new('2LRH0UGPXER4KLVDBCOHZUNKKWWCM5JI0B2F05IDFUEREUMD','M4EK4OH2FMKH0WNFJYDPL2GWNAF1AOCTZ4YE1XFE22OQXN0H')
 @s = Geocoder.search(city+","+state+","+country+","+pincode)
-@venues = foursquare.venues.search(:query => params[:business], :ll => @s[0].latitude.to_s+","+@s[0].longitude.to_s, :intent => :match)
+@venues = foursquare.venues.search(:query => params[:business], :ll => @s[0].latitude.to_s+","+@s[0].longitude.to_s) if !@s.blank?
 
-<<<<<<< HEAD
 
-=======
 #End of Foursquare search condition .
 #saving the search contents in to business location model.
->>>>>>> 1a3586eb130b0e799e34049474837187f8c6e4f1
-business_location=BusinessLocation.new(:address=> params[:address], :city => params[:city], :state=> params[:business_location], :ph_no => params[:ph_no], :business_name=>params[:business], :pincode => params[:pincode], :user_id => user.id, :login_time => user.last_login_on)
+
+business_location=BusinessLocation.new(:address=> params[:address], :country =>params[:country], :city => params[:city], :state=> params[:business_location], :ph_no => params[:ph_no], :business_name=>params[:business], :pincode => params[:pincode], :user_id => user.id, :login_time => user.last_login_on)
 business_location.save
 #End of business locations savings.
 
 #savings directories code
 u=UsersBusinessLocation.new
-u.directory_savings(business_location.id,"MAPQUEST",@s[0].formatted_address,"Found")
-
  if(@yelp_results=="OK")
-  puts @response_results
-  puts @yahoo_results
-   u.directory_savings(business_location.id,@response_results["businesses"][0]["name"],@response_results["businesses"][0]["city"]+","+@response_results["businesses"][0]["state"],"Found")
-end
+    u.directory_savings(business_location.id,@response_results["businesses"][0]["name"],@response_results["businesses"][0]["city"]+","+@response_results["businesses"][0]["state"],"Found") if(@response_results["businesses"]!=[])
+      end
 
-if(@venues)
-  if(@venues["places"])
-   u.directory_savings(business_location.id,"Foursquare",@venues["places"][0].location["city"]+","+@venues["places"][0].location["state"],"Found")
-   end 
-end
+if(!@venues.blank?)
+   u.directory_savings(business_location.id,"Foursquare",@venues["places"][0].location["city"]+","+@venues["places"][0].location["state"],"Found") if(@venues["places"]!=[])
+  end
 
-if(@yahoo_results)
+if(!@yahoo_results.blank?)
   if(@yahoo_results[0].title)
   u.directory_savings(business_location.id,"Yahoo",params[:city]+","+params[:business_location]+","+params[:country],"Found")
 end
