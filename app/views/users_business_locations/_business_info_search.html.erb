@@ -4,41 +4,62 @@
 
 <% i=1 %>
 <% j=0 %>
-<table width='100%' align='center'>
-
-<tr>
-	<td colspan="7">Listings Diagnostic Report</td>
-</tr>
-<tr>
-<td colspan="9">Report prepared for : <%= params[:business] %>,<%= params[:city] %>,<%= params[:business_location] %>,<%= params[:country] %>,<%= params[:ph_no] %>,<%= params[:pincode] %></td>
-</tr>
-<tr class="summary">
-	<td colspan="9">
-		<table>
-			<tr>
-			<th><%= Time.now.strftime("%d %b %Y  %r")%></th>
-			<th><%= Time.now.strftime("%d %b %Y  %r")%></th>
-			<th>OPTIMIZED <%= j %>(%) </th>
-		   </tr>
-		 </table>
-	</td>
-</tr>
-</tr>
-
-<tr bgcolor="#99CCFF">
-		<th> </th>
-		<th>Basic Listings Information</th>
-		<th>Categories</th>			
-		<th>Web Site</th>
-		<th>Description</th>
-		<th>Photos</th>
-		<th>Special Offer</th>
-		<th>Reviews</th>
-        <th>Status</th>
-	</tr>
 
 
-<% if(@yelp_results=="OK") && (@response_results["businesses"]!=[]) %>
+<div id="body_main_blk">
+	<div id="body_main">
+		<h1 class="cntr">Listings Diagnostic</h1>
+        <div id="body_cont_blk" class="scan_blk"> 
+			<div class="sub_nav">
+            	<ul>
+                	<li><a href="#" class="active">Info</a></li>
+                	<li><a href="#" class="active">Report</a></li>
+                	<li><a href="#">Preview</a></li>
+                	<li class="last"><a href="#">Fix</a></li>
+                </ul>
+                <div class="clr"></div>
+            </div>   
+                
+        	
+            <div class="clr"></div>
+            
+            <h3>Listings Diagnostic Report</h3>
+            <div class="scan_res_blk col1">
+            	<strong>Report prepared for:</strong>
+<%= params[:business]  %>,<%= params[:city] %>,<%= params[:business_location] if params[:business_location] %>,<%= params[:country] %><%= params[:ph_no] %>,<%= params[:pincode] %>		
+            </div>
+            <div class="scan_res_blk col2">
+            	<strong>Report at a glance: </strong>
+                <div class="report_scale_blk"><img src="images/scale_bg.jpg" alt="" /></div>
+                <p>
+                    <span class="grn">Optimized: 79%</span>
+                    <span class="red">Missing: 21%</span>
+                </p>
+            </div>
+            <div class="scan_res_blk col3">
+            	<strong>Scanned On: </strong> 
+              <div class="scan_no"><%= Time.now.strftime("%d %b %Y  %r")%>	</div>
+          	</div>
+            <div class="scan_res_blk col4"><input type="submit" value="Fix It All" class="btn_bg flt_rgt" /></div>
+            
+            <div class="clr"></div>
+            <div class="line"></div>
+            <div class="clr"></div>
+            
+            <table border="0px" cellpadding="0" cellspacing="0" width="100%">
+              <tr>
+                <th width="17%">&nbsp;</th>
+                <th width="27%" class="lft">Basic Listings Information</th>
+                <th width="9%">Categories</th>
+                <th width="9%">Web Site</th>
+                <th width="11%">Description</th>
+                <th width="8%">Photos</th>
+                <th width="7%">Special<br> Offer</th>
+                <th width="7%">Special<br> Reviews</th>
+                <th width="12%" class="last">Status</th>
+              </tr>
+              	<tr class="odd">
+              		<% if(@yelp_results=="OK") && (@response_results["businesses"]!=[]) %>
 <%= results_app_params("Yelp",@response_results["businesses"][0]["address1"]+","+@response_results["businesses"][0]["city"]+","+@response_results["businesses"][0]["state"],@response_results["businesses"][0]["categories"],@response_results["businesses"][0]["url"],"",@response_results["businesses"][0]["url"],"",@response_results["businesses"][0]["review_count"],"yes",i,j+=1)%>
 <% else %>
 <%= results_app_params("Yelp","","","","","","","","",i,"")%>
@@ -56,6 +77,14 @@
 <% else %>
 <%= results_app_params("Yahoo","","","","","","","","",i+2,"")%>
 <% end %>
-
-</table>
-
+              	
+     	</table>
+            
+            <div class="clr"></div>
+            <div class="icon_plus"><a href="#">Show 20+ more sites, mobile and navigation apps</a></div>
+            
+            <div><input type="submit" value="Fix It All" class="btn_bg flt_rgt" /></div>
+            <div class="clr"></div>
+        </div>
+    </div>
+</div>

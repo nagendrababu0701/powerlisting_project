@@ -144,16 +144,19 @@ background-color:#F0FFFF;
 </style>
 
 </style>
-
-<div>
-    <table width="100%">
-    <tr style="color:#9C4A6A;background-color:#B5B7BA;">
+<a href="#" class="modify" style="float:right;height: 20px;">MODIFY</a>
+<div class="slidingDiv">
+ <div style="float: right;width: 22%;margin-right:-65px; ">
+    
+    <table style="margin-top:-2px;border-color:#FFF;">
+       <caption style="background-color:#404040;color:white;">Previous Searches</caption>
+    <tr style="color:#9C4A6A;background-color:#E6EEF0 ;">
         <th>Business Name</th>
         <th>Address</th>
     </tr>
     <% if !@last_3.blank? %>
 <% @last_3.each do |last_3| %>
-     <tr align="center" onclick='store_valuess("<%= last_3.id %>","<%= last_3.business_name %>","<%= last_3.city %>","<%= last_3.state %>","<%= last_3.country %>","<%= last_3.ph_no %>","<%= last_3.pincode %>")'>
+     <tr style="background-color:#E6EEF0; "align="center" onclick='store_valuess("<%= last_3.id %>","<%= last_3.business_name %>","<%= last_3.city %>","<%= last_3.state %>","<%= last_3.country %>","<%= last_3.ph_no %>","<%= last_3.pincode %>")'>
         <td><%= last_3.business_name %></td>
         <td><%= last_3.city %></td>
     </tr>   
@@ -162,13 +165,9 @@ background-color:#F0FFFF;
 </table>
 </div>
 
-<div style="background:#ADD8E6">
-
-<fieldset>
-<a href="#" class="modify" style="float:right;">Modify</a>
-<legend><b>Scanning Details</b></legend>
-	<div class="slidingDiv">
-	<table width="100%">
+<div style="float: right; width: 82%; background:#E6EEF0;">
+	
+	<table >
 <%= hidden_field_tag :business_ids, "", :id=>"business_ids" %>
 	<tr>
 		<td>Business Name</td>
@@ -191,7 +190,7 @@ background-color:#F0FFFF;
 		<td>Pincode</td>
 		<td><%= text_field_tag :pincode, "", :id=>"pincode", :onlynumeric=>"i" %></td>
 
-		<td class="show_hide"><%= submit_tag 'Scan',:class => "preview", :id=>"clicking" %>
+		<td class="show_hide"><%= submit_tag '',:class => "btn_scan_now1", :id=>"clicking" %>
 			<span id="creating_events" style ="display:none;">Scaning, Please wait...</span></td>
 
 
@@ -199,10 +198,9 @@ background-color:#F0FFFF;
   </table>
 </div>
 
- </fieldset>
 </div>
 
-
+    <div class="clr"></div>    <div class="clr"></div>
 <div id="searched_business_data">
 
 </div>
