@@ -2,8 +2,6 @@ function new_user_validations(action_name)
 
 {
 
-	//alert(City_Name)
-
 if(action_name == "business_search" ){
 	if(($('#business').val() == "" || $('#city').val() == "") && ($('#business').val() == "" || $('#ph_no').val() == "")){
 		if($('#business').val())
