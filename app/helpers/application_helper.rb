@@ -33,6 +33,8 @@ module ApplicationHelper
     User.current.allowed_to?({:controller => controller, :action => action}, @project)
   end
 
+
+
   # Display a link if user is authorized
   #
   # @param [String] name Anchor text (passed to link_to)

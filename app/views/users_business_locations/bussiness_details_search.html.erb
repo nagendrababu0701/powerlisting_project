@@ -38,21 +38,15 @@ $.ajax({
             data: { 'country' : $("#country").val() },
             dataType: "html",
             success: function (data) {
-
- 
 states=data.split("option value=").length
 document.getElementById('business_location').length=0
-var opt = document.createElement("option");
-document.getElementById("business_location").options.add(opt);
-opt.text = "Please Select"
-opt.value = ""
 for(i=1;i<parseInt(data.split("option value=").length);i++)
 {
 var opt = document.createElement("option")
 document.getElementById("business_location").options.add(opt)
-state=data.split("<option value=")[i]
-opt.text = state.split('"')[1]
-opt.value = state.split('"')[1]
+state=data.split("&lt;option value=&quot;")[i]
+opt.text = state.split("&quot;&gt;")[0]
+opt.value = state.split("&quot;&gt;")[0]
 }
             },
             error: function () {
@@ -71,7 +65,6 @@ jQuery('input[onlyNumeric]').keyup(function(){
 });
 
 })
-
 
 function hide_show()
 {
@@ -131,7 +124,14 @@ background-color:#CCFFCC;
 .color2{
 background-color:#F0FFFF;
 }
-
+.summary {
+    background: url("/images/yelp_buttons/banner_bg.jpg") no-repeat scroll 0 0 transparent;
+    clear: both;
+    color: #FFF;
+    height: 122px;
+    margin: 0 0 30px 18px;
+    width: 916px;
+}
 .error_explanation_search {
   width: 450px;
   padding: 12px 133px  0 ;
