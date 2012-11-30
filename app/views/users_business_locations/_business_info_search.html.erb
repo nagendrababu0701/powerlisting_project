@@ -4,7 +4,11 @@
 
 <% i=0 %>
 <table width='100%' align='center'>
-<tr bgcolor="#99CCFF">
+<tr class="result"><% if(@yelp_results!="OK") && (@response_results["businesses"]==[]) %>
+<td >There are no directories exi</td>
+</tr>
+<% end %>
+	<tr bgcolor="#99CCFF">
 		<th> </th>
 		<th>Basic Listings Information</th>
 		<th>Categories</th>			
@@ -36,3 +40,4 @@
 <%= results_app_params("Yahoo","","","","","","","","",i+2)%>
 <% end %>
 </table>
+
