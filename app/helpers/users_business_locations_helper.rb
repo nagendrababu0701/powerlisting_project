@@ -1,17 +1,19 @@
 module UsersBusinessLocationsHelper
 
 
-def results_app_params(bus_name,address,category,web_site,description,photos,offer,total_revenue,fount_or_not,i)
+def results_app_params(bus_name,address,category,web_site,description,photos,offer,total_revenue,fount_or_not,i,j)
+
+puts j
+puts "hiiiiiiiiiiiiiiiiiiiiiiiii"
   data=""
   if((i%2)==0) 
-    id='color1'
-  else
     id='color2'
+  else
+    id='color1'
   end 
            data << "<tr class=#{id}>"
                data << "<td>#{bus_name}</td>"
-
-              
+        
             if(!address.blank?) 
                data << "<td>#{address}</td>"
             else
@@ -56,15 +58,21 @@ def results_app_params(bus_name,address,category,web_site,description,photos,off
 
              if(!category.blank?) 
                data << "<td class='status_bg'>Listed</td>"
-            else
+             else
               data << "<td class='status_bg'>Not Listed</td> "
 
              end
              data <<  "</tr>"
 
+
+if j!=""
+ 
+@@result_percentage=(100*j)
+ end
   data.html_safe
 
 end
+
 
 
 	def get_cities
