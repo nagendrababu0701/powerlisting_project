@@ -19,7 +19,10 @@ require "digest/sha1"
 
 class User < Principal
 
- has_many :business_locations, :dependent => :destroy
+has_many :directory_preferences
+has_many :directory_partners,:through =>:directory_preferences
+has_many :search_lists
+has_many :fixed_results
 
   include Redmine::SafeAttributes
 

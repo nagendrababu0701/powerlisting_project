@@ -23,11 +23,15 @@ end
 
 def bussiness_details_search
 
-@user=User.current
-@name=@user.firstname
-@login_time=@user.last_login_on
-@business_user_id=BusinessLocation.find_by_user_id(@user.id)
-@last_3=BusinessLocation.find(:all, :conditions=>"user_id = '#{@user.id}'", :order => "id desc", :limit => 3) if !@user.firstname.blank?
+
+puts yahoosss_id
+puts "ssssssss"
+
+@user = User.current
+@name = @user.firstname
+@login_time = @user.last_login_on
+@business_user_id = BusinessLocation.find_by_user_id(@user.id)
+@last_3 = BusinessLocation.find(:all, :conditions=>"user_id = '#{@user.id}'", :order => "id desc", :limit => 3) if !@user.firstname.blank?
 
 end
 
@@ -39,11 +43,12 @@ end
 
 def search_business_details
 
-user=User.find_by_id(params[:user_id].to_i)
+
+user = User.find_by_id(params[:user_id].to_i)
 address=""
-address=user.address1.to_s if user
-@name=user.firstname
-@login_time=user.last_login_on
+address = user.address1.to_s if user
+@name = user.firstname
+@login_time = user.last_login_on
 
 #yls = Yahoo::LocalSearch.new('0yJmk9cUNjYUg0RWhVOG1aJmQ9WVdrOVNUZEdkMjFrTXpJbWNHbzlNVEV4TVRJd05UWXkmcz1jb25zdW1lcnNlY3JldCZ4PWI')
 #@yahoo_results = yls.locate params[:business], params[:pincode], 5
@@ -67,11 +72,11 @@ search_address=JSON.parse(e1)
      end
    end
 elsif !phone.blank?
-e=Net::HTTP.get(URI.parse(URI.escape("http://api.yelp.com/phone_search?phone="+phone+"&ywsid=GanonVA_293b8gzCHFgHdQ")))
+e = Net::HTTP.get(URI.parse(URI.escape("http://api.yelp.com/phone_search?phone="+phone+"&ywsid=GanonVA_293b8gzCHFgHdQ")))
 @response_results=JSON.parse(e)
 @yelp_results=@response_results["message"]["text"]
 elsif !city.blank?
-e=Net::HTTP.get(URI.parse(URI.escape("http://api.yelp.com/business_review_search?term="+business+"&location="+address+","+city+","+country+","+pincode+"&ywsid=GanonVA_293b8gzCHFgHdQ")))
+e = Net::HTTP.get(URI.parse(URI.escape("http://api.yelp.com/business_review_search?term="+business+"&location="+address+","+city+","+country+","+pincode+"&ywsid=GanonVA_293b8gzCHFgHdQ")))
 @response_results=JSON.parse(e)
 @yelp_results=@response_results["message"]["text"]
 end
@@ -82,9 +87,10 @@ end
 #Foursquare search condition.
 foursquare=Foursquare::Base.new('2LRH0UGPXER4KLVDBCOHZUNKKWWCM5JI0B2F05IDFUEREUMD','M4EK4OH2FMKH0WNFJYDPL2GWNAF1AOCTZ4YE1XFE22OQXN0H')
 @s = Geocoder.search(city+","+state+","+country+","+pincode)
+@venues = foursquare.venues.search(:query => params[:business], :ll => @s[0].latitude.to_s+","+@s[0].longitude.to_s, :intent => :match) if @s!=[]
 
-@venues = foursquare.venues.search(:query => params[:business], :ll => @s[0].latitude.to_s+","+@s[0].longitude.to_s) if @s!=[]
-
+@venues = foursquare.venues.propose_venue_edit(venue_id,{:name=>"dsfnsjdnf", :address=>"",:phone=>""})
+@venues = foursquare.venues.add_venue({:name=>"dsfnsjdnf", :address=>"",:phone=>""})
 #End of Foursquare search condition .
 #saving the search contents in to business location model.
 
