@@ -7,12 +7,6 @@ document.getElementById("user_password_confirmation").value=document.getElementB
 }
 </script>
 
-
-
-
-
-
-
 <%= labelled_form_for @user, :url => register_path do |f| %>
 <%= error_messages_for 'user' %>
 <div id="body_main_blk">
@@ -22,27 +16,22 @@ document.getElementById("user_password_confirmation").value=document.getElementB
         	<div id="body_contL">               	
                 <div class="login_row">
 		   <% if @user.auth_source_id.nil? %>	
-                    <span class="label">Email <span class="mand">*</span></span>
                     <span class="inp"><%= f.text_field :mail, :type=>"text", :class=>"txtbox"%></span>
                     <div class="clr"></div>
                 </div>
                 <div class="login_row">
-                    <span class="label">Full name <span class="mand">*</span></span>
                     <span class="inp"><%= f.text_field :firstname, :type=>"text", :class=>"txtbox"%></span>
                     <div class="clr"></div>
                 </div>
                 <div class="login_row">
-                    <span class="label">Address1 <span class="mand">*</span></span>
                     <span class="inp"><%= f.text_field :address1, :type=>"text", :class=>"txtbox"%></span>
                     <div class="clr"></div>
                 </div>
                 <div class="login_row">
-                    <span class="label">City <span class="mand">*</span></span>
                     <span class="inp"><%= f.text_field :city, :type=>"text", :class=>"txtbox"%></span>
                     <div class="clr"></div>
                 </div>
                 <div class="login_row">
-                    <span class="label">Country <span class="mand">*</span></span>
                     <span class="inp"><%= f.text_field :country, :type=>"text", :class=>"txtbox"%></span>
                     <div class="clr"></div>
                 </div>
@@ -50,28 +39,23 @@ document.getElementById("user_password_confirmation").value=document.getElementB
             
         	<div id="body_contR">
                 <div class="login_row">
-                    <span class="label">Password <span class="mand">*</span></span>
                     <span class="inp"><%= f.text_field :password, :type=>"text", :class=>"txtbox"%></span>
                     <div class="clr"></div>
                 </div>
                 <div class="login_row">
-                    <span class="label">Phone <span class="mand">*</span></span>
                     <span class="inp"><%= f.text_field :phone, :type=>"text", :class=>"txtbox"%></span>
                     <div class="clr"></div>
                 </div>
 		<% end %>
                 <div class="login_row">
-                    <span class="label">Address2  <span class="mand">*</span></span>
                     <span class="inp"><%= f.text_field :address2, :type=>"text", :class=>"txtbox"%></span>
                     <div class="clr"></div>
                 </div>
                 <div class="login_row">
-                    <span class="label">State  <span class="mand">*</span></span>
                     <span class="inp"><%= f.text_field :state, :type=>"text", :class=>"txtbox"%></span>
                     <div class="clr"></div>
                 </div>
                 <div class="login_row">
-                    <span class="label">Zipcode  <span class="mand">*</span></span>
                     <span class="inp"><%= f.text_field :zip_code, :type=>"text", :class=>"txtbox"%></span>
                     <div class="clr"></div>
                 </div>
