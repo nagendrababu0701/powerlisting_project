@@ -105,60 +105,7 @@ $("#country").val(country)
 }
 </script>
 
-<style type="text/css">
-   .preview{
-	color:#08233e;
-	background-color: #E3E1B8; 
-	font:1.0em Futura, ‘Century Gothic’, AppleGothic, sans-serif;
-	font-weight:bold;
-	padding:9px;
-	border-radius:12px 12px 12px 12px;
-}
-.status_bg {
-    background: url("/images/directory_icons/status_bg.png") no-repeat scroll center bottom transparent;
-    color: #559D00;
-    float: left;
-    padding: 6px 0 8px 35px;
-    text-align: left;
-    width: 58px;
-}
 
-.tr_background { 
- bgcolor: #99CCFF;
-}
-.preview:hover{background-color:rgb(255,222,173);}
-.preview:active{position:relative;top:2px;}
-
-.color1{
-background-color:#CCFFCC;
-}
-.color2{
-background-color:#F0FFFF;
-}
-.summary {
-    background: url("/images/directory_icons/banner_bg.jpg") no-repeat scroll 0 0 transparent;
-    clear: both;
-    color: #FFF;
-    height: 122px;
-    margin: 0 0 30px 18px;
-    width: 916px;
-}
-.loding_image {
-background: url("/images/directory_icons/ws_loader.gif") no-repeat scroll 0 0 transparent;
-}
-
-.error_explanation_search {
-  width: 450px;
-  padding: 12px 133px  0 ;
-  padding-bottom: 0;
-  margin-top: 10px;
-  color: red;
-  /*margin-bottom: 20px;*/
- /* background-color: red;*/
- 
-</style>
-
-</style>
 <a href="#" class="modify" style="float:right;height: 20px;">MODIFY</a>
 <div class="slidingDiv">
  <div style="float: right;width: 22%;margin-right:-65px; ">
@@ -215,14 +162,14 @@ background: url("/images/directory_icons/ws_loader.gif") no-repeat scroll 0 0 tr
 </div>
 
 </div>
-
+<div  class="loding_image" >
+<h1 >&nbsp;</h1>
+</div>
     <div class="clr"></div>    <div class="clr"></div>
 <div id="searched_business_data">
 
 </div>
-<div class="loding_image" >
-<h1>&nbsp;</h1>
-</div>
+
 <script type="text/javascript">
  
 $(document).ready(function(){
@@ -233,11 +180,15 @@ $(document).ready(function(){
     $(".slidingDiv").slideToggle();
     $(".modify").show();	
     $(".loding_image").show();
+      //  $("#searched_business_data").show();
+
     });
 
     $('.modify').click(function(){
     $(".slidingDiv").slideToggle();  
     $(".modify").hide();
+    //$("#searched_business_data").hide();
+
 
     });	
  
