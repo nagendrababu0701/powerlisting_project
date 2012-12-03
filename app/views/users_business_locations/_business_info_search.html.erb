@@ -9,15 +9,15 @@
 	<td colspan="7">Listings Diagnostic Report</td>
 </tr>
 <tr>
-<td colspan="9">Report prepared for : <%= params[:business] %>,<%= params[:city] %>,<%= params[:business_location] %>,<%= params[:country] %>,<%= params[:ph_no] %>,<%= params[:pincode] %></td>
+<td colspan="9">Report prepared for : <%= params[:business] %>,<%= params[:city] %>,<%= @state %>,<%= params[:country] %>,<%= params[:ph_no] %>,<%= params[:pincode] %></td>
 </tr>
 <tr class="summary">
 	<td colspan="9">
 		<table>
 			<tr>
 			<th><%= Time.now.strftime("%d %b %Y  %r")%></th>
-			<th><%= Time.now.strftime("%d %b %Y  %r")%></th>
 			<th>OPTIMIZED <%= j %>(%) </th>
+			<th><%= Time.now.strftime("%d %b %Y  %r")%></th>
 		   </tr>
 		 </table>
 	</td>
@@ -38,22 +38,22 @@
 
 
 <% if(@yelp_results=="OK") && (@response_results["businesses"]!=[]) %>
-<%= results_app_params("Yelp",@response_results["businesses"][0]["address1"]+","+@response_results["businesses"][0]["city"]+","+@response_results["businesses"][0]["state"],@response_results["businesses"][0]["categories"],@response_results["businesses"][0]["url"],"",@response_results["businesses"][0]["url"],"",@response_results["businesses"][0]["review_count"],"yes",i,j+=1)%>
+<%= results_app_params(:bus_name => "Yelp", :address => @response_results["businesses"][0]["address1"]+","+@response_results["businesses"][0]["city"]+","+@response_results["businesses"][0]["state"], :category => @response_results["businesses"][0]["categories"],:web_site => @response_results["businesses"][0]["url"], :description=>"",:photos=>@response_results["businesses"][0]["url"],:offer=>"",:total_revenue=>@response_results["businesses"][0]["review_count"],:fount_or_not=>"yes",:i=>i,:image_url=>"yelp.jpg")%>
 <% else %>
-<%= results_app_params("Yelp","","","","","","","","",i,"")%>
+<%= results_app_params(:bus_name =>"Yelp", :address=>"",:category=>"",:web_site=>"",:description=>"",:photos=>"",:offer=>"",:total_revenue=>"",:fount_or_not=>"",:i=>i,:image_url=>"yelp.jpg")%>
 <% end %>
 
 <% if(!@venues.blank?) && (@venues["places"]!=[])%>
-<%= results_app_params("Foursquare", @venues["places"][0].location["address"]+","+@venues["places"][0].location["city"]+","+@venues["places"][0].location["state"]+","+@venues["places"][0].location["country"]+","+@venues["places"][0].location["postalCode"],@venues["places"][0].categories,@venues["places"][0].json["url"],"",@venues["places"][0].icon,@venues["places"][0].json["specials"],"","yes",i+1,j+=1)%>
+<%= results_app_params(:bus_name =>"Foursquare",:address => @venues["places"][0].location["address"]+","+@venues["places"][0].location["city"]+","+@venues["places"][0].location["state"]+","+@venues["places"][0].location["country"]+","+@venues["places"][0].location["postalCode"],:category =>@venues["places"][0].categories,:web_site =>@venues["places"][0].json["url"],:description=>"",:photos=>@venues["places"][0].icon,:offer=>@venues["places"][0].json["specials"],:total_revenue=>"",:fount_or_not=>"yes",:i=>i+=1, :image_url=>"foursquare.jpg")%>
 <% else %>
-<%= results_app_params("Foursquare","","","","","","","","",i+1,"")%>
+<%= results_app_params(:bus_name =>"Foursquare",:address =>"",:category =>"",:web_site =>"",:description=>"",:photos=>"",:offer=>"",:total_revenue=>"",:fount_or_not=>"",:i=>i+=1, :image_url=>"foursquare.jpg")%>
 <% end %>
 		
 <% if !@yahoo_results.blank? && !@yahoo_results[0].title.blank? %>
-<%= results_app_params("Yahoo",@yahoo_results[0].address+","+@yahoo_results[0].city+","+@yahoo_results[0].state+","+@yahoo_results[0].phone,@yahoo_results[0].categories,@yahoo_results[0].url,"",@yahoo_results[0].map_url,"",@yahoo_results[0].total_reviews,"yes",i+2,j+=1)%>
+<%= results_app_params(:bus_name =>"Yahoo",:address =>@yahoo_results[0].address+","+@yahoo_results[0].city+","+@yahoo_results[0].state+","+@yahoo_results[0].phone,:category =>@yahoo_results[0].categories,:web_site =>@yahoo_results[0].url,:description=>"",:photos=>@yahoo_results[0].map_url,:offer=>"",:total_revenue=>@yahoo_results[0].total_reviews,:fount_or_not=>"yes",:i=>i+=1, :image_url=>"yahoo.jpg")%>
 		
 <% else %>
-<%= results_app_params("Yahoo","","","","","","","","",i+2,"")%>
+<%= results_app_params(:bus_name =>"Yahoo",:address =>"",:category =>"",:web_site =>"",:description=>"",:photos=>"",:offer=>"",:total_revenue=>"",:fount_or_not=>"",:i=>i+=1, :image_url=>"yahoo.jpg")%>
 <% end %>
 
 </table>

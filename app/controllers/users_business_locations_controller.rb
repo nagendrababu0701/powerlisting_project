@@ -79,11 +79,11 @@ end
 #End of the yelp search.
 
 
-
 #Foursquare search condition.
 foursquare=Foursquare::Base.new('2LRH0UGPXER4KLVDBCOHZUNKKWWCM5JI0B2F05IDFUEREUMD','M4EK4OH2FMKH0WNFJYDPL2GWNAF1AOCTZ4YE1XFE22OQXN0H')
 @s = Geocoder.search(city+","+state+","+country+","+pincode)
-@venues = foursquare.venues.search(:query => params[:business], :ll => @s[0].latitude.to_s+","+@s[0].longitude.to_s) if !@s.blank?
+
+@venues = foursquare.venues.search(:query => params[:business], :ll => @s[0].latitude.to_s+","+@s[0].longitude.to_s) if @s!=[]
 
 #End of Foursquare search condition .
 #saving the search contents in to business location model.
@@ -94,7 +94,7 @@ foursquare=Foursquare::Base.new('2LRH0UGPXER4KLVDBCOHZUNKKWWCM5JI0B2F05IDFUEREUM
 #saving the search contents in to business location model.
 
 if params[:business_ids].blank?
-business_location=BusinessLocation.new(:address=> params[:address], :country =>params[:country], :city => params[:city], :state=> params[:business_location], :business_name=>params[:business], :pincode => params[:pincode], :user_id => user.id, :login_time => user.last_login_on, :ph_no => phone)
+business_location=BusinessLocation.new(:address=> params[:address], :country =>country, :city => params[:city], :state=> params[:business_location], :business_name=>params[:business], :pincode => params[:pincode], :user_id => user.id, :ph_no => phone, :login_time => user.last_login_on)
 business_location.save
 #End of business locations savings.
 

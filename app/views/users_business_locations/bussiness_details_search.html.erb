@@ -1,6 +1,6 @@
 <script type="text/javascript">
 $(document).ready(function(){
-
+$('.loding_image').hide();
     $("#clicking").click(function () {
         var t= new_user_validations("business_search");
         if(t){
@@ -10,17 +10,26 @@ $(document).ready(function(){
             return false;
         }
         hide_show();
+if($("#business_location").val()==null)
+    state=""
+else
+    state=$("#business_location").val()
+
+if($("#country").val()=="Please Select")
+country=""
+else
+country=$("#country").val()
 
           $.ajax({
             url: '/users_business_locations/search_business_details',
             type: "POST",
 
-            data: { 'business': $("#business").val(), 'city' : $("#city").val(), 'business_location' :$("#business_location").val(), 'country' : $("#country").val(), 'pincode' : $("#pincode").val() , 'ph_no' : $("#ph_no").val(), 'user_id' : '<%= @user.id %>', 'business_ids' : $("#business_ids").val()  },
+            data: { 'business': $("#business").val(), 'city' : $("#city").val(), 'business_location' :state, 'country' : country, 'pincode' : $("#pincode").val() , 'ph_no' : $("#ph_no").val(), 'user_id' : '<%= @user.id %>', 'business_ids' : $("#business_ids").val()  },
 
             dataType: "html",
             success: function (data) {
 	$("#searched_business_data").html(data)
-
+$(".loding_image").hide();
             },
             error: function () {
                 alert("error");
@@ -37,7 +46,8 @@ $.ajax({
             type: "POST",
             data: { 'country' : $("#country").val() },
             dataType: "html",
-            success: function (data) {
+            success: function (data){
+
 states=data.split("option value=").length
 document.getElementById('business_location').length=0
 for(i=1;i<parseInt(data.split("option value=").length);i++)
@@ -105,13 +115,14 @@ $("#country").val(country)
 	border-radius:12px 12px 12px 12px;
 }
 .status_bg {
-    background: url("/images/yelp_buttons/status_bg.png") no-repeat scroll center bottom transparent;
+    background: url("/images/directory_icons/status_bg.png") no-repeat scroll center bottom transparent;
     color: #559D00;
     float: left;
     padding: 6px 0 8px 35px;
     text-align: left;
     width: 58px;
 }
+
 .tr_background { 
  bgcolor: #99CCFF;
 }
@@ -125,13 +136,17 @@ background-color:#CCFFCC;
 background-color:#F0FFFF;
 }
 .summary {
-    background: url("/images/yelp_buttons/banner_bg.jpg") no-repeat scroll 0 0 transparent;
+    background: url("/images/directory_icons/banner_bg.jpg") no-repeat scroll 0 0 transparent;
     clear: both;
     color: #FFF;
     height: 122px;
     margin: 0 0 30px 18px;
     width: 916px;
 }
+.loding_image {
+background: url("/images/directory_icons/ws_loader.gif") no-repeat scroll 0 0 transparent;
+}
+
 .error_explanation_search {
   width: 450px;
   padding: 12px 133px  0 ;
@@ -165,7 +180,7 @@ background-color:#F0FFFF;
 <div style="background:#ADD8E6">
 
 <fieldset>
-<a href="#" class="modify" style="float:right;">Modify</a>
+<a href="" class="modify" style="float:right;">Modify</a>
 <legend><b>Scanning Details</b></legend>
 	<div class="slidingDiv">
 	<table width="100%">
@@ -206,21 +221,23 @@ background-color:#F0FFFF;
 <div id="searched_business_data">
 
 </div>
+<div class="loding_image" >
+<h1>&nbsp;</h1>
+</div>
 <script type="text/javascript">
  
 $(document).ready(function(){
  
-       
-        $(".show_hide").show();
-	$(".modify").hide();
-
+    $(".show_hide").show();
+    $(".modify").hide();
     $('.show_hide').click(function(){
     $(".slidingDiv").slideToggle();
     $(".modify").show();	
+    $(".loding_image").show();
     });
 
     $('.modify').click(function(){
-    $(".slidingDiv").slideToggle();
+    $(".slidingDiv").slideToggle();  
     $(".modify").hide();
 
     });	
