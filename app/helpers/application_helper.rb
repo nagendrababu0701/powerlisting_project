@@ -33,6 +33,35 @@ module ApplicationHelper
     User.current.allowed_to?({:controller => controller, :action => action}, @project)
   end
 
+#submenu tabs
+
+def sub_menu
+    html = ''
+    case controller.controller_name
+      when 'admin' 
+      html << "<div class='sub_menu_header' align='top'><ul><div class='sub_menu'>"
+      html <<  '<li>'
+      html << link_to('USERS',{:controller=>'users',:action=>'index'},:class=>(current_page?(:controller=>'users',:action=>'index') ? "users selected" : ""))
+      html << '</li>' 
+      html <<  '<li>'
+      html << link_to('GROUPS',{:controller=>'groups',:action=>'index'},:class=>(current_page?(:controller=>'groups',:action=>'index') ? "groups selected" : ""))
+      html << '</li>' 
+      html <<  '<li>'
+      html << link_to('ROLES',{:controller=>'roles',:action=>'index'},:class=>(current_page?(:controller=>'roles',:action=>'index') ? "roles selected" : ""))
+      html << '</li>' 
+      html <<  '<li>'
+      html << link_to('TRACKERS',{:controller=>'trackers',:action=>'index'},:class=>(current_page?(:controller=>'trackers',:action=>'index') ? "trackers selected" : ""))
+      html << '</li>' 
+      html <<  '<li>'
+      html << link_to('ISSUES',{:controller=>'issue_statuses',:action=>'index'},:class=>(current_page?(:controller=>'issue_statuses',:action=>'index') ? "issue statuses selected" : ""))
+      html << '</li>' 
+      html <<  '<li>'
+      html << link_to('Settings',{:controller=>'settings',:action=>'index'},:class=>(current_page?(:controller=>'settings',:action=>'index') ? "settings selected" : ""))
+      html << '</li>' 
+      html <<  "</div></ul></div><br/>" 
+    end
+    return html.html_safe
+  end
 
 
   # Display a link if user is authorized

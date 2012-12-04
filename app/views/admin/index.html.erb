@@ -1,8 +1,9 @@
+<%#= render :partial => 'shared/top_navigation' %>
+<%= sub_menu %>
 <h2><%=l(:label_administration)%></h2>
-
 <div id="admin-index">
   <%= render :partial => 'no_data' if @no_configuration_data %>
-  <%= render :partial => 'menu' %>
+  <%#= render :partial => 'menu' %>
 </div>
 
 <% html_title(l(:label_administration)) -%>

@@ -69,7 +69,7 @@ foursquare=Foursquare::Base.new(APPID['defaults']['foursquare_api'],APPID['defau
 
 #End of Foursquare search condition .
 #saving the search contents in to business location model.
-debugger
+
 search_list=SearchList.new(:address=> address, :country =>country, :city => params[:city], :state=> params[:business_location], :business_name=>params[:business], :pin_code => params[:pincode], :user_id => user_id, :ph_no => phone)
 search_list.save
 #End of Search list savings.
