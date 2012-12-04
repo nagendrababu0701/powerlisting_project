@@ -24,8 +24,8 @@ end
 def bussiness_details_search
 
 
-puts yahoosss_id
-puts "ssssssss"
+
+
 
 @user = User.current
 @name = @user.firstname

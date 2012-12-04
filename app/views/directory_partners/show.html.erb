@@ -1,0 +1,32 @@
+<% if @directory_partners.blank? %>
+<p>There are no directories avilable</p>
+<% else %>
+<table>
+	<tr>
+		<td>Directory Name</td>
+		<td></td>
+
+	</tr>	
+<% @directory_partners.each do | directory | %>
+<tr>
+	<td><%= directory.name %></td>
+<% if !directory.preffered.eql?(true) %>
+
+	<td>
+		<%= form_tag(directory_partners_update_path :id => directory.id ) do %>
+		        <%=check_box_tag "preffered", 1, false,:onclick => "this.parentNode.submit();"%>
+                <%= hidden_field_tag "directory",directory.id %>
+                <% end %>
+	</td>
+	<% else %>
+	<td>
+		<%= form_tag(directory_partners_update_path :id => directory.id ) do %>
+		        <%=check_box_tag "preffered", 1, true,:onclick => "this.parentNode.submit();"%>
+                <%= hidden_field_tag "directory",directory.id %>
+                <% end %>
+	</td>
+	<% end %>
+	<% end %>
+</tr>
+</table>
+<% end %>
