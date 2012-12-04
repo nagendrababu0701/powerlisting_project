@@ -14,11 +14,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
+ require 'state_select_plugin'
 class AccountController < ApplicationController
   helper :custom_fields
   include CustomFieldsHelper
-
+  
   # prevents login action to be filtered by check_if_login_required application scope filter
   skip_before_filter :check_if_login_required
 
@@ -35,11 +35,80 @@ class AccountController < ApplicationController
   end
 
 def bussiness_details_search
-
+user=User.current
+@name=user.firstname
+@login_time=user.last_login_on
+@business_user_id=BusinessLocation.find_by_user_id(user.id)
 end
 
 
 
+def search_business_details
+user=User.current
+@name=user.firstname
+@login_time=user.last_login_on
+
+@s = Geocoder.search(params[:city],params[:business])
+
+		client = Yelp::Client.new
+        	request = Yelp::Review::Request::Location.new(
+                :address => '',
+                :city => params[:city],
+                :state => params[:state],
+                :term => params[:business],
+                :yws_id => 'GanonVA_293b8gzCHFgHdQ')
+		response = client.search(request)
+		@result=response["message"]["text"]
+   
+       business_location=BusinessLocation.new
+       business_location.address = params[:address]
+       business_location.city = params[:city]
+       business_location.state = params[:state]
+       business_location.ph_no = params[:ph_no]
+       business_location.business_name = params[:business]
+business_location.pincode = params[:pincode]
+
+
+       business_location.user_id = user.id
+       business_location.login_time = user.last_login_on 
+
+       i=1
+	business_user_id=BusinessLocation.find_by_user_id(user.id)
+       if(business_user_id)
+	business_location.logincount = business_user_id.user_id.to_i+1
+	else
+	business_location.logincount = i
+        end
+
+       business_location.save
+	
+	 directories= Directory.new
+if(@s[0])
+ directories.business_location_id=business_location.id
+ directories.business="MAPQUEST"
+ directories.business_lising_information=@s[0].formatted_address
+ directories.categories=params[:business]
+directories.status="Found"
+directories.save
+end
+if(@result=="OK")
+directories.business_location_id=business_location.id
+ directories.business="YELP"
+ directories.business_lising_information=params[:city]+","+params[:state]+","+params[:country]
+ directories.categories=params[:business]
+directories.status="Found"
+directories.save
+end
+
+render :partial=>'users/business_info_search'
+end
+
+def select_states
+puts "ssssssssssssssssssssssssssssssssssssssssssssSSS"
+debugger
+
+state_select('business_location', 'state',  options = {:country=>params[:country]}, html_options = {})
+end
 
   # Log out current user and redirect to welcome page
   def logout
@@ -303,5 +372,7 @@ end
     redirect_to signin_path
   end
 
+
+  
 
 end
