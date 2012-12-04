@@ -1,0 +1,2 @@
+module DirectoryPartnersHelper
+end

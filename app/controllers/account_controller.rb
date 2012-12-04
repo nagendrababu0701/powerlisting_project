@@ -224,7 +224,12 @@ class AccountController < ApplicationController
       set_autologin_cookie(user)
     end
     call_hook(:controller_account_success_authentication_after, {:user => user })
-    redirect_to  bussiness_details_search_users_business_locations_url 
+     if user.admin
+#	redirect_to(home_url)
+	redirect_back_or_default :controller => 'my', :action => 'page'
+	else
+	    redirect_to  bussiness_details_search_users_business_locations_url 
+	end
   end
 
   def set_autologin_cookie(user)
