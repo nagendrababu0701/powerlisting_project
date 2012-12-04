@@ -1,0 +1,197 @@
+<script type="text/javascript">
+$(document).ready(function(){
+$('.loding_image').hide();
+    $("#clicking").click(function () {
+        var t= new_user_validations("business_search");
+        if(t){
+
+        }
+        else{
+            return false;
+        }
+        hide_show();
+if($("#business_location").val()==null)
+    state=""
+else
+    state=$("#business_location").val()
+
+if($("#country").val()=="Please Select")
+country=""
+else
+country=$("#country").val()
+
+          $.ajax({
+            url: '/search_lists/search_business_details',
+            type: "POST",
+
+            data: { 'business': $("#business").val(), 'city' : $("#city").val(), 'business_location' :state, 'country' : country, 'pincode' : $("#pincode").val() , 'ph_no' : $("#ph_no").val(), 'user_id' : '<%= @user_id %>', 'business_ids' : $("#business_ids").val()  },
+
+            dataType: "html",
+            success: function (data) {
+	$("#searched_business_data").html(data)
+$(".loding_image").hide();
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+
+   });
+
+
+$("#country").change(function(){
+
+$.ajax({
+            url: '/search_lists/select_states',
+            type: "POST",
+            data: { 'country' : $("#country").val() },
+            dataType: "html",
+            success: function (data){
+
+states=data.split("option value=").length
+document.getElementById('business_location').length=0
+for(i=1;i<parseInt(data.split("option value=").length);i++)
+{
+var opt = document.createElement("option")
+document.getElementById("business_location").options.add(opt)
+state=data.split("&lt;option value=&quot;")[i]
+opt.text = state.split("&quot;&gt;")[0]
+opt.value = state.split("&quot;&gt;")[0]
+}
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+});
+
+jQuery('input[onlyNumeric]').keyup(function(){ 
+    var decimal=jQuery(this).attr('onlyNumeric'); var msg="Only Integer Values allowed."; 
+    var val=jQuery(this).val(); var old_val=val; val=val.replace(/[0-9]*/g, ""); if (decimal=='d')
+    {val=val.replace(/\./, ""); msg="Only Numeric Values allowed.";}
+    if (val!=''){ old_val=old_val.replace(/([^0-9].*)/g, "")
+    jQuery(this).val(old_val); //alert(msg);
+    }
+});
+
+})
+
+function hide_show()
+{
+$('#clicking').hide();
+$('#creating_events').show();
+}
+function hide_show1()
+{
+$('#clicking').show();
+$('#creating_events').hide();
+}
+function store_valuess(id,business_name,city,state,country,ph_no,pincode)
+{
+$("#business_ids").val(id)
+$("#business").val(business_name)
+$("#city").val(city)
+ $("#ph_no").val(ph_no)
+$("#pincode").val(pincode)
+document.getElementById('business_location').length=0
+var opt = document.createElement("option");
+document.getElementById("business_location").options.add(opt);
+opt.text = state
+opt.value = state
+$("#country").val(country)
+
+
+}
+</script>
+
+
+<a href="" class="modify" style="float:right;height: 20px;">MODIFY</a>
+<div class="slidingDiv">
+ <div style="float: right;width: 22%;margin-right:-65px; ">
+    
+    <table style="margin-top:-2px;border-color:#FFF;">
+       <caption style="background-color:#404040;color:white;">Previous Searches</caption>
+    <tr style="color:#9C4A6A;background-color:#E6EEF0 ;">
+        <th>Business Name</th>
+        <th>Address</th>
+    </tr>
+    <% if !@last_3.blank? %>
+<% @last_3.each do |last_3| %>
+     <tr style="background-color:#E6EEF0; "align="center" onclick='store_valuess("<%= last_3.id %>","<%= last_3.business_name %>","<%= last_3.city %>","<%= last_3.state %>","<%= last_3.country %>","<%= last_3.ph_no %>","<%= last_3.pincode %>")'>
+        <td><%= last_3.business_name %></td>
+        <td><%= last_3.city %></td>
+    </tr>   
+<% end %>
+<% end %>
+</table>
+</div>
+
+
+<div style="float: right; width: 82%; background:#E6EEF0;">
+	
+	<table >
+<%= hidden_field_tag :business_ids, "", :id=>"business_ids" %>
+	<tr>
+		<td>Business Name</td>
+		<td><%= text_field_tag :business, "", :id=>"business" %></td>
+         <span class="error_explanation_search" id="business_search" style="display:none;">Business Name  cant be blank</span>
+		<td>City</td>
+		<td><%= text_field_tag :city, "", :id=>"city" %></td>
+        <span class="error_explanation_search" id="city_search" style="display:none;">City Name  cant be blank</span>
+
+	  <td>Country</td>
+		<td><%=  select_tag 'country', options_for_select(get_countries),html_options = {:onChange =>"select_states()"} %></td>	
+	</tr>
+
+  <tr>	
+  	<td>State</td>
+		<td><%= select_tag (:business_location, :state) %></td>
+		<td>Ph.No</td>
+
+		<td><%= text_field_tag :ph_no, "", :id=>"ph_no", :onlynumeric=>"i", :maxlength=>"10" %></td>
+		<td>Pincode</td>
+		<td><%= text_field_tag :pincode, "", :id=>"pincode", :onlynumeric=>"i" %></td>
+
+		<td class="show_hide"><%= submit_tag '',:class => "btn_scan_now1", :id=>"clicking" %>
+			<span id="creating_events" style ="display:none;">Scaning, Please wait...</span></td>
+
+
+	</tr>
+  </table>
+</div>
+
+</div>
+<div  class="loding_image" >
+<h1 >&nbsp;</h1>
+</div>
+    <div class="clr"></div>    <div class="clr"></div>
+<div id="searched_business_data">
+
+</div>
+
+<script type="text/javascript">
+ 
+$(document).ready(function(){
+ 
+    $(".show_hide").show();
+    $(".modify").hide();
+    $('.show_hide').click(function(){
+    $(".slidingDiv").slideToggle();
+    $(".modify").show();	
+    $(".loding_image").show();
+      //  $("#searched_business_data").show();
+
+    });
+
+    $('.modify').click(function(){
+    $(".slidingDiv").slideToggle();  
+    $(".modify").hide();
+    //$("#searched_business_data").hide();
+
+
+    });	
+ 
+});
+ 
+</script>
+

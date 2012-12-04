@@ -1,0 +1,89 @@
+<script type="text/javascript">
+ hide_show1();
+</script>
+
+<% i=1 %>
+<% j=0 %>
+
+
+<div id="body_main_blk">
+	<div id="body_main">
+		<h1 class="cntr">Listings Diagnostic</h1>
+        <div id="body_cont_blk" class="scan_blk"> 
+			<div class="sub_nav">
+            	<ul>
+                	<li><a href="#" class="active">Info</a></li>
+                	<li><a href="#" class="active">Report</a></li>
+                	<li><a href="#">Preview</a></li>
+                	<li class="last"><a href="#">Fix</a></li>
+                </ul>
+                <div class="clr"></div>
+            </div>   
+                
+        	
+            <div class="clr"></div>
+            
+            <h3>Listings Diagnostic Report</h3>
+            <div class="scan_res_blk col1">
+            	<strong>Report prepared for:</strong>
+<%= params[:business]  %>,<%= params[:city] %>,<%= params[:business_location] if params[:business_location] %>,<%= params[:country] %><%= params[:ph_no] %>,<%= params[:pincode] %>		
+            </div>
+            <div class="scan_res_blk col2">
+            	<strong>Report at a glance: </strong>
+                <div class="report_scale_blk"><img src="images/scale_bg.jpg" alt="" /></div>
+                <p>
+                    <span class="grn">Optimized: 79%</span>
+                    <span class="red">Missing: 21%</span>
+                </p>
+            </div>
+            <div class="scan_res_blk col3">
+            	<strong>Scanned On: </strong> 
+              <div class="scan_no"><%= Time.now.strftime("%d %b %Y  %r")%>	</div>
+          	</div>
+            <div class="scan_res_blk col4"><input type="submit" value="Fix It All" class="btn_bg flt_rgt" /></div>
+            
+            <div class="clr"></div>
+            <div class="line"></div>
+            <div class="clr"></div>
+            
+            <table border="0px" cellpadding="0" cellspacing="0" width="100%">
+              <tr>
+                <th width="17%">&nbsp;</th>
+                <th width="27%" class="lft">Basic Listings Information</th>
+                <th width="9%">Categories</th>
+                <th width="9%">Web Site</th>
+                <th width="11%">Description</th>
+                <th width="8%">Photos</th>
+                <th width="7%">Special<br> Offer</th>
+                <th width="7%">Special<br> Reviews</th>
+                <th width="12%" class="last">Status</th>
+              </tr>
+              <% if(@yelp_results=="OK") && (@response_results["businesses"]!=[]) %>
+<%= results_app_params(:bus_name => "Yelp", :address => @response_results["businesses"][0]["address1"]+","+@response_results["businesses"][0]["city"]+","+@response_results["businesses"][0]["state"], :category => @response_results["businesses"][0]["categories"],:web_site => @response_results["businesses"][0]["url"], :description=>"",:photos=>@response_results["businesses"][0]["url"],:offer=>"",:total_revenue=>@response_results["businesses"][0]["review_count"],:fount_or_not=>"yes",:i=>i,:image_url=>"yelp.jpg")%>
+<% else %>
+<%= results_app_params(:bus_name =>"Yelp", :address=>"",:category=>"",:web_site=>"",:description=>"",:photos=>"",:offer=>"",:total_revenue=>"",:fount_or_not=>"",:i=>i,:image_url=>"yelp.jpg")%>
+<% end %>
+
+<% if(!@venues.blank?) && (@venues["places"]!=[])%>
+<%= results_app_params(:bus_name =>"Foursquare",:address => @venues["places"][0].location["address"]+","+@venues["places"][0].location["city"]+","+@venues["places"][0].location["state"]+","+@venues["places"][0].location["country"]+","+@venues["places"][0].location["postalCode"],:category =>@venues["places"][0].categories,:web_site =>@venues["places"][0].json["url"],:description=>"",:photos=>@venues["places"][0].icon,:offer=>@venues["places"][0].json["specials"],:total_revenue=>"",:fount_or_not=>"yes",:i=>i+=1, :image_url=>"foursquare.jpg")%>
+<% else %>
+<%= results_app_params(:bus_name =>"Foursquare",:address =>"",:category =>"",:web_site =>"",:description=>"",:photos=>"",:offer=>"",:total_revenue=>"",:fount_or_not=>"",:i=>i+=1, :image_url=>"foursquare.jpg")%>
+<% end %>
+		
+<% if !@yahoo_results.blank? && !@yahoo_results[0].title.blank? %>
+<%= results_app_params(:bus_name =>"Yahoo",:address =>@yahoo_results[0].address+","+@yahoo_results[0].city+","+@yahoo_results[0].state+","+@yahoo_results[0].phone,:category =>@yahoo_results[0].categories,:web_site =>@yahoo_results[0].url,:description=>"",:photos=>@yahoo_results[0].map_url,:offer=>"",:total_revenue=>@yahoo_results[0].total_reviews,:fount_or_not=>"yes",:i=>i+=1, :image_url=>"yahoo.jpg")%>
+		
+<% else %>
+<%= results_app_params(:bus_name =>"Yahoo",:address =>"",:category =>"",:web_site =>"",:description=>"",:photos=>"",:offer=>"",:total_revenue=>"",:fount_or_not=>"",:i=>i+=1, :image_url=>"yahoo.jpg")%>
+<% end %>
+              	
+     	</table>
+            
+            <div class="clr"></div>
+            <div class="icon_plus"><a href="#">Show 20+ more sites, mobile and navigation apps</a></div>
+            
+            <div><input type="submit" value="Fix It All" class="btn_bg flt_rgt" /></div>
+            <div class="clr"></div>
+        </div>
+    </div>
+</div>
