@@ -103,10 +103,9 @@ post "search_business_details_urbanmapping"
 end
 end
 
-resources :users_business_locations do
+resources :search_lists do
 collection do
-get "bussiness_details_search"
-get "previous_information_details"
+get "scan_page"
 post "select_states"
 post "search_business_details"
 end
