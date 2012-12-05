@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class GroupsController < ApplicationController
-  layout 'common_layout'
+  layout 'admin_layout'
 
   before_filter :require_admin
   before_filter :find_group, :except => [:index, :new, :create]

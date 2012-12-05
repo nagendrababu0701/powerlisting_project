@@ -1,0 +1,40 @@
+
+<%= form_for @search_list,:url =>{:controller =>"search_lists",:action => 'update_search_list',:id =>@search_list.id}, :html => {:method => 'post'} do |form| %>
+ <p class="legend"><strong>Note:</strong> Required fields are marked with an asterisk (<em>*</em>)</p>
+<fieldset>
+<legend>Fix All</legend>
+
+
+<div>
+    <label for="business_name">Bisiness Name<em>*</em></label>
+   <%= form.text_field :business_name %>
+  </div>
+  <div>
+    <label for="city">City<em>*</em></label>
+   <%= form.text_field :city%>
+  </div>
+<div>
+    <label for="state">State<em>*</em></label>
+     <%= form.text_field :state%>
+ 
+
+
+  </div>
+<div>
+    <label for="country">Country <em>*</em></label>
+     <%= form.text_field :country%>
+  </div>
+  <div>
+    <label for="ph_no">Phone Number</label>
+   <%= form.text_field :ph_no %>
+  </div>
+  
+<div>
+    <label for="pin_code">Pincode</label>
+   <%= form.text_field :pin_code %>
+  </div>
+ <div class="buttonrow">
+    <%= form.submit "SUBMIT" ,:class=>'button'%>
+  </div>
+  </fieldset>
+<% end %>
