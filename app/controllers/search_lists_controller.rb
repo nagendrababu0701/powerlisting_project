@@ -5,7 +5,6 @@
 # require 'yahoo/local_search'
 class SearchListsController < ApplicationController
 layout 'common_layout'
-<<<<<<< HEAD
 #before_filter :find_current_user
 skip_after_filter :search_business_details
 
