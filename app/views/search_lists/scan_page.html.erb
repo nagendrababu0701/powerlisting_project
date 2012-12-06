@@ -1,6 +1,6 @@
 <script type="text/javascript">
 $(document).ready(function(){
-$('.loding_image').hide();
+$(".loding_image").hide();
     $("#clicking").click(function () {
         var t= new_user_validations("business_search");
         if(t){
@@ -10,7 +10,7 @@ $('.loding_image').hide();
             return false;
         }
         hide_show();
-if($("#business_location").val()==null)
+        if($("#business_location").val()==null)
     state=""
 else
     state=$("#business_location").val()
@@ -28,8 +28,10 @@ country=$("#country").val()
 
             dataType: "html",
             success: function (data) {
-	$("#searched_business_data").html(data)
-$(".loding_image").hide();
+    $(".loding_image").hide();
+    $("#searched_business_data").html(data)
+
+
             },
             error: function () {
                 alert("error");
@@ -126,44 +128,37 @@ $("#country").val(country)
 
 
 <div style="float: right; width: 82%; background:#E6EEF0;">
-	
-	<table >
+    
+    <table >
 <%= hidden_field_tag :business_ids, "", :id=>"business_ids" %>
-	<tr>
-		<td>Business Name</td>
-		<td><%= text_field_tag :business, "", :id=>"business" %></td>
+    <tr>
+        <td>Business Name</td>
+        <td><%= text_field_tag :business, "", :id=>"business" %></td>
          <span class="error_explanation_search" id="business_search" style="display:none;">Business Name  cant be blank</span>
-		<td>City</td>
-		<td><%= text_field_tag :city, "", :id=>"city" %></td>
+        <td>City</td>
+        <td><%= text_field_tag :city, "", :id=>"city" %></td>
         <span class="error_explanation_search" id="city_search" style="display:none;">City Name  cant be blank</span>
 
-	  <td>Country</td>
-		<td><%=  select_tag 'country', options_for_select(get_countries),html_options = {:onChange =>"select_states()"} %></td>	
-	</tr>
+      <td>Country</td>
+        <td><%=  select_tag 'country', options_for_select(get_countries),html_options = {:onChange =>"select_states()"} %></td> 
+    </tr>
 
-  <tr>	
-  	<td>State</td>
-		<td><%= select_tag (:business_location, :state) %></td>
-		<td>Ph.No</td>
+  <tr>  
+    <td>State</td>
+        <td><%= select_tag (:business_location, :state) %></td>
+        <td>Ph.No</td>
 
-		<td><%= text_field_tag :ph_no, "", :id=>"ph_no", :onlynumeric=>"i", :maxlength=>"10" %></td>
-		<td>Pincode</td>
-		<td><%= text_field_tag :pincode, "", :id=>"pincode", :onlynumeric=>"i" %></td>
+        <td><%= text_field_tag :ph_no, "", :id=>"ph_no", :onlynumeric=>"i", :maxlength=>"10" %></td>
+        <td>Pincode</td>
+        <td><%= text_field_tag :pincode, "", :id=>"pincode", :onlynumeric=>"i" %></td>
 
-		<td class="show_hide"><%= submit_tag '',:class => "btn_scan_now1", :id=>"clicking" %>
-			<span id="creating_events" style ="display:none;">Scaning, Please wait...</span></td>
+        <td class="show_hide"><%= submit_tag '',:class => "btn_scan_now1", :id=>"clicking" %>
+            <span id="creating_events" style ="display:none;">Scaning, Please wait...</span></td>
 
 
-	</tr>
+    </tr>
   </table>
 </div>
-
-</div>
-<div  class="loding_image" >
-<h1 >&nbsp;</h1>
-</div>
-    <div class="clr"></div>    <div class="clr"></div>
-<div id="searched_business_data">
 
 </div>
 
@@ -175,21 +170,27 @@ $(document).ready(function(){
     $(".modify").hide();
     $('.show_hide').click(function(){
     $(".slidingDiv").slideToggle();
-    $(".modify").show();	
+    $(".modify").show();    
     $(".loding_image").show();
       //  $("#searched_business_data").show();
 
     });
 
     $('.modify').click(function(){
-    $(".slidingDiv").slideToggle();  
+    $(".slidingDiv").slideToggle(); 
     $(".modify").hide();
     //$("#searched_business_data").hide();
 
 
-    });	
+    }); 
  
 });
  
 </script>
 
+<div class="loding_image">
+<h1>&nbsp;</h1>
+</div>
+    <div id="searched_business_data">
+
+    </div>

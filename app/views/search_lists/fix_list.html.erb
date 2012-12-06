@@ -1,1 +1,25 @@
-<h1>hi</h1>
+<table>
+
+<tr>
+		<td>Business Name</td>
+		<td><%= text_field_tag :business, "", :id=>"business" %></td>
+   		<td>City</td>
+		<td><%= text_field_tag :city, "", :id=>"city" %></td>
+       	<td>Country</td>
+		<td><%= text_field_tag :country,"", :id=>"country" %></td>	
+</tr>
+<tr>	
+     	<td>State</td>
+		<td><%= text_field_tag :state,"", :id=>"state" %></td>	
+		<td>Ph.No</td>
+		<td><%= text_field_tag :ph_no, "", :id=>"ph_no"%></td>
+		<td>Pincode</td>
+		<td><%= text_field_tag :pincode, "", :id=>"pincode" %></td>
+
+		<td><%= submit_tag '',:class => "btn_scan_now1", :id=>"clicking" %>
+
+	</tr>
+
+
+
+</table>

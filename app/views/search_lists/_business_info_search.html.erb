@@ -1,6 +1,5 @@
 <script type="text/javascript">
  hide_show1();
-
  $(document).ready(function(){   
 
    $('#btnClick').click(function(){
@@ -8,7 +7,7 @@
     $(':checkbox:checked').each(function(i){
          val[i] = $(this).val();
     });
-         window.open("/search_lists/fix_list?directories="+val)
+         window.open("/search_lists/fix_list?directories="+val+"business"+'<%=params[:business]%>'+"city"+'<%=params[:city]%>')
    });
 
 })   
@@ -38,7 +37,7 @@
             <h3>Listings Diagnostic Report</h3>
             <div class="scan_res_blk col1">
             	<strong>Report prepared for:</strong>
-<%= params[:business]  %>,<%= params[:city] %>,<%= params[:business_location] if params[:business_location] %>,<%= params[:country] %><%= params[:ph_no] %>,<%= params[:pincode] %>		
+<%= params[:business]  %>,<%= params[:city] %>,<%= params[:business_location] %>, <%= params[:country] %>, <%= params[:ph_no] %>,<%= params[:pincode] %>
             </div>
             <div class="scan_res_blk col2">
             	<strong>Report at a glance: </strong>

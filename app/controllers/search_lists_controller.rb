@@ -24,6 +24,7 @@ directories=Directoriespartner.find_by_sql("SELECT * FROM directoriespartners WH
 puts "r"
 puts directories[0].id
 puts directories[0].users
+puts params[:business]
 puts "sssss"
 end
 
