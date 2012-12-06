@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  directory_partner_id: 1
+  user_id: 1
+  issue_id: 1
+  status: MyString
+
+two:
+  directory_partner_id: 1
+  user_id: 1
+  issue_id: 1
+  status: MyString

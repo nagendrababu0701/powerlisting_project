@@ -1,0 +1,22 @@
+<%= form_tag(:controller => :directory_partners, :action=> :update) do%>
+<% if @directory_partners.blank? %>
+<p>There are no directories avilable</p>
+<% else %>
+<table>
+	<tr>
+		<td>Directory Name</td>
+		<td></td>
+	</tr>
+	<% @i=0 %>	
+<% @directory_partners.each do | directory | %>
+<tr>
+	<td><%= directory.name %></td>
+	<% exiting = user_directory(directory.name,@preffered_api) %>
+	<td><%= check_box_tag('preffered[]',"#{directory.name}",exiting, :id => "#{@i}") %><% @i+=1 %></td>
+</tr>
+<% end %>
+</table>
+	    <%= image_submit_tag("directory_icons/save.png", :width => "56px", :height =>"21px", :border =>"0") %>
+
+<% end %>
+<% end %>

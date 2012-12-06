@@ -16,6 +16,24 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 RedmineApp::Application.routes.draw do
+  get "directory_partners/index"
+
+  get "directory_partners/show"
+
+  get "directory_partners/create"
+
+  get "directory_partners/edit"
+
+  get "directory_partners/update" 
+
+  get "directory_partners/new"
+
+  resources :directory_partners do
+    member do
+        match 'update', :via => [:get, :post]
+      end
+  end
+
   root :to => 'welcome#index', :as => 'home'
 
   match 'login', :to => 'account#login', :as => 'signin'
@@ -75,21 +93,17 @@ match 'account/bussiness_details_search', :to => 'account#bussiness_details_sear
   match 'my/remove_block', :controller => 'my', :action => 'remove_block', :via => :post
   match 'my/order_blocks', :controller => 'my', :action => 'order_blocks', :via => :post
 
-  resources :users do
-collection do
-post "search_business_details_mapquest"
-post "search_business_details123"
-post "search_business_details_yahoo"
-post "search_business_details_urbanmapping"
-
-end
-end
-
 resources :search_lists do
 collection do
 get "scan_page"
 post "select_states"
 post "search_business_details"
+get "fix_list"
+end
+end
+
+resources :users do
+collection do
 end
 end
 

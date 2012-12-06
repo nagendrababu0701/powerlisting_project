@@ -1,10 +1,22 @@
 <script type="text/javascript">
  hide_show1();
+
+ $(document).ready(function(){   
+
+   $('#btnClick').click(function(){
+    var val = [];
+    $(':checkbox:checked').each(function(i){
+         val[i] = $(this).val();
+    });
+         window.open("/search_lists/fix_list?directories="+val)
+   });
+
+})   
+
 </script>
 
 <% i=1 %>
 <% j=0 %>
-
 
 <div id="body_main_blk">
 	<div id="body_main">
@@ -58,31 +70,36 @@
                 <th width="7%">Special<br> Reviews</th>
                 <th width="12%" class="last">Status</th>
               </tr>
-              <% if(@yelp_results=="OK") && (@response_results["businesses"]!=[]) %>
-<%= results_app_params(:bus_name => "Yelp", :address => @response_results["businesses"][0]["address1"]+","+@response_results["businesses"][0]["city"]+","+@response_results["businesses"][0]["state"], :category => @response_results["businesses"][0]["categories"],:web_site => @response_results["businesses"][0]["url"], :description=>"",:photos=>@response_results["businesses"][0]["url"],:offer=>"",:total_revenue=>@response_results["businesses"][0]["review_count"],:fount_or_not=>"yes",:i=>i,:image_url=>"yelp.jpg")%>
+              <% if @directories.include?("YELP") %>
+              <% if !(@response_results.blank?) && @response_results["businesses"]!=[] && (@response_results["message"]["text"]=="OK")  %>
+<%= results_app_params(:bus_name => "Yelp", :address => @response_results["businesses"][0]["address1"]+","+@response_results["businesses"][0]["city"]+","+@response_results["businesses"][0]["state"], :category => @response_results["businesses"][0]["categories"],:web_site => @response_results["businesses"][0]["url"], :description=>"",:photos=>@response_results["businesses"][0]["url"],:offer=>"",:total_revenue=>@response_results["businesses"][0]["review_count"],:fount_or_not=>"yes",:i=>i,:image_url=>"yelp.jpg", :user_id=>@user_id)%>
 <% else %>
-<%= results_app_params(:bus_name =>"Yelp", :address=>"",:category=>"",:web_site=>"",:description=>"",:photos=>"",:offer=>"",:total_revenue=>"",:fount_or_not=>"",:i=>i,:image_url=>"yelp.jpg")%>
+<%= results_app_params(:bus_name =>"Yelp", :address=>"",:category=>"",:web_site=>"",:description=>"",:photos=>"",:offer=>"",:total_revenue=>"",:fount_or_not=>"",:i=>i,:image_url=>"yelp.jpg", :user_id=>@user_id)%>
+<% end %>
 <% end %>
 
+ <% if @directories.include?("FOURSQUARE") %>
 <% if(!@venues.blank?) && (@venues["places"]!=[])%>
-<%= results_app_params(:bus_name =>"Foursquare",:address => @venues["places"][0].location["address"]+","+@venues["places"][0].location["city"]+","+@venues["places"][0].location["state"]+","+@venues["places"][0].location["country"]+","+@venues["places"][0].location["postalCode"],:category =>@venues["places"][0].categories,:web_site =>@venues["places"][0].json["url"],:description=>"",:photos=>@venues["places"][0].icon,:offer=>@venues["places"][0].json["specials"],:total_revenue=>"",:fount_or_not=>"yes",:i=>i+=1, :image_url=>"foursquare.jpg")%>
+<%= results_app_params(:bus_name =>"Foursquare",:address => @venues["places"][0].location["address"]+","+@venues["places"][0].location["city"]+","+@venues["places"][0].location["state"]+","+@venues["places"][0].location["country"]+","+@venues["places"][0].location["postalCode"],:category =>@venues["places"][0].categories,:web_site =>@venues["places"][0].json["url"],:description=>"",:photos=>@venues["places"][0].icon,:offer=>@venues["places"][0].json["specials"],:total_revenue=>"",:fount_or_not=>"yes",:i=>i+=1, :image_url=>"foursquare.jpg", :user_id=>@user_id)%>
 <% else %>
-<%= results_app_params(:bus_name =>"Foursquare",:address =>"",:category =>"",:web_site =>"",:description=>"",:photos=>"",:offer=>"",:total_revenue=>"",:fount_or_not=>"",:i=>i+=1, :image_url=>"foursquare.jpg")%>
+<%= results_app_params(:bus_name =>"Foursquare",:address =>"",:category =>"",:web_site =>"",:description=>"",:photos=>"",:offer=>"",:total_revenue=>"",:fount_or_not=>"",:i=>i+=1, :image_url=>"foursquare.jpg", :user_id=>@user_id)%>
 <% end %>
-		
+<% end %>
+
+ <% if @directories.include?("YAHOO") %>
 <% if !@yahoo_results.blank? && !@yahoo_results[0].title.blank? %>
-<%= results_app_params(:bus_name =>"Yahoo",:address =>@yahoo_results[0].address+","+@yahoo_results[0].city+","+@yahoo_results[0].state+","+@yahoo_results[0].phone,:category =>@yahoo_results[0].categories,:web_site =>@yahoo_results[0].url,:description=>"",:photos=>@yahoo_results[0].map_url,:offer=>"",:total_revenue=>@yahoo_results[0].total_reviews,:fount_or_not=>"yes",:i=>i+=1, :image_url=>"yahoo.jpg")%>
+<%= results_app_params(:bus_name =>"Yahoo",:address =>@yahoo_results[0].address+","+@yahoo_results[0].city+","+@yahoo_results[0].state+","+@yahoo_results[0].phone,:category =>@yahoo_results[0].categories,:web_site =>@yahoo_results[0].url,:description=>"",:photos=>@yahoo_results[0].map_url,:offer=>"",:total_revenue=>@yahoo_results[0].total_reviews,:fount_or_not=>"yes",:i=>i+=1, :image_url=>"yahoo.jpg", :user_id=>@user_id)%>
 		
 <% else %>
-<%= results_app_params(:bus_name =>"Yahoo",:address =>"",:category =>"",:web_site =>"",:description=>"",:photos=>"",:offer=>"",:total_revenue=>"",:fount_or_not=>"",:i=>i+=1, :image_url=>"yahoo.jpg")%>
+<%= results_app_params(:bus_name =>"Yahoo",:address =>"",:category =>"",:web_site =>"",:description=>"",:photos=>"",:offer=>"",:total_revenue=>"",:fount_or_not=>"",:i=>i+=1, :image_url=>"yahoo.jpg", :user_id=>@user_id)%>
 <% end %>
-              	
+ <% end %>             	
      	</table>
             
             <div class="clr"></div>
-            <div class="icon_plus"><a href="#">Show 20+ more sites, mobile and navigation apps</a></div>
+            <div class="icon_plus"><a href="#" >Show 20+ more sites, mobile and navigation apps</a></div>
             
-            <div><input type="submit" value="Fix It All" class="btn_bg flt_rgt" /></div>
+            <div><input type="button" id='btnClick' class="btn_bg flt_rgt"></a></div>
             <div class="clr"></div>
         </div>
     </div>

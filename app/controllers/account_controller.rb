@@ -224,7 +224,13 @@ class AccountController < ApplicationController
       set_autologin_cookie(user)
     end
     call_hook(:controller_account_success_authentication_after, {:user => user })
-    redirect_to  bussiness_details_search_users_business_locations_url 
+    #debugger
+     if user.admin
+#	redirect_to(home_url)
+	   redirect_to :controller => 'admin', :action => 'index'
+	   else
+	   redirect_to  :controller => 'search_lists', :action => 'scan_page'
+	end
   end
 
   def set_autologin_cookie(user)
@@ -276,7 +282,7 @@ class AccountController < ApplicationController
     if user.save
       self.logged_user = user
       flash[:notice] = l(:notice_account_activated)
-      redirect_to :controller => 'users_business_locations', :action => 'bussiness_details_search'
+      redirect_to :controller => 'search_lists', :action => 'scan_page'
     else
       yield if block_given?
     end
