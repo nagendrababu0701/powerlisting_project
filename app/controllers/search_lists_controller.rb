@@ -1,11 +1,18 @@
  require "rubygems"
  require "test/unit"
  require "net/https"
+
 # require 'yahoo/local_search'
 class SearchListsController < ApplicationController
 layout 'common_layout'
+<<<<<<< HEAD
 #before_filter :find_current_user
 skip_after_filter :search_business_details
+=======
+before_filter :check_if_login_required 
+#before_filter :authorize
+ # skip_before_filter :search_business_details
+>>>>>>> 5a5a191c6f28fb7bd6d92377a81ba74071a94b85
 
 def scan_page
 @user = User.current
@@ -13,6 +20,16 @@ def scan_page
 @last_3=""
 @user_id = @user.id if @user
 @last_3 = BusinessLocation.find(:all, :conditions=>"user_id = '#{@user.id}'", :order => "id desc", :limit => 3) if !@user.firstname.blank?
+end
+
+def fix_list
+a=params[:directories].split(",")
+puts a
+directories=Directoriespartner.find_by_sql("SELECT * FROM directoriespartners WHERE directoriespartners.name IN ('#{a.join("','")}')")
+puts "r"
+puts directories[0].id
+puts directories[0].users
+puts "sssss"
 end
 
 def select_states
@@ -25,11 +42,17 @@ def search_business_details
  # debugger
 @user=User.find(User.current)#User.find_by_id(params[:user_id].to_i)
 address=""
+<<<<<<< HEAD
 user_id=params[:user_id]
 address=@user.address1.to_s if @user
 
 #yls = Yahoo::LocalSearch.new(APPID['defaults']['yahoo_id'])
 #@yahoo_results = yls.locate params[:business], params[:pincode], 5
+=======
+@user_id=""
+address=user.address1.to_s if user
+@user_id=user.id if user
+>>>>>>> 5a5a191c6f28fb7bd6d92377a81ba74071a94b85
 
 phone=params[:ph_no].to_s 
 city=params[:city].to_s 
@@ -37,41 +60,30 @@ business=params[:business].to_s
 state=params[:business_location].to_s 
 country=params[:country].to_s 
 pincode=params[:pincode].to_s 
-match=phone
-match=city if phone.blank?
-#yelp searching conditions
-if !phone.blank? && !city.blank?
-e1=Net::HTTP.get(URI.parse(URI.escape("http://api.yelp.com/phone_search?phone="+phone+"&ywsid="+APPID['defaults']['yelp'])))
-debugger
-search_address=JSON.parse(e1)
-   if(search_address["message"]["text"]=="OK")
-     if(search_address["businesses"][0]["address1"].include?(city) || search_address["businesses"][0]["city"].include?(city) )
-          @response_results=search_address 
-          @yelp_results=@response_results["message"]["text"]
-     end
-   end
-elsif !phone.blank?
-e = Net::HTTP.get(URI.parse(URI.escape("http://api.yelp.com/phone_search?phone="+phone+"&ywsid="+APPID['defaults']['yelp'])))
-@response_results=JSON.parse(e)
-@yelp_results=@response_results["message"]["text"]
-elsif !city.blank?
-e = Net::HTTP.get(URI.parse(URI.escape("http://api.yelp.com/business_review_search?term="+business+"&location="+address+","+city+","+country+","+pincode+"&ywsid="+APPID['defaults']['yelp'])))
-@response_results=JSON.parse(e)
-@yelp_results=@response_results["message"]["text"]
+
+@directories=[]
+dir = user.directoriespartners
+non_user =  Directoriespartner.all
+dir.each{|x| @directories << x.name } unless dir.blank? unless user.blank?
+non_user.each{|x| @directories << x.name } unless non_user.blank? if user.firstname.blank?
+ 
+ #yelp search condition.   
+if @directories.include?("YELP")
+  @response_results = YelpModel.yelp_method(:address=>address,:phone=>phone, :city=>city, :state=>state, :country=>country, :pincode=>pincode, :business=>business)
 end
 
-#End of the yelp search.
-
-
 #Foursquare search condition.
-foursquare=Foursquare::Base.new(APPID['defaults']['foursquare_api'],APPID['defaults']['foursquare_secret'])
-@s = Geocoder.search(city+","+state+","+country+","+pincode)
-@venues = foursquare.venues.search(:query => params[:business], :ll => @s[0].latitude.to_s+","+@s[0].longitude.to_s, :intent => :match) if @s!=[]
+if @directories.include?("FOURSQUARE")
+  @venues = FoursquareModel.foursuare_method(:address=>address,:phone=>phone, :city=>city, :state=>state, :country=>country, :pincode=>pincode, :business=>business)
+end
 
-#End of Foursquare search condition .
+#yahoo search condition
+if @directories.include?("YAHOO")
+  #@yahoo_results=YahooModel.yahoo_method(:address=>address,:phone=>phone, :city=>city, :state=>state, :country=>country, :pincode=>pincode, :business=>business)
+end
+
 #saving the search contents in to business location model.
-
-search_list=SearchList.new(:address=> address, :country =>country, :city => params[:city], :state=> params[:business_location], :business_name=>params[:business], :pin_code => params[:pincode], :user_id => user_id, :ph_no => phone)
+search_list=SearchList.new(:address=> address, :country =>country, :city => params[:city], :state=> params[:business_location], :business_name=>params[:business], :pin_code => params[:pincode], :user_id => params[:user_id], :ph_no => phone)
 search_list.save
 #End of Search list savings.
 
@@ -79,7 +91,7 @@ search_list.save
 
 call=SearchList.new
 
-if(@yelp_results=="OK")
+if(!@response_results.blank? && @response_results["message"]["text"]=="OK")
   call.directory_savings(:search_id=>search_list.id,:directory_name=>"yelp") if(@response_results["businesses"]!=[])
 end
 if(!@venues.blank?)

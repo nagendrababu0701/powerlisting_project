@@ -1,2 +1,19 @@
-<h1>DirectoryPartners#new</h1>
-<p>Find me in app/views/directory_partners/new.html.erb</p>
+<script type="text/javascript">
+var new_verify=0
+
+</script>
+  <% @i=0 %>
+<%= form_for(@directory_partner) do |f| %>
+  <% ApiMaster.all.each do |api_master| %>
+<table>
+<tr style="height:0px;">
+	
+	<td><%= text_field_tag('name[]',nil, :value => "#{api_master.api_name}", :id => "#{@i}") %></td><% @i+=1 %>
+	<td><%= text_field_tag('description[]',nil, :id => "#{@i}") %><% @i+=1 %></td>
+	<td><%= check_box_tag('preffered[]',"#{api_master.api_name}",false, :id => "#{@i}") %><% @i+=1 %></td>
+</tr>
+	<% end %>
+
+
+<% end %>
+	    <%= image_submit_tag("directory_icons/save.png", :width => "56px", :height =>"21px", :border =>"0") %>

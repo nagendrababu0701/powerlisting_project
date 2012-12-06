@@ -9,8 +9,8 @@ data=""
   else
     id='color1'
   end 
-           data << "<tr class=#{id}>"
-                 data << "<td><image src='/images/directory_icons/#{options[:image_url]}' height='50px'> #{options[:bus_name]}</td>"
+          data << "<tr class=#{id}>"
+          data << "<td><image src='/images/directory_icons/#{options[:image_url]}' height='50px'> #{options[:bus_name]}</td>"
             if(!options[:address].blank?) 
                data << "<td>#{options[:address]}</td>"
             else
@@ -57,8 +57,10 @@ data=""
                data << "<td class='status_bg'>Listed</td>"
              else
               data << "<td class='status_bg'>Not Listed</td> "
-
              end
+             
+              data << "<td><input type='checkbox' name='directory' value='#{options[:bus_name]}' id='#{options[:bus_name]}'></td>"
+             
              data <<  "</tr>"
 
 

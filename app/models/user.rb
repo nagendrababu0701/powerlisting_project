@@ -19,8 +19,7 @@ require "digest/sha1"
 
 class User < Principal
 
-has_many :directory_preferences
-has_many :directory_partners,:through =>:directory_preferences
+has_and_belongs_to_many :directoriespartners
 has_many :search_lists
 has_many :fixed_results
 

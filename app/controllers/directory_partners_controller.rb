@@ -1,37 +1,54 @@
 class DirectoryPartnersController < ApplicationController
   layout "common_layout"
+
   def index
   end
 
   def show
-    @directory_partners=DirectoryPartner.all
+    @preffered_api = []
+    @directory_partners=Directoriespartner.all
+    preffered_a = User.current.directoriespartners
+    unless preffered_a.blank?
+      preffered_a.each{|x| @preffered_api << x.name }
+     end 
+     #@directory_partners=DirectoryPartner.all
   end
 
-  def create
+def new
+   @directory_partner=DirectoryPartner.new
+end
+
+def create
+  preferred_api = []
+  u = User.current
+   params[:preffered].each do |x|
+      preferred_api<<[:name=>x,:preffered=>"1", :user_id=> "1"]
   end
+    @directory_partner = DirectoryPartner.create(preferred_api)
+  #  if @directory_partner.save
+  #    format.html { redirect_to("/directory_partners/new", :notice => "successfully created.") }
+  #end  
+end
 
   def edit
   end
 
   def update
-    debugger
-    directory=DirectoryPartner.find_by_id(params[:directory].to_i)
-    directory_preferance=DirectoryPreferance.find_by_directory_partner_id_and_user_id(directory.id,User.current.id)   if directory
-    if params[:preffered].nil?
-      directory.update_attributes(:preffered=>0) 
-      directory_preferance.update_attributes(:preferance=>0) if directory_preferance
-    #elsif  !params[:preffered].nil? && !directory.preffered.eql?(0) 
-    #  directory.update_attributes(:preffered=>1) 
-     # directory_preferance.update_attributes(:preferance=>1) if directory_preferance
-    else
-      directory.update_attributes(:preffered=>1)    
-      DirectoryPreferance.create(:user_id=>User.current.id,:directory_partner_id=>directory.id,:preferance =>true)
-     end 
-       
-    flash[:notice] = "Your Directory listing search changed successfully. Thank you!" 
-    redirect_to directory_partners_show_url
+pamas_all=params[:preffered]
+user_now=User.current
+checked_api=Directoriespartner.find_by_sql("SELECT * FROM directoriespartners WHERE directoriespartners.name IN ('#{pamas_all.join("','")}')") unless pamas_all.blank?
+unless checked_api.blank?
+    checked_api.each do |x|
+       user_now.directoriespartners <<  x if user_now.directoriespartners.find_by_name(x.name).blank?
+    end 
+end    
+un_checked_api=Directoriespartner.find_by_sql("SELECT * FROM directoriespartners WHERE directoriespartners.name NOT IN ('#{pamas_all.join("','")}')") unless pamas_all.blank?
+un_checked_api = user_now.directoriespartners if pamas_all.blank?
+unless un_checked_api.blank?
+  un_checked_api.each do |y|
+     user_now.directoriespartners.delete(y)
   end
-
-  def new
-  end
+end   
+   redirect_to directory_partners_show_path
+end
 end
