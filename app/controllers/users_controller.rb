@@ -19,7 +19,7 @@ require 'net/http'
 
 
 class UsersController < ApplicationController
-layout "common_layout"
+layout "admin_layout"
 
   before_filter :require_admin, :except => :show
  before_filter :find_user, :only => [:show, :edit, :update, :destroy, :edit_membership, :destroy_membership]

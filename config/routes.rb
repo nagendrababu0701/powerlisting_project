@@ -98,15 +98,22 @@ collection do
 get "scan_page"
 post "select_states"
 post "search_business_details"
+get "edit_search_list"
+post "edit_search_list"
 get "fix_list"
 end
 end
 
 resources :users do
 collection do
-end
-end
 
+end
+member do
+get "update_search_list"
+post "update_search_list"
+
+end
+end
 
   match 'users/:id/memberships/:membership_id', :to => 'users#edit_membership', :via => :put, :as => 'user_membership'
   match 'users/:id/memberships/:membership_id', :to => 'users#destroy_membership', :via => :delete
@@ -214,6 +221,7 @@ end
     resources :relations, :shallow => true, :controller => 'issue_relations', :only => [:index, :show, :create, :destroy]
   end
   match '/issues', :controller => 'issues', :action => 'destroy', :via => :delete
+    
 
   resources :queries, :except => [:show]
 

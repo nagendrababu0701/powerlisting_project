@@ -48,6 +48,8 @@ $.ajax({
             dataType: "html",
             success: function (data){
 
+$("#searched_business_data").html(data)
+
 states=data.split("option value=").length
 document.getElementById('business_location').length=0
 for(i=1;i<parseInt(data.split("option value=").length);i++)
@@ -142,12 +144,10 @@ $("#country").val(country)
       <td>Country</td>
         <td><%=  select_tag 'country', options_for_select(get_countries),html_options = {:onChange =>"select_states()"} %></td> 
     </tr>
-
-  <tr>  
-    <td>State</td>
-        <td><%= select_tag (:business_location, :state) %></td>
-        <td>Ph.No</td>
-
+  <tr>	
+  		<td>State</td>
+		<td><%= select_tag (:business_location, :state) %></td>
+		<td>Ph.No</td>
         <td><%= text_field_tag :ph_no, "", :id=>"ph_no", :onlynumeric=>"i", :maxlength=>"10" %></td>
         <td>Pincode</td>
         <td><%= text_field_tag :pincode, "", :id=>"pincode", :onlynumeric=>"i" %></td>
@@ -191,6 +191,6 @@ $(document).ready(function(){
 <div class="loding_image">
 <h1>&nbsp;</h1>
 </div>
-    <div id="searched_business_data">
+<div id="searched_business_data">
 
-    </div>
+</div>

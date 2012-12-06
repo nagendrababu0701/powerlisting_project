@@ -5,9 +5,8 @@
 # require 'yahoo/local_search'
 class SearchListsController < ApplicationController
 layout 'common_layout'
-before_filter :check_if_login_required 
-#before_filter :authorize
- # skip_before_filter :search_business_details
+#before_filter :find_current_user
+skip_after_filter :search_business_details
 
 def scan_page
 @user = User.current
@@ -35,8 +34,10 @@ end
 
 
 def search_business_details
-user=User.find_by_id(params[:user_id].to_i)
+ # debugger
+@user=User.find(User.current)#User.find_by_id(params[:user_id].to_i)
 address=""
+
 @user_id=""
 address=user.address1.to_s if user
 @user_id=user.id if user
@@ -91,6 +92,27 @@ end
 #end of directories savings.
 render :partial=>'business_info_search'
 end
+def edit_search_list
+  
+  user=User.current
+  
+  @search_list=SearchList.where(:user_id=>user.id).last
+end
+
+def update_search_list
+  
+  user=User.current
+  @update_list=SearchList.where(:user_id=>user.id).last 
+  @update_list.update_attributes(:city=>params[:search_list][:city],:state=>params[:search_list][:state],:country=>params[:search_list][:country],:pin_code=>params[:search_list][:pin_code],:ph_no=>params[:search_list][:ph_no],:updated_at =>Time.now)
+  Issue.create(:user_id=>user.id,:subject=>params[:search_list][:business_name],:project_id=>7,:created_on=>Time.now,:updated_on=>Time.now,:start_date =>Date.today)
+  issue_id=Issue.where(:user_id=>user.id).id
+
+  #3.times { FixedResult.create(:user_id =>user.id,:directory_partner_id=>"#{d}",:issue_id=>issue_id,:status =>"New")}
+  
+  redirect_to scan_page_search_lists_path
+  #Tracker.create(:name=>user.firstname,:user_id=>user.id)
+  #tracker=Tracker.find_by_id(user.id)
+end  
 
 private 
 def state_select(object, method, country, options = {}, html_options = {})
