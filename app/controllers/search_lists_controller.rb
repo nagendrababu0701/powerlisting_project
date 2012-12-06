@@ -22,7 +22,8 @@ end
 
 
 def search_business_details
-@user=User.find_by_id(params[:user_id].to_i)
+ # debugger
+@user=User.find(User.current)#User.find_by_id(params[:user_id].to_i)
 address=""
 user_id=params[:user_id]
 address=@user.address1.to_s if @user
