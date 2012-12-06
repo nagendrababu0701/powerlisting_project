@@ -8,11 +8,6 @@ layout 'common_layout'
 <<<<<<< HEAD
 #before_filter :find_current_user
 skip_after_filter :search_business_details
-=======
-before_filter :check_if_login_required 
-#before_filter :authorize
- # skip_before_filter :search_business_details
->>>>>>> 5a5a191c6f28fb7bd6d92377a81ba74071a94b85
 
 def scan_page
 @user = User.current
@@ -42,17 +37,10 @@ def search_business_details
  # debugger
 @user=User.find(User.current)#User.find_by_id(params[:user_id].to_i)
 address=""
-<<<<<<< HEAD
-user_id=params[:user_id]
-address=@user.address1.to_s if @user
 
-#yls = Yahoo::LocalSearch.new(APPID['defaults']['yahoo_id'])
-#@yahoo_results = yls.locate params[:business], params[:pincode], 5
-=======
 @user_id=""
 address=user.address1.to_s if user
 @user_id=user.id if user
->>>>>>> 5a5a191c6f28fb7bd6d92377a81ba74071a94b85
 
 phone=params[:ph_no].to_s 
 city=params[:city].to_s 

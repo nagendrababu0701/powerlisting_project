@@ -98,17 +98,15 @@ collection do
 get "scan_page"
 post "select_states"
 post "search_business_details"
-<<<<<<< HEAD
 get "edit_search_list"
 post "edit_search_list"
-=======
 get "fix_list"
 end
 end
 
 resources :users do
 collection do
->>>>>>> 5a5a191c6f28fb7bd6d92377a81ba74071a94b85
+
 end
 member do
 get "update_search_list"
