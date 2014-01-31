@@ -1,0 +1,23 @@
+<h1>Listing paperclipins</h1>
+
+<table>
+  <tr>
+    <th>Upload file</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @paperclipins.each do |paperclipin| %>
+  <tr>
+    <td><%= paperclipin.upload_file %></td>
+    <td><%= link_to 'Show', paperclipin %></td>
+    <td><%= link_to 'Edit', edit_paperclipin_path(paperclipin) %></td>
+    <td><%= link_to 'Destroy', paperclipin, :method => :delete, :data => { :confirm => 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Paperclipin', new_paperclipin_path %>

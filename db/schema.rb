@@ -10,7 +10,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121116060340) do
+ActiveRecord::Schema.define(:version => 20130205062304) do
+
+  create_table "api_masters", :force => true do |t|
+    t.string   "image_url"
+    t.string   "api_name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "attachments", :force => true do |t|
     t.integer  "container_id"
@@ -74,8 +81,7 @@ ActiveRecord::Schema.define(:version => 20121116060340) do
     t.string   "login_time"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
-    t.string   "address"
-    t.string   "logincount"
+    t.string   "ph_no"
   end
 
   create_table "changes", :force => true do |t|
@@ -193,6 +199,57 @@ ActiveRecord::Schema.define(:version => 20121116060340) do
     t.string   "business"
   end
 
+  create_table "directoriespartners", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "directoriespartners_users", :id => false, :force => true do |t|
+    t.integer "directoriespartner_id"
+    t.integer "user_id"
+  end
+
+  create_table "directory_lists", :force => true do |t|
+    t.string   "name"
+    t.string   "description"
+    t.string   "preffered"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "directory_partners", :force => true do |t|
+    t.string   "name"
+    t.boolean  "preffered"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "directory_partners_users", :id => false, :force => true do |t|
+    t.integer "directory_partner_id"
+    t.integer "user_id"
+  end
+
+  create_table "directory_preferances", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "directory_partner_id"
+    t.date     "date"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+    t.boolean  "preferance"
+  end
+
+  create_table "directorypartners", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "directorypartners_users", :id => false, :force => true do |t|
+    t.integer "directorypartner_id"
+    t.integer "user_id"
+  end
+
   create_table "documents", :force => true do |t|
     t.integer  "project_id",                :default => 0,  :null => false
     t.integer  "category_id",               :default => 0,  :null => false
@@ -225,6 +282,30 @@ ActiveRecord::Schema.define(:version => 20121116060340) do
 
   add_index "enumerations", ["id", "type"], :name => "index_enumerations_on_id_and_type"
   add_index "enumerations", ["project_id"], :name => "index_enumerations_on_project_id"
+
+  create_table "fixed_results", :force => true do |t|
+    t.string   "directoriespartner_name"
+    t.integer  "search_list_id"
+    t.integer  "user_id"
+    t.integer  "issue_id"
+    t.string   "status"
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
+  end
+
+  create_table "fixeds", :force => true do |t|
+    t.integer  "directory_partner_id"
+    t.integer  "user_id"
+    t.string   "status"
+    t.integer  "issue_id"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
+
+  create_table "foursquare_models", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "groups_users", :id => false, :force => true do |t|
     t.integer "group_id", :null => false
@@ -266,28 +347,30 @@ ActiveRecord::Schema.define(:version => 20121116060340) do
   add_index "issue_statuses", ["position"], :name => "index_issue_statuses_on_position"
 
   create_table "issues", :force => true do |t|
-    t.integer  "tracker_id",       :default => 0,     :null => false
-    t.integer  "project_id",       :default => 0,     :null => false
-    t.string   "subject",          :default => "",    :null => false
+    t.integer  "tracker_id",            :default => 0
+    t.integer  "project_id",            :default => 0
+    t.string   "subject",               :default => ""
     t.text     "description"
     t.date     "due_date"
     t.integer  "category_id"
-    t.integer  "status_id",        :default => 0,     :null => false
+    t.integer  "status_id",             :default => 0
     t.integer  "assigned_to_id"
-    t.integer  "priority_id",      :default => 0,     :null => false
+    t.integer  "priority_id",           :default => 0,     :null => false
     t.integer  "fixed_version_id"
-    t.integer  "author_id",        :default => 0,     :null => false
-    t.integer  "lock_version",     :default => 0,     :null => false
+    t.integer  "author_id",             :default => 0,     :null => false
+    t.integer  "lock_version",          :default => 0,     :null => false
     t.datetime "created_on"
     t.datetime "updated_on"
     t.date     "start_date"
-    t.integer  "done_ratio",       :default => 0,     :null => false
+    t.integer  "done_ratio",            :default => 0,     :null => false
     t.float    "estimated_hours"
     t.integer  "parent_id"
     t.integer  "root_id"
     t.integer  "lft"
     t.integer  "rgt"
-    t.boolean  "is_private",       :default => false, :null => false
+    t.boolean  "is_private",            :default => false, :null => false
+    t.integer  "user_id"
+    t.integer  "directoriespartner_id"
   end
 
   add_index "issues", ["assigned_to_id"], :name => "index_issues_on_assigned_to_id"
@@ -394,6 +477,18 @@ ActiveRecord::Schema.define(:version => 20121116060340) do
     t.string  "salt",       :null => false
   end
 
+  create_table "paperclipins", :force => true do |t|
+    t.string   "upload_file"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "paperclips", :force => true do |t|
+    t.string   "uploading_file"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
   create_table "projects", :force => true do |t|
     t.string   "name",        :default => "",   :null => false
     t.text     "description"
@@ -449,6 +544,21 @@ ActiveRecord::Schema.define(:version => 20121116060340) do
 
   add_index "repositories", ["project_id"], :name => "index_repositories_on_project_id"
 
+  create_table "reviews", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "search_list_id"
+    t.integer  "directoriespartner_id"
+    t.date     "date"
+    t.string   "location"
+    t.string   "site"
+    t.string   "review"
+    t.string   "rating"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+    t.string   "count"
+    t.string   "review_id"
+  end
+
   create_table "roles", :force => true do |t|
     t.string  "name",              :limit => 30, :default => "",        :null => false
     t.integer "position",                        :default => 1
@@ -458,8 +568,51 @@ ActiveRecord::Schema.define(:version => 20121116060340) do
     t.string  "issues_visibility", :limit => 30, :default => "default", :null => false
   end
 
+  create_table "search_lists", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "business_name"
+    t.string   "city"
+    t.string   "state"
+    t.string   "country"
+    t.string   "pin_code"
+    t.string   "ph_no"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "address"
+    t.string   "discription"
+    t.string   "category"
+    t.integer  "update_count"
+    t.text     "special_offer"
+    t.string   "name"
+    t.string   "email"
+    t.string   "web_site"
+  end
+
+  create_table "search_results", :force => true do |t|
+    t.integer  "search_list_id"
+    t.integer  "directory_partner_id"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
+
+  create_table "searched_results", :force => true do |t|
+    t.integer  "search_list_id"
+    t.integer  "directoriespartner_id"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+    t.string   "category"
+    t.string   "discription"
+    t.string   "basic_listing_information"
+    t.string   "web_site"
+    t.string   "photos"
+    t.string   "special_offer"
+    t.string   "reviews"
+    t.string   "status"
+    t.string   "phone"
+  end
+
   create_table "settings", :force => true do |t|
-    t.string   "name",       :default => "", :null => false
+    t.string   "name",       :default => ""
     t.text     "value"
     t.datetime "updated_on"
   end
@@ -504,6 +657,18 @@ ActiveRecord::Schema.define(:version => 20121116060340) do
     t.integer "fields_bits",                 :default => 0
   end
 
+  create_table "user_images", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "image_path"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.string   "files_file_name"
+    t.string   "files_content_type"
+    t.string   "files_file_size"
+    t.string   "files_updated_at"
+    t.string   "datetime"
+  end
+
   create_table "user_preferences", :force => true do |t|
     t.integer "user_id",   :default => 0,     :null => false
     t.text    "others"
@@ -538,11 +703,20 @@ ActiveRecord::Schema.define(:version => 20121116060340) do
     t.string   "zip_code"
     t.string   "phone"
     t.string   "logincount"
+    t.string   "business_name"
+    t.string   "business_phone"
+    t.string   "category"
+    t.string   "role"
   end
 
   add_index "users", ["auth_source_id"], :name => "index_users_on_auth_source_id"
   add_index "users", ["id", "type"], :name => "index_users_on_id_and_type"
   add_index "users", ["type"], :name => "index_users_on_type"
+
+  create_table "users_business_locations", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "versions", :force => true do |t|
     t.integer  "project_id",      :default => 0,      :null => false
@@ -641,5 +815,15 @@ ActiveRecord::Schema.define(:version => 20121116060340) do
   add_index "workflows", ["old_status_id"], :name => "index_workflows_on_old_status_id"
   add_index "workflows", ["role_id", "tracker_id", "old_status_id"], :name => "wkfs_role_tracker_old_status"
   add_index "workflows", ["role_id"], :name => "index_workflows_on_role_id"
+
+  create_table "yahoo_models", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "yelp_models", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
 end

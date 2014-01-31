@@ -5,7 +5,9 @@ defaults: &defaults
   foursquare_api: '2LRH0UGPXER4KLVDBCOHZUNKKWWCM5JI0B2F05IDFUEREUMD' 
   foursquare_secret: 'M4EK4OH2FMKH0WNFJYDPL2GWNAF1AOCTZ4YE1XFE22OQXN0H'
   yelp: 'GanonVA_293b8gzCHFgHdQ'
-
+  project_name: 'Powerlisting'
+  tracker: 'Affiliate'
+  status: 'New'  
 development:
   <<: *defaults
 

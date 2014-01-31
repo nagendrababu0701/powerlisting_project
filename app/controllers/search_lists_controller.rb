@@ -18,13 +18,7 @@ end
 
 def fix_list
 a=params[:directories].split(",")
-puts a
 directories=Directoriespartner.find_by_sql("SELECT * FROM directoriespartners WHERE directoriespartners.name IN ('#{a.join("','")}')")
-puts "r"
-puts directories[0].id
-puts directories[0].users
-puts params[:business]
-puts "sssss"
 end
 
 def select_states
@@ -34,8 +28,7 @@ end
 
 
 def search_business_details
- # debugger
-@user=User.find(User.current)#User.find_by_id(params[:user_id].to_i)
+user=User.find_by_id(params[:user_id].to_i)
 address=""
 
 @user_id=""
@@ -88,37 +81,33 @@ end
 if(!@yahoo_results.blank?)
   call.directory_savings(:search_id=>search_list.id,:directory_name=>"yahoo") if(!@yahoo_results[0].title.blank?)
 end
-
 #end of directories savings.
 render :partial=>'business_info_search'
 end
+
 def edit_search_list
-  
-  user=User.current
-  
+	user=User.current
+  if user.id==51
+    redirect_to signin_path
+  end
   @search_list=SearchList.where(:user_id=>user.id).last
 end
 
 def update_search_list
-  
   user=User.current
   @update_list=SearchList.where(:user_id=>user.id).last 
-  @update_list.update_attributes(:city=>params[:search_list][:city],:state=>params[:search_list][:state],:country=>params[:search_list][:country],:pin_code=>params[:search_list][:pin_code],:ph_no=>params[:search_list][:ph_no],:updated_at =>Time.now)
-  Issue.create(:user_id=>user.id,:subject=>params[:search_list][:business_name],:project_id=>7,:created_on=>Time.now,:updated_on=>Time.now,:start_date =>Date.today)
-  issue_id=Issue.where(:user_id=>user.id).id
-
-  #3.times { FixedResult.create(:user_id =>user.id,:directory_partner_id=>"#{d}",:issue_id=>issue_id,:status =>"New")}
+  @update_list.update_attributes(params[:search_list])
   
+  #3.times { FixedResult.create(:user_id =>user.id,:directory_partner_id=>"#{d}",:issue_id=>issue_id,:status =>"New")}
   redirect_to scan_page_search_lists_path
   #Tracker.create(:name=>user.firstname,:user_id=>user.id)
   #tracker=Tracker.find_by_id(user.id)
 end  
 
 private 
-def state_select(object, method, country, options = {}, html_options = {})
-    ActionView::Helpers::InstanceTag.new(object, method, self, options.delete(:object)).to_state_select_tag(country, options, html_options)
-end
-
+	def state_select(object, method, country, options = {}, html_options = {})
+	    ActionView::Helpers::InstanceTag.new(object, method, self, options.delete(:object)).to_state_select_tag(country, options, html_options)
+	end
 end
 
 

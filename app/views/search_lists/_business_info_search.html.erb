@@ -7,7 +7,7 @@
     $(':checkbox:checked').each(function(i){
          val[i] = $(this).val();
     });
-         window.open("/search_lists/fix_list?directories="+val+"business"+'<%=params[:business]%>'+"city"+'<%=params[:city]%>')
+          window.open("/search_lists/edit_search_list?directories="+val)
    });
 
 })   
@@ -51,7 +51,7 @@
             	<strong>Scanned On: </strong> 
               <div class="scan_no"><%= Time.now.strftime("%d %b %Y  %r")%>	</div>
           	</div>
-            <div class="scan_res_blk col4"><%= link_to "FIXIT ALL",edit_search_list_search_lists_path,:class=>"btn_bg flt_rgt"%></div>
+            <div class="scan_res_blk col4"><%= link_to "FIXIT IT ALL", edit_search_list_search_lists_path, :class=>"btn_bg flt_rgt" %></div>
             
             <div class="clr"></div>
             <div class="line"></div>

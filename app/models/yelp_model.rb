@@ -19,6 +19,7 @@ elsif !options[:city].blank?
 e = Net::HTTP.get(URI.parse(URI.escape("http://api.yelp.com/business_review_search?term="+options[:business]+"&location="+options[:address]+","+options[:city]+","+options[:country]+","+options[:pincode]+"&ywsid="+APPID['defaults']['yelp'])))
 response_results=JSON.parse(e)
 end
+
  return response_results
 end
 #End of the yelp search.

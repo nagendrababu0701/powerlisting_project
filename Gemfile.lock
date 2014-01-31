@@ -29,6 +29,7 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     arel (3.0.2)
+    attr_required (0.0.5)
     builder (3.0.0)
     citygrid (0.1.2)
       httparty (>= 0.5.0)
@@ -43,6 +44,11 @@ GEM
     faraday_middleware (0.9.0)
       faraday (>= 0.7.4, < 0.9)
     fastercsv (1.5.5)
+    fb_graph (2.6.4)
+      httpclient (>= 2.2.0.2)
+      multi_json (>= 1.3)
+      rack-oauth2 (>= 0.14.4)
+      tzinfo
     ffi (1.1.5)
     foursquare2 (1.8.2)
       faraday (~> 0.8)
@@ -57,6 +63,7 @@ GEM
       multi_json (~> 1.0)
       multi_xml
     httpauth (0.2.0)
+    httpclient (2.3.2)
     i18n (0.6.1)
     journey (1.0.4)
     jquery-rails (2.0.3)
@@ -89,8 +96,6 @@ GEM
     multipart-post (1.1.5)
     mysql (2.8.1)
     mysql2 (0.3.11)
-    nas-yahoo_stock (1.0.8)
-      builder (>= 2.1.2)
     net-http-digest_auth (1.2.1)
     net-http-persistent (2.8)
     net-ldap (0.3.1)
@@ -112,11 +117,21 @@ GEM
     omniauth-oauth2 (1.1.1)
       oauth2 (~> 0.8.0)
       omniauth (~> 1.0)
+    paperclip (2.3.11)
+      activerecord (>= 2.3.0)
+      activesupport (>= 2.3.2)
     pg (0.14.1)
     polyglot (0.3.3)
     rack (1.4.1)
     rack-cache (1.2)
       rack (>= 0.4)
+    rack-oauth2 (1.0.0)
+      activesupport (>= 2.3)
+      attr_required (>= 0.0.5)
+      httpclient (>= 2.2.0.2)
+      i18n
+      multi_json (>= 1.3.6)
+      rack (>= 1.1)
     rack-openid (1.3.1)
       rack (>= 1.1.0)
       ruby-openid (>= 2.1.8)
@@ -170,8 +185,6 @@ GEM
       unf_ext
     unf_ext (0.0.5)
     webrobots (0.0.13)
-    yahoo-placemaker (0.0.7)
-      json
     yard (0.8.3)
     yelp (1.0.0)
       json (>= 1.1.1)
@@ -188,6 +201,7 @@ DEPENDENCIES
   coderay (~> 1.0.6)
   country_select (= 1.0.0)
   fastercsv (~> 1.5.0)
+  fb_graph
   foursquare2
   geocoder
   hashie
@@ -203,11 +217,11 @@ DEPENDENCIES
   multi_xml
   mysql
   mysql2 (~> 0.3.11)
-  nas-yahoo_stock
   net-ldap (~> 0.3.1)
   nokogiri
   oauth
   omniauth-foursquare
+  paperclip
   pg (>= 0.11.0)
   rack-openid
   rails (= 3.2.8)
@@ -219,6 +233,5 @@ DEPENDENCIES
   sqlite3
   test-unit
   typhoeus (= 0.4.0)
-  yahoo-placemaker (~> 0.0.7)
   yard
   yelp

@@ -20,7 +20,7 @@ require 'cgi'
 class Unauthorized < Exception; end
 
 class ApplicationController < ActionController::Base
-  include Redmine::I18n
+    include Redmine::I18n
 
   class_attribute :accept_api_auth_actions
   class_attribute :accept_rss_auth_actions
@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
     cookies.delete(:autologin)
   end
 
-  before_filter :session_expiration, :user_setup, :check_if_login_required, :set_localization
+ before_filter :session_expiration, :user_setup, :check_if_login_required, :set_localization
 
   rescue_from ActionController::InvalidAuthenticityToken, :with => :invalid_authenticity_token
   rescue_from ::Unauthorized, :with => :deny_access
@@ -45,6 +45,7 @@ class ApplicationController < ActionController::Base
   helper Redmine::MenuManager::MenuHelper
 
   def session_expiration
+    p "dddddddddddddddddddddddddddddddddddd"
     if session[:user_id]
       if session_expired? && !try_to_autologin
         reset_session
@@ -57,6 +58,7 @@ class ApplicationController < ActionController::Base
   end
 
   def session_expired?
+    p "sssssssssssssssssssssssssssssssss"
     if Setting.session_lifetime?
       unless session[:ctime] && (Time.now.utc.to_i - session[:ctime].to_i <= Setting.session_lifetime.to_i * 60)
         return true
@@ -81,12 +83,15 @@ class ApplicationController < ActionController::Base
     Setting.check_cache
     # Find the current user
     User.current = find_current_user
+    p ("  Current user: " + (User.current.logged? ? "#{User.current.login} (id=#{User.current.id})" : "anonymous"))
     logger.info("  Current user: " + (User.current.logged? ? "#{User.current.login} (id=#{User.current.id})" : "anonymous")) if logger
   end
 
   # Returns the current user or nil if no user is logged in
   # and starts a session if needed
   def find_current_user
+
+    p "dsssssssssssswwwwwwwwwW"
     user = nil
     unless api_request?
       if session[:user_id]

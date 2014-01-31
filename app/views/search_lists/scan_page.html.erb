@@ -19,17 +19,16 @@ if($("#country").val()=="Please Select")
 country=""
 else
 country=$("#country").val()
-
-          $.ajax({
+         $.ajax({
             url: '/search_lists/search_business_details',
-            type: "POST",
+            type: "GET",
 
             data: { 'business': $("#business").val(), 'city' : $("#city").val(), 'business_location' :state, 'country' : country, 'pincode' : $("#pincode").val() , 'ph_no' : $("#ph_no").val(), 'user_id' : '<%= @user_id %>', 'business_ids' : $("#business_ids").val()  },
 
             dataType: "html",
             success: function (data) {
     $(".loding_image").hide();
-    $("#searched_business_data").html(data)
+    $("#searched_business_data").html(data);
 
 
             },
@@ -41,25 +40,27 @@ country=$("#country").val()
    });
 
 $("#country").change(function(){
-$.ajax({
+        $.ajax({
             url: '/search_lists/select_states',
-            type: "POST",
+            type: "GET",
             data: { 'country' : $("#country").val() },
             dataType: "html",
             success: function (data){
-
-$("#searched_business_data").html(data)
-
+               
+               // $("#states_data_before").hide();
+               // $("#states_data_after").show();
+               //  $("#states_data_after").html(data);
 states=data.split("option value=").length
 document.getElementById('business_location').length=0
 for(i=1;i<parseInt(data.split("option value=").length);i++)
 {
 var opt = document.createElement("option")
 document.getElementById("business_location").options.add(opt)
-state=data.split("&lt;option value=&quot;")[i]
-opt.text = state.split("&quot;&gt;")[0]
-opt.value = state.split("&quot;&gt;")[0]
+state=data.split('option value="')[i]
+opt.text = state.split('"')[0]
+opt.value = state.split('"')[0]
 }
+               
             },
             error: function () {
                 alert("error");
@@ -139,14 +140,15 @@ $("#country").val(country)
          <span class="error_explanation_search" id="business_search" style="display:none;">Business Name  cant be blank</span>
         <td>City</td>
         <td><%= text_field_tag :city, "", :id=>"city" %></td>
-        <span class="error_explanation_search" id="city_search" style="display:none;">City Name  cant be blank</span>
+        <span class="error_explanation_search" id="city_search" style="display:none;">City Name or ph_no cant be blank</span>
 
       <td>Country</td>
         <td><%=  select_tag 'country', options_for_select(get_countries),html_options = {:onChange =>"select_states()"} %></td> 
     </tr>
   <tr>	
   		<td>State</td>
-		<td><%= select_tag (:business_location, :state) %></td>
+		<td><div id="states_data_before"><%= select_tag (:business_location, :state) %></div>
+            <div id="states_data_after"></div></td>
 		<td>Ph.No</td>
         <td><%= text_field_tag :ph_no, "", :id=>"ph_no", :onlynumeric=>"i", :maxlength=>"10" %></td>
         <td>Pincode</td>

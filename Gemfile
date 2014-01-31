@@ -23,8 +23,10 @@ gem 'oauth'
 gem 'ruby-debug'           
 gem 'country_select', '1.0.0'
 gem 'htmlentities', '4.2.0'
-gem "yahoo-placemaker", "~> 0.0.7"
-gem 'nas-yahoo_stock'
+gem 'fb_graph'
+#gem "yahoo-placemaker", "~> 0.0.7"
+#gem 'nas-yahoo_stock'
+gem 'paperclip'
 #gem "yahoo_jp_transit", "~> 0.1.2"
 #gem "yahoo-answers"
 #gem "yahoofinance-typhoeus", "~> 1.0.0"

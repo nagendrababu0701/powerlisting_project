@@ -6,33 +6,25 @@
 
 
 <div>
-    <label for="business_name">Bisiness Name<em>*</em></label>
-   <%= form.text_field :business_name %>
-  </div>
-  <div>
-    <label for="city">City<em>*</em></label>
-   <%= form.text_field :city%>
-  </div>
-<div>
-    <label for="state">State<em>*</em></label>
-     <%= form.text_field :state%>
- 
-
-
-  </div>
-<div>
-    <label for="country">Country <em>*</em></label>
-     <%= form.text_field :country%>
-  </div>
-  <div>
-    <label for="ph_no">Phone Number</label>
-   <%= form.text_field :ph_no %>
-  </div>
-  
-<div>
-    <label for="pin_code">Pincode</label>
-   <%= form.text_field :pin_code %>
-  </div>
+ <table align="center">
+  <tr>
+      <td><label for="business_name">Bisiness Name<em>*</em></label></td>
+      <td><%= form.text_field :business_name %></td>
+      <td><label for="city">City<em>*</em></label></td>
+      <td><%= form.text_field :city%></td>
+      <td><label for="state">State<em>*</em></label></td>
+      <td><%= form.text_field :state%></td>
+  </tr>
+  <tr>
+      <td><label for="country">Country <em>*</em></label></td>
+      <td><%= form.text_field :country%></td>
+      <td><label for="ph_no">Phone Number</label></td>
+      <td><%= form.text_field :ph_no %></td>
+      <td><label for="pin_code">Pincode</label></td>
+      <td><%= form.text_field :pin_code %></td>
+      <td><%= hidden_field_tag :directories,"" %></td>
+  </tr>
+</table>
  <div class="buttonrow">
     <%= form.submit "SUBMIT" ,:class=>'button'%>
   </div>

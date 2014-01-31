@@ -16,6 +16,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 RedmineApp::Application.routes.draw do
+  resources :paperclipins
+
   get "directory_partners/index"
 
   get "directory_partners/show"
@@ -97,9 +99,12 @@ resources :search_lists do
 collection do
 get "scan_page"
 post "select_states"
+get "select_states"
 post "search_business_details"
+get "search_business_details"
 get "edit_search_list"
 post "edit_search_list"
+post "update_search_list"
 get "fix_list"
 end
 end

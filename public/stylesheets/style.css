@@ -140,8 +140,8 @@ th, td {
     font-weight: bold;
     vertical-align: middle;
     padding: 10px;
-	border-right:1px solid #cfcfcd;
-	border-bottom:1px solid #cfcfcd;
+	border-right:0px solid #cfcfcd;
+	border-bottom:0px solid #cfcfcd;
 	text-align:center;
 }
 th.last, td.last {
@@ -234,13 +234,13 @@ th.last, td.last {
 
 .logo{
 	float:left;
-	margin:0 -5px -45px -35px;
+	margin:-1 -5px -45px -35px;
 	text-indent:-9999px;
 	overflow:hidden;
 	z-index:20;
 	position:relative;
-	width:209px;
-	height:130px;
+	width:133px;
+	height:133px;
 	background:url(../images/logo.png) no-repeat;
 }
 .logo a{

@@ -6,7 +6,6 @@ class FoursquareModel < ActiveRecord::Base
 		match=options[:phone]
 		match=options[:city] if options[:phone].blank?
 		venues = foursquare.venues.search(:query => options[:business], :ll => @s[0].latitude.to_s+","+@s[0].longitude.to_s, :intent => :match) if @s!=[]
-		
 		return venues
   end
 end

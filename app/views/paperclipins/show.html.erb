@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Upload file:</b>
+
+  <%= image_tag @paperclipin.upload_file.url %>
+<%= image_tag @paperclipin.upload_file.url(:medium) %>
+<%= image_tag @paperclipin.upload_file.url(:thumb) %>
+
+</p>
+
+
+<%= link_to 'Edit', edit_paperclipin_path(@paperclipin) %> |
+<%= link_to 'Back', paperclipins_path %>

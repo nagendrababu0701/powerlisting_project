@@ -19,15 +19,7 @@ def new
 end
 
 def create
-  preferred_api = []
-  u = User.current
-   params[:preffered].each do |x|
-      preferred_api<<[:name=>x,:preffered=>"1", :user_id=> "1"]
-  end
-    @directory_partner = DirectoryPartner.create(preferred_api)
-  #  if @directory_partner.save
-  #    format.html { redirect_to("/directory_partners/new", :notice => "successfully created.") }
-  #end  
+ 
 end
 
   def edit
